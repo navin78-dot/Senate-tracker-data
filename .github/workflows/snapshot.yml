@@ -1,0 +1,119 @@
+name: snapshot
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: snapshot
+  cancel-in-progress: false
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch sources
+        run: |
+          python3 - <<'PYEOF'
+          #!/usr/bin/env python3
+          """Snapshot the 2026 Senate tracker's sources. Runs inside GitHub Actions every 30 minutes.
+          Writes everything under data/latest/ plus data/manifest.json (what was fetched, when, HTTP status)."""
+          import json, os, sys, time, urllib.request, urllib.error
+          from datetime import datetime, timezone
+
+          UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36 senate-tracker-relay/1.0"
+          OUT = "data/latest"
+          os.makedirs(OUT + "/rcp", exist_ok=True); os.makedirs(OUT + "/polymarket", exist_ok=True); os.makedirs(OUT + "/kalshi", exist_ok=True)
+
+          RCP_IDS = {"OH": 8689, "TX": 8867, "AK": 8754, "ME": 9100, "NC": 8753, "IA": 8930, "MI": 8802, "NH": 8845, "GA": 8718}
+          RCP_PAGES = {
+              "OH": "https://www.realclearpolling.com/polls/senate/special-election/2026/ohio/husted-vs-brown",
+              "TX": "https://www.realclearpolling.com/polls/senate/general/2026/texas/talarico-vs-paxton",
+              "AK": "https://www.realclearpolling.com/polls/senate/general/2026/alaska/peltola-vs-sullivan",
+              "ME": "https://www.realclearpolling.com/polls/senate/general/2026/collins-vs-jackson",
+              "NC": "https://www.realclearpolling.com/polls/senate/general/2026/north-carolina/cooper-vs-whatley",
+              "IA": "https://www.realclearpolling.com/polls/senate/general/2026/iowa/hinson-vs-turek",
+              "MI": "https://www.realclearpolling.com/polls/senate/general/2026/michigan/rogers-vs-el-sayed",
+              "NH": "https://www.realclearpolling.com/polls/senate/general/2026/new-hampshire/pappas-vs-sununu",
+              "GA": "https://www.realclearpolling.com/polls/senate/general/2026/georgia/ossoff-vs-collins",
+          }
+          POLY_SLUGS = {st: f"{name}-senate-election-winner" for st, name in {
+              "NC": "north-carolina", "GA": "georgia", "NH": "new-hampshire", "TX": "texas", "OH": "ohio",
+              "AK": "alaska", "ME": "maine", "MI": "michigan", "IA": "iowa"}.items()}
+          POLY_SLUGS["CONTROL"] = "balance-of-power-2026-midterms"
+          KALSHI_EVENTS = {"TX": "SENATETX-26", "MI": "SENATEMI-26", "IA": "SENATEIA-26", "ME": "SENATEME-26", "OH": "SENATEOHS-26",
+                           "NC": "SENATENC-26", "AK": "SENATEAK-26", "NH": "SENATENH-26", "GA": "SENATEGA-26", "CONTROL": "KXBALANCEPOWERCOMBO-27FEB"}
+          KALSHI_PAGES = {"TX": "https://kalshi.com/markets/senatetx/texas-senate-race/senatetx-26",
+                          "MI": "https://kalshi.com/markets/senatemi/michigan-senate-race/senatemi-26",
+                          "IA": "https://kalshi.com/markets/senateia/iowa-senate-race/senateia-26",
+                          "ME": "https://kalshi.com/markets/senateme/maine-senate-race/senateme-26",
+                          "OH": "https://kalshi.com/markets/senateohs/special-senate-election-in-ohio/senateohs-26",
+                          "NC": "https://kalshi.com/markets/senatenc/north-carolina-senate-race/senatenc-26",
+                          "AK": "https://kalshi.com/markets/senateak/alaska-senate-race/senateak-26",
+                          "NH": "https://kalshi.com/markets/senatenh/new-hampshire-senate-race/senatenh-26",
+                          "GA": "https://kalshi.com/markets/senatega/georgia-senate-race/senatega-26",
+                          "CONTROL": "https://kalshi.com/markets/kxbalancepowercombo/congress-balance-of-power-combo/kxbalancepowercombo-27feb"}
+
+          manifest = {"fetched_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"), "items": {}}
+
+          def get(url, tries=3, pause=2.0):
+              last = None
+              for i in range(tries):
+                  try:
+                      req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "*/*", "Cache-Control": "no-cache", "Pragma": "no-cache"})
+                      with urllib.request.urlopen(req, timeout=40) as r:
+                          return r.status, r.read()
+                  except urllib.error.HTTPError as e:
+                      last = e.code
+                      if e.code == 429: time.sleep(pause * (i + 2)); continue
+                      return e.code, b""
+                  except Exception as e:
+                      last = str(e); time.sleep(pause)
+              return last, b""
+
+          def save(key, url, path, expect_json=False):
+              status, body = get(url)
+              ok = status == 200 and (not expect_json or body.lstrip().startswith((b"{", b"[")))
+              if ok:
+                  with open(path, "wb") as f: f.write(body)
+              manifest["items"][key] = {"url": url, "status": status, "ok": ok, "bytes": len(body), "path": path if ok else None}
+              print(f"{key:14s} {status} {len(body):>8d}  {url}")
+              time.sleep(1.0)
+
+          for st, rid in RCP_IDS.items():
+              save(f"rcp_json_{st}", f"https://www.realclearpolitics.com/poll/race/{rid}/polling_data.json", f"{OUT}/rcp/{st}.json", expect_json=True)
+          for st, url in RCP_PAGES.items():
+              save(f"rcp_page_{st}", url, f"{OUT}/rcp/{st}.html")
+          save("rcp_feed", "https://www.realclearpolling.com/latest-polls/senate", f"{OUT}/rcp/latest-polls-senate.html")
+          for st, slug in POLY_SLUGS.items():
+              save(f"polymarket_{st}", f"https://gamma-api.polymarket.com/events?slug={slug}", f"{OUT}/polymarket/{st}.json", expect_json=True)
+          for st, ev in KALSHI_EVENTS.items():
+              save(f"kalshi_api_{st}", f"https://api.elections.kalshi.com/trade-api/v2/events/{ev}?with_nested_markets=true", f"{OUT}/kalshi/{st}.json", expect_json=True)
+              if not manifest["items"][f"kalshi_api_{st}"]["ok"]:
+                  save(f"kalshi_api_{st}_kx", f"https://api.elections.kalshi.com/trade-api/v2/events/KX{ev}?with_nested_markets=true", f"{OUT}/kalshi/{st}.json", expect_json=True)
+          for st, url in KALSHI_PAGES.items():
+              save(f"kalshi_page_{st}", url, f"{OUT}/kalshi/{st}.html")
+
+          # A compact summary of the RCP averages straight from the JSON, so the reader never has to parse HTML
+          summary = {}
+          for st in RCP_IDS:
+              p = f"{OUT}/rcp/{st}.json"
+              try:
+                  j = json.load(open(p)); avg = j["poll"][0]
+                  summary[st] = {"window": avg.get("date"), "candidates": [(c.get("name"), c.get("value")) for c in avg.get("candidate", [])],
+                                 "n_flagged": sum(1 for r in j["poll"] if r.get("type") == "poll_rcp_avg"), "n_rows": len(j["poll"]) - 1}
+              except Exception as e:
+                  summary[st] = {"error": str(e)}
+          manifest["rcp_summary"] = summary
+          json.dump(manifest, open("data/manifest.json", "w"), indent=1)
+          bad = [k for k, v in manifest["items"].items() if not v["ok"] and not k.endswith("_kx")]
+          print("\nNOT OK:", bad if bad else "none")
+          PYEOF
+      - name: Commit if anything changed
+        run: |
+          git config user.name "senate-tracker-relay"
+          git config user.email "relay@users.noreply.github.com"
+          git add -A data
+          if git diff --cached --quiet; then echo "no changes"; else git commit -m "snapshot $(date -u +%Y-%m-%dT%H:%M:%SZ)" && git push; fi
