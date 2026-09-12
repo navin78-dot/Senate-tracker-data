@@ -1,0 +1,485 @@
+{
+ "fetched_at_utc": "2026-09-12T12:24:55+00:00",
+ "items": {
+  "rcp_json_OH": {
+   "url": "https://www.realclearpolitics.com/poll/race/8689/polling_data.json",
+   "status": 200,
+   "ok": true,
+   "bytes": 18942,
+   "path": "data/latest/rcp/OH.json"
+  },
+  "rcp_json_TX": {
+   "url": "https://www.realclearpolitics.com/poll/race/8867/polling_data.json",
+   "status": 200,
+   "ok": true,
+   "bytes": 28973,
+   "path": "data/latest/rcp/TX.json"
+  },
+  "rcp_json_AK": {
+   "url": "https://www.realclearpolitics.com/poll/race/8754/polling_data.json",
+   "status": 200,
+   "ok": true,
+   "bytes": 19882,
+   "path": "data/latest/rcp/AK.json"
+  },
+  "rcp_json_ME": {
+   "url": "https://www.realclearpolitics.com/poll/race/9100/polling_data.json",
+   "status": 200,
+   "ok": true,
+   "bytes": 16178,
+   "path": "data/latest/rcp/ME.json"
+  },
+  "rcp_json_NC": {
+   "url": "https://www.realclearpolitics.com/poll/race/8753/polling_data.json",
+   "status": 200,
+   "ok": true,
+   "bytes": 30381,
+   "path": "data/latest/rcp/NC.json"
+  },
+  "rcp_json_IA": {
+   "url": "https://www.realclearpolitics.com/poll/race/8930/polling_data.json",
+   "status": 200,
+   "ok": true,
+   "bytes": 21438,
+   "path": "data/latest/rcp/IA.json"
+  },
+  "rcp_json_MI": {
+   "url": "https://www.realclearpolitics.com/poll/race/8802/polling_data.json",
+   "status": 200,
+   "ok": true,
+   "bytes": 29282,
+   "path": "data/latest/rcp/MI.json"
+  },
+  "rcp_json_NH": {
+   "url": "https://www.realclearpolitics.com/poll/race/8845/polling_data.json",
+   "status": 200,
+   "ok": true,
+   "bytes": 20889,
+   "path": "data/latest/rcp/NH.json"
+  },
+  "rcp_json_GA": {
+   "url": "https://www.realclearpolitics.com/poll/race/8718/polling_data.json",
+   "status": 200,
+   "ok": true,
+   "bytes": 15884,
+   "path": "data/latest/rcp/GA.json"
+  },
+  "rcp_page_OH": {
+   "url": "https://www.realclearpolling.com/polls/senate/special-election/2026/ohio/husted-vs-brown",
+   "status": 403,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "rcp_page_TX": {
+   "url": "https://www.realclearpolling.com/polls/senate/general/2026/texas/talarico-vs-paxton",
+   "status": 403,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "rcp_page_AK": {
+   "url": "https://www.realclearpolling.com/polls/senate/general/2026/alaska/peltola-vs-sullivan",
+   "status": 403,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "rcp_page_ME": {
+   "url": "https://www.realclearpolling.com/polls/senate/general/2026/collins-vs-jackson",
+   "status": 403,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "rcp_page_NC": {
+   "url": "https://www.realclearpolling.com/polls/senate/general/2026/north-carolina/cooper-vs-whatley",
+   "status": 403,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "rcp_page_IA": {
+   "url": "https://www.realclearpolling.com/polls/senate/general/2026/iowa/hinson-vs-turek",
+   "status": 403,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "rcp_page_MI": {
+   "url": "https://www.realclearpolling.com/polls/senate/general/2026/michigan/rogers-vs-el-sayed",
+   "status": 403,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "rcp_page_NH": {
+   "url": "https://www.realclearpolling.com/polls/senate/general/2026/new-hampshire/pappas-vs-sununu",
+   "status": 403,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "rcp_page_GA": {
+   "url": "https://www.realclearpolling.com/polls/senate/general/2026/georgia/ossoff-vs-collins",
+   "status": 403,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "rcp_feed": {
+   "url": "https://www.realclearpolling.com/latest-polls/senate",
+   "status": 403,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "polymarket_NC": {
+   "url": "https://gamma-api.polymarket.com/events?slug=north-carolina-senate-election-winner",
+   "status": 200,
+   "ok": true,
+   "bytes": 52554,
+   "path": "data/latest/polymarket/NC.json"
+  },
+  "polymarket_GA": {
+   "url": "https://gamma-api.polymarket.com/events?slug=georgia-senate-election-winner",
+   "status": 200,
+   "ok": true,
+   "bytes": 52202,
+   "path": "data/latest/polymarket/GA.json"
+  },
+  "polymarket_NH": {
+   "url": "https://gamma-api.polymarket.com/events?slug=new-hampshire-senate-election-winner",
+   "status": 200,
+   "ok": true,
+   "bytes": 52296,
+   "path": "data/latest/polymarket/NH.json"
+  },
+  "polymarket_TX": {
+   "url": "https://gamma-api.polymarket.com/events?slug=texas-senate-election-winner",
+   "status": 200,
+   "ok": true,
+   "bytes": 52728,
+   "path": "data/latest/polymarket/TX.json"
+  },
+  "polymarket_OH": {
+   "url": "https://gamma-api.polymarket.com/events?slug=ohio-senate-election-winner",
+   "status": 200,
+   "ok": true,
+   "bytes": 53470,
+   "path": "data/latest/polymarket/OH.json"
+  },
+  "polymarket_AK": {
+   "url": "https://gamma-api.polymarket.com/events?slug=alaska-senate-election-winner",
+   "status": 200,
+   "ok": true,
+   "bytes": 103402,
+   "path": "data/latest/polymarket/AK.json"
+  },
+  "polymarket_ME": {
+   "url": "https://gamma-api.polymarket.com/events?slug=maine-senate-election-winner",
+   "status": 200,
+   "ok": true,
+   "bytes": 52891,
+   "path": "data/latest/polymarket/ME.json"
+  },
+  "polymarket_MI": {
+   "url": "https://gamma-api.polymarket.com/events?slug=michigan-senate-election-winner",
+   "status": 200,
+   "ok": true,
+   "bytes": 52900,
+   "path": "data/latest/polymarket/MI.json"
+  },
+  "polymarket_IA": {
+   "url": "https://gamma-api.polymarket.com/events?slug=iowa-senate-election-winner",
+   "status": 200,
+   "ok": true,
+   "bytes": 52092,
+   "path": "data/latest/polymarket/IA.json"
+  },
+  "polymarket_CONTROL": {
+   "url": "https://gamma-api.polymarket.com/events?slug=balance-of-power-2026-midterms",
+   "status": 200,
+   "ok": true,
+   "bytes": 40913,
+   "path": "data/latest/polymarket/CONTROL.json"
+  },
+  "kalshi_api_TX": {
+   "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATETX-26?with_nested_markets=true",
+   "status": 200,
+   "ok": true,
+   "bytes": 4419,
+   "path": "data/latest/kalshi/TX.json"
+  },
+  "kalshi_api_MI": {
+   "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEMI-26?with_nested_markets=true",
+   "status": 200,
+   "ok": true,
+   "bytes": 4423,
+   "path": "data/latest/kalshi/MI.json"
+  },
+  "kalshi_api_IA": {
+   "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEIA-26?with_nested_markets=true",
+   "status": 200,
+   "ok": true,
+   "bytes": 4411,
+   "path": "data/latest/kalshi/IA.json"
+  },
+  "kalshi_api_ME": {
+   "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEME-26?with_nested_markets=true",
+   "status": 200,
+   "ok": true,
+   "bytes": 4421,
+   "path": "data/latest/kalshi/ME.json"
+  },
+  "kalshi_api_OH": {
+   "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEOHS-26?with_nested_markets=true",
+   "status": 200,
+   "ok": true,
+   "bytes": 4405,
+   "path": "data/latest/kalshi/OH.json"
+  },
+  "kalshi_api_NC": {
+   "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATENC-26?with_nested_markets=true",
+   "status": 200,
+   "ok": true,
+   "bytes": 4324,
+   "path": "data/latest/kalshi/NC.json"
+  },
+  "kalshi_api_AK": {
+   "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEAK-26?with_nested_markets=true",
+   "status": 200,
+   "ok": true,
+   "bytes": 4312,
+   "path": "data/latest/kalshi/AK.json"
+  },
+  "kalshi_api_NH": {
+   "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATENH-26?with_nested_markets=true",
+   "status": 200,
+   "ok": true,
+   "bytes": 4441,
+   "path": "data/latest/kalshi/NH.json"
+  },
+  "kalshi_api_GA": {
+   "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEGA-26?with_nested_markets=true",
+   "status": 200,
+   "ok": true,
+   "bytes": 4419,
+   "path": "data/latest/kalshi/GA.json"
+  },
+  "kalshi_api_CONTROL": {
+   "url": "https://api.elections.kalshi.com/trade-api/v2/events/KXBALANCEPOWERCOMBO-27FEB?with_nested_markets=true",
+   "status": 200,
+   "ok": true,
+   "bytes": 9323,
+   "path": "data/latest/kalshi/CONTROL.json"
+  },
+  "kalshi_page_TX": {
+   "url": "https://kalshi.com/markets/senatetx/texas-senate-race/senatetx-26",
+   "status": 429,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "kalshi_page_MI": {
+   "url": "https://kalshi.com/markets/senatemi/michigan-senate-race/senatemi-26",
+   "status": 429,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "kalshi_page_IA": {
+   "url": "https://kalshi.com/markets/senateia/iowa-senate-race/senateia-26",
+   "status": 429,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "kalshi_page_ME": {
+   "url": "https://kalshi.com/markets/senateme/maine-senate-race/senateme-26",
+   "status": 429,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "kalshi_page_OH": {
+   "url": "https://kalshi.com/markets/senateohs/special-senate-election-in-ohio/senateohs-26",
+   "status": 429,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "kalshi_page_NC": {
+   "url": "https://kalshi.com/markets/senatenc/north-carolina-senate-race/senatenc-26",
+   "status": 429,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "kalshi_page_AK": {
+   "url": "https://kalshi.com/markets/senateak/alaska-senate-race/senateak-26",
+   "status": 429,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "kalshi_page_NH": {
+   "url": "https://kalshi.com/markets/senatenh/new-hampshire-senate-race/senatenh-26",
+   "status": 429,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "kalshi_page_GA": {
+   "url": "https://kalshi.com/markets/senatega/georgia-senate-race/senatega-26",
+   "status": 429,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "kalshi_page_CONTROL": {
+   "url": "https://kalshi.com/markets/kxbalancepowercombo/congress-balance-of-power-combo/kxbalancepowercombo-27feb",
+   "status": 429,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  }
+ },
+ "rcp_summary": {
+  "OH": {
+   "window": "6/14 - 9/9",
+   "candidates": [
+    [
+     "Brown",
+     "48.8"
+    ],
+    [
+     "Husted",
+     "45.5"
+    ]
+   ],
+   "n_flagged": 4,
+   "n_rows": 12
+  },
+  "TX": {
+   "window": "7/23 - 9/9",
+   "candidates": [
+    [
+     "Talarico",
+     "47.4"
+    ],
+    [
+     "Paxton",
+     "44.7"
+    ]
+   ],
+   "n_flagged": 10,
+   "n_rows": 23
+  },
+  "AK": {
+   "window": "6/15 - 8/23",
+   "candidates": [
+    [
+     "Peltola",
+     "49.7"
+    ],
+    [
+     "Sullivan",
+     "47.7"
+    ]
+   ],
+   "n_flagged": 3,
+   "n_rows": 15
+  },
+  "ME": {
+   "window": "7/7 - 9/10",
+   "candidates": [
+    [
+     "Jackson",
+     "47.9"
+    ],
+    [
+     "Collins",
+     "45.4"
+    ]
+   ],
+   "n_flagged": 7,
+   "n_rows": 10
+  },
+  "NC": {
+   "window": "6/15 - 9/3",
+   "candidates": [
+    [
+     "Cooper",
+     "50.5"
+    ],
+    [
+     "Whatley",
+     "42.5"
+    ]
+   ],
+   "n_flagged": 8,
+   "n_rows": 25
+  },
+  "IA": {
+   "window": "8/20 - 9/10",
+   "candidates": [
+    [
+     "Hinson",
+     "44.5"
+    ],
+    [
+     "Turek",
+     "44.0"
+    ]
+   ],
+   "n_flagged": 4,
+   "n_rows": 16
+  },
+  "MI": {
+   "window": "7/28 - 9/9",
+   "candidates": [
+    [
+     "El-Sayed",
+     "46.5"
+    ],
+    [
+     "Rogers",
+     "44.7"
+    ]
+   ],
+   "n_flagged": 10,
+   "n_rows": 23
+  },
+  "NH": {
+   "window": "3/21 - 9/10",
+   "candidates": [
+    [
+     "Pappas",
+     "45.3"
+    ],
+    [
+     "Sununu",
+     "41.0"
+    ]
+   ],
+   "n_flagged": 4,
+   "n_rows": 13
+  },
+  "GA": {
+   "window": "2/28 - 8/17",
+   "candidates": [
+    [
+     "Ossoff",
+     "50.7"
+    ],
+    [
+     "Collins",
+     "43.2"
+    ]
+   ],
+   "n_flagged": 6,
+   "n_rows": 10
+  }
+ }
+}
