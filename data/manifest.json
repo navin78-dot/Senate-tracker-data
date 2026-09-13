@@ -1,5 +1,5 @@
 {
- "fetched_at_utc": "2026-09-13T12:38:21+00:00",
+ "fetched_at_utc": "2026-09-13T13:02:48+00:00",
  "items": {
   "rcp_json_OH": {
    "url": "https://www.realclearpolitics.com/poll/race/8689/polling_data.json",
@@ -138,70 +138,70 @@
    "url": "https://gamma-api.polymarket.com/events?slug=north-carolina-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52872,
+   "bytes": 52887,
    "path": "data/latest/polymarket/NC.json"
   },
   "polymarket_GA": {
    "url": "https://gamma-api.polymarket.com/events?slug=georgia-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 51692,
+   "bytes": 51688,
    "path": "data/latest/polymarket/GA.json"
   },
   "polymarket_NH": {
    "url": "https://gamma-api.polymarket.com/events?slug=new-hampshire-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52267,
+   "bytes": 52297,
    "path": "data/latest/polymarket/NH.json"
   },
   "polymarket_TX": {
    "url": "https://gamma-api.polymarket.com/events?slug=texas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52881,
+   "bytes": 52838,
    "path": "data/latest/polymarket/TX.json"
   },
   "polymarket_OH": {
    "url": "https://gamma-api.polymarket.com/events?slug=ohio-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53486,
+   "bytes": 53468,
    "path": "data/latest/polymarket/OH.json"
   },
   "polymarket_AK": {
    "url": "https://gamma-api.polymarket.com/events?slug=alaska-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 103175,
+   "bytes": 103197,
    "path": "data/latest/polymarket/AK.json"
   },
   "polymarket_ME": {
    "url": "https://gamma-api.polymarket.com/events?slug=maine-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52845,
+   "bytes": 52814,
    "path": "data/latest/polymarket/ME.json"
   },
   "polymarket_MI": {
    "url": "https://gamma-api.polymarket.com/events?slug=michigan-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52924,
+   "bytes": 52906,
    "path": "data/latest/polymarket/MI.json"
   },
   "polymarket_IA": {
    "url": "https://gamma-api.polymarket.com/events?slug=iowa-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52050,
+   "bytes": 52049,
    "path": "data/latest/polymarket/IA.json"
   },
   "polymarket_CONTROL": {
    "url": "https://gamma-api.polymarket.com/events?slug=balance-of-power-2026-midterms",
    "status": 200,
    "ok": true,
-   "bytes": 41021,
+   "bytes": 41024,
    "path": "data/latest/polymarket/CONTROL.json"
   },
   "kalshi_api_TX": {
@@ -236,7 +236,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEOHS-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4405,
+   "bytes": 4404,
    "path": "data/latest/kalshi/OH.json"
   },
   "kalshi_api_NC": {
@@ -271,7 +271,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/KXBALANCEPOWERCOMBO-27FEB?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 9324,
+   "bytes": 9325,
    "path": "data/latest/kalshi/CONTROL.json"
   },
   "kalshi_page_TX": {
