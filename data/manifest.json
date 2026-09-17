@@ -1,5 +1,5 @@
 {
- "fetched_at_utc": "2026-09-17T18:03:42+00:00",
+ "fetched_at_utc": "2026-09-17T18:38:47+00:00",
  "items": {
   "rcp_json_OH": {
    "url": "https://www.realclearpolitics.com/poll/race/8689/polling_data.json",
@@ -19,7 +19,7 @@
    "url": "https://www.realclearpolitics.com/poll/race/8754/polling_data.json",
    "status": 200,
    "ok": true,
-   "bytes": 20771,
+   "bytes": 21529,
    "path": "data/latest/rcp/AK.json"
   },
   "rcp_json_ME": {
@@ -138,7 +138,7 @@
    "url": "https://gamma-api.polymarket.com/events?slug=north-carolina-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52431,
+   "bytes": 52430,
    "path": "data/latest/polymarket/NC.json"
   },
   "polymarket_GA": {
@@ -152,21 +152,21 @@
    "url": "https://gamma-api.polymarket.com/events?slug=new-hampshire-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52435,
+   "bytes": 52454,
    "path": "data/latest/polymarket/NH.json"
   },
   "polymarket_TX": {
    "url": "https://gamma-api.polymarket.com/events?slug=texas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53100,
+   "bytes": 53099,
    "path": "data/latest/polymarket/TX.json"
   },
   "polymarket_OH": {
    "url": "https://gamma-api.polymarket.com/events?slug=ohio-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53598,
+   "bytes": 53619,
    "path": "data/latest/polymarket/OH.json"
   },
   "polymarket_AK": {
@@ -180,42 +180,42 @@
    "url": "https://gamma-api.polymarket.com/events?slug=maine-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53067,
+   "bytes": 53083,
    "path": "data/latest/polymarket/ME.json"
   },
   "polymarket_MI": {
    "url": "https://gamma-api.polymarket.com/events?slug=michigan-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53128,
+   "bytes": 53119,
    "path": "data/latest/polymarket/MI.json"
   },
   "polymarket_IA": {
    "url": "https://gamma-api.polymarket.com/events?slug=iowa-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52344,
+   "bytes": 52347,
    "path": "data/latest/polymarket/IA.json"
   },
   "polymarket_CONTROL": {
    "url": "https://gamma-api.polymarket.com/events?slug=balance-of-power-2026-midterms",
    "status": 200,
    "ok": true,
-   "bytes": 41012,
+   "bytes": 41046,
    "path": "data/latest/polymarket/CONTROL.json"
   },
   "kalshi_api_TX": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATETX-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4426,
+   "bytes": 4425,
    "path": "data/latest/kalshi/TX.json"
   },
   "kalshi_api_MI": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEMI-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4419,
+   "bytes": 4420,
    "path": "data/latest/kalshi/MI.json"
   },
   "kalshi_api_IA": {
@@ -243,14 +243,14 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATENC-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4324,
+   "bytes": 4325,
    "path": "data/latest/kalshi/NC.json"
   },
   "kalshi_api_AK": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEAK-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4313,
+   "bytes": 4317,
    "path": "data/latest/kalshi/AK.json"
   },
   "kalshi_api_NH": {
@@ -264,14 +264,14 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEGA-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4413,
+   "bytes": 4412,
    "path": "data/latest/kalshi/GA.json"
   },
   "kalshi_api_CONTROL": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/KXBALANCEPOWERCOMBO-27FEB?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 9314,
+   "bytes": 9315,
    "path": "data/latest/kalshi/CONTROL.json"
   },
   "kalshi_page_TX": {
@@ -389,7 +389,7 @@
     ]
    ],
    "n_flagged": 4,
-   "n_rows": 16
+   "n_rows": 17
   },
   "ME": {
    "window": "8/6 - 9/15",
