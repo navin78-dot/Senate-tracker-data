@@ -1,5 +1,5 @@
 {
- "fetched_at_utc": "2026-09-17T11:35:17+00:00",
+ "fetched_at_utc": "2026-09-17T12:03:53+00:00",
  "items": {
   "rcp_json_OH": {
    "url": "https://www.realclearpolitics.com/poll/race/8689/polling_data.json",
@@ -12,7 +12,7 @@
    "url": "https://www.realclearpolitics.com/poll/race/8867/polling_data.json",
    "status": 200,
    "ok": true,
-   "bytes": 29754,
+   "bytes": 31409,
    "path": "data/latest/rcp/TX.json"
   },
   "rcp_json_AK": {
@@ -47,7 +47,7 @@
    "url": "https://www.realclearpolitics.com/poll/race/8802/polling_data.json",
    "status": 200,
    "ok": true,
-   "bytes": 29282,
+   "bytes": 30981,
    "path": "data/latest/rcp/MI.json"
   },
   "rcp_json_NH": {
@@ -138,70 +138,70 @@
    "url": "https://gamma-api.polymarket.com/events?slug=north-carolina-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52739,
+   "bytes": 52744,
    "path": "data/latest/polymarket/NC.json"
   },
   "polymarket_GA": {
    "url": "https://gamma-api.polymarket.com/events?slug=georgia-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52183,
+   "bytes": 52189,
    "path": "data/latest/polymarket/GA.json"
   },
   "polymarket_NH": {
    "url": "https://gamma-api.polymarket.com/events?slug=new-hampshire-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52454,
+   "bytes": 52479,
    "path": "data/latest/polymarket/NH.json"
   },
   "polymarket_TX": {
    "url": "https://gamma-api.polymarket.com/events?slug=texas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53122,
+   "bytes": 53068,
    "path": "data/latest/polymarket/TX.json"
   },
   "polymarket_OH": {
    "url": "https://gamma-api.polymarket.com/events?slug=ohio-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53567,
+   "bytes": 53538,
    "path": "data/latest/polymarket/OH.json"
   },
   "polymarket_AK": {
    "url": "https://gamma-api.polymarket.com/events?slug=alaska-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 103431,
+   "bytes": 103400,
    "path": "data/latest/polymarket/AK.json"
   },
   "polymarket_ME": {
    "url": "https://gamma-api.polymarket.com/events?slug=maine-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53063,
+   "bytes": 53116,
    "path": "data/latest/polymarket/ME.json"
   },
   "polymarket_MI": {
    "url": "https://gamma-api.polymarket.com/events?slug=michigan-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53145,
+   "bytes": 53169,
    "path": "data/latest/polymarket/MI.json"
   },
   "polymarket_IA": {
    "url": "https://gamma-api.polymarket.com/events?slug=iowa-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52341,
+   "bytes": 52321,
    "path": "data/latest/polymarket/IA.json"
   },
   "polymarket_CONTROL": {
    "url": "https://gamma-api.polymarket.com/events?slug=balance-of-power-2026-midterms",
    "status": 200,
    "ok": true,
-   "bytes": 41058,
+   "bytes": 40994,
    "path": "data/latest/polymarket/CONTROL.json"
   },
   "kalshi_api_TX": {
@@ -250,7 +250,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEAK-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4317,
+   "bytes": 4310,
    "path": "data/latest/kalshi/AK.json"
   },
   "kalshi_api_NH": {
@@ -271,7 +271,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/KXBALANCEPOWERCOMBO-27FEB?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 9314,
+   "bytes": 9313,
    "path": "data/latest/kalshi/CONTROL.json"
   },
   "kalshi_page_TX": {
@@ -362,11 +362,11 @@
    "n_rows": 13
   },
   "TX": {
-   "window": "8/9 - 9/10",
+   "window": "8/24 - 9/14",
    "candidates": [
     [
      "Talarico",
-     "47.6"
+     "47.9"
     ],
     [
      "Paxton",
@@ -374,7 +374,7 @@
     ]
    ],
    "n_flagged": 7,
-   "n_rows": 24
+   "n_rows": 26
   },
   "AK": {
    "window": "6/15 - 8/23",
@@ -437,19 +437,19 @@
    "n_rows": 18
   },
   "MI": {
-   "window": "7/28 - 9/9",
+   "window": "7/28 - 9/14",
    "candidates": [
     [
      "El-Sayed",
-     "46.5"
+     "46.8"
     ],
     [
      "Rogers",
-     "44.7"
+     "44.8"
     ]
    ],
-   "n_flagged": 10,
-   "n_rows": 23
+   "n_flagged": 12,
+   "n_rows": 25
   },
   "NH": {
    "window": "8/17 - 9/11",
