@@ -1,5 +1,5 @@
 {
- "fetched_at_utc": "2026-09-18T14:03:04+00:00",
+ "fetched_at_utc": "2026-09-18T14:35:46+00:00",
  "items": {
   "rcp_json_OH": {
    "url": "https://www.realclearpolitics.com/poll/race/8689/polling_data.json",
@@ -33,7 +33,7 @@
    "url": "https://www.realclearpolitics.com/poll/race/8753/polling_data.json",
    "status": 200,
    "ok": true,
-   "bytes": 32839,
+   "bytes": 32814,
    "path": "data/latest/rcp/NC.json"
   },
   "rcp_json_IA": {
@@ -47,7 +47,7 @@
    "url": "https://www.realclearpolitics.com/poll/race/8802/polling_data.json",
    "status": 200,
    "ok": true,
-   "bytes": 31757,
+   "bytes": 31748,
    "path": "data/latest/rcp/MI.json"
   },
   "rcp_json_NH": {
@@ -138,77 +138,77 @@
    "url": "https://gamma-api.polymarket.com/events?slug=north-carolina-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52981,
+   "bytes": 53019,
    "path": "data/latest/polymarket/NC.json"
   },
   "polymarket_GA": {
    "url": "https://gamma-api.polymarket.com/events?slug=georgia-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52399,
+   "bytes": 52415,
    "path": "data/latest/polymarket/GA.json"
   },
   "polymarket_NH": {
    "url": "https://gamma-api.polymarket.com/events?slug=new-hampshire-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52506,
+   "bytes": 52504,
    "path": "data/latest/polymarket/NH.json"
   },
   "polymarket_TX": {
    "url": "https://gamma-api.polymarket.com/events?slug=texas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53052,
+   "bytes": 53076,
    "path": "data/latest/polymarket/TX.json"
   },
   "polymarket_OH": {
    "url": "https://gamma-api.polymarket.com/events?slug=ohio-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53775,
+   "bytes": 53796,
    "path": "data/latest/polymarket/OH.json"
   },
   "polymarket_AK": {
    "url": "https://gamma-api.polymarket.com/events?slug=alaska-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 103426,
+   "bytes": 103456,
    "path": "data/latest/polymarket/AK.json"
   },
   "polymarket_ME": {
    "url": "https://gamma-api.polymarket.com/events?slug=maine-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53044,
+   "bytes": 53072,
    "path": "data/latest/polymarket/ME.json"
   },
   "polymarket_MI": {
    "url": "https://gamma-api.polymarket.com/events?slug=michigan-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53111,
+   "bytes": 53125,
    "path": "data/latest/polymarket/MI.json"
   },
   "polymarket_IA": {
    "url": "https://gamma-api.polymarket.com/events?slug=iowa-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52253,
+   "bytes": 52238,
    "path": "data/latest/polymarket/IA.json"
   },
   "polymarket_CONTROL": {
    "url": "https://gamma-api.polymarket.com/events?slug=balance-of-power-2026-midterms",
    "status": 200,
    "ok": true,
-   "bytes": 40963,
+   "bytes": 40953,
    "path": "data/latest/polymarket/CONTROL.json"
   },
   "kalshi_api_TX": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATETX-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4427,
+   "bytes": 4426,
    "path": "data/latest/kalshi/TX.json"
   },
   "kalshi_api_MI": {
@@ -229,7 +229,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEME-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4423,
+   "bytes": 4422,
    "path": "data/latest/kalshi/ME.json"
   },
   "kalshi_api_OH": {
@@ -257,7 +257,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATENH-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4446,
+   "bytes": 4441,
    "path": "data/latest/kalshi/NH.json"
   },
   "kalshi_api_GA": {
@@ -271,7 +271,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/KXBALANCEPOWERCOMBO-27FEB?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 9319,
+   "bytes": 9318,
    "path": "data/latest/kalshi/CONTROL.json"
   },
   "kalshi_page_TX": {
@@ -407,18 +407,18 @@
    "n_rows": 11
   },
   "NC": {
-   "window": "6/15 - 9/17",
+   "window": "8/3 - 9/17",
    "candidates": [
     [
      "Cooper",
-     "49.9"
+     "49.8"
     ],
     [
      "Whatley",
-     "41.7"
+     "41.0"
     ]
    ],
-   "n_flagged": 11,
+   "n_flagged": 8,
    "n_rows": 28
   },
   "IA": {
@@ -437,18 +437,18 @@
    "n_rows": 18
   },
   "MI": {
-   "window": "7/28 - 9/17",
+   "window": "8/6 - 9/17",
    "candidates": [
     [
      "El-Sayed",
-     "46.8"
+     "46.9"
     ],
     [
      "Rogers",
      "44.8"
     ]
    ],
-   "n_flagged": 13,
+   "n_flagged": 12,
    "n_rows": 26
   },
   "NH": {
