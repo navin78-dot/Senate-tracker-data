@@ -1,5 +1,5 @@
 {
- "fetched_at_utc": "2026-09-18T22:34:14+00:00",
+ "fetched_at_utc": "2026-09-18T23:03:04+00:00",
  "items": {
   "rcp_json_OH": {
    "url": "https://www.realclearpolitics.com/poll/race/8689/polling_data.json",
@@ -33,7 +33,7 @@
    "url": "https://www.realclearpolitics.com/poll/race/8753/polling_data.json",
    "status": 200,
    "ok": true,
-   "bytes": 33644,
+   "bytes": 33628,
    "path": "data/latest/rcp/NC.json"
   },
   "rcp_json_IA": {
@@ -61,7 +61,7 @@
    "url": "https://www.realclearpolitics.com/poll/race/8718/polling_data.json",
    "status": 200,
    "ok": true,
-   "bytes": 17549,
+   "bytes": 18387,
    "path": "data/latest/rcp/GA.json"
   },
   "rcp_page_OH": {
@@ -138,70 +138,70 @@
    "url": "https://gamma-api.polymarket.com/events?slug=north-carolina-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52984,
+   "bytes": 52980,
    "path": "data/latest/polymarket/NC.json"
   },
   "polymarket_GA": {
    "url": "https://gamma-api.polymarket.com/events?slug=georgia-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52417,
+   "bytes": 52393,
    "path": "data/latest/polymarket/GA.json"
   },
   "polymarket_NH": {
    "url": "https://gamma-api.polymarket.com/events?slug=new-hampshire-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52613,
+   "bytes": 52508,
    "path": "data/latest/polymarket/NH.json"
   },
   "polymarket_TX": {
    "url": "https://gamma-api.polymarket.com/events?slug=texas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53116,
+   "bytes": 53054,
    "path": "data/latest/polymarket/TX.json"
   },
   "polymarket_OH": {
    "url": "https://gamma-api.polymarket.com/events?slug=ohio-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53755,
+   "bytes": 53764,
    "path": "data/latest/polymarket/OH.json"
   },
   "polymarket_AK": {
    "url": "https://gamma-api.polymarket.com/events?slug=alaska-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 103395,
+   "bytes": 103374,
    "path": "data/latest/polymarket/AK.json"
   },
   "polymarket_ME": {
    "url": "https://gamma-api.polymarket.com/events?slug=maine-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53085,
+   "bytes": 53041,
    "path": "data/latest/polymarket/ME.json"
   },
   "polymarket_MI": {
    "url": "https://gamma-api.polymarket.com/events?slug=michigan-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53176,
+   "bytes": 53125,
    "path": "data/latest/polymarket/MI.json"
   },
   "polymarket_IA": {
    "url": "https://gamma-api.polymarket.com/events?slug=iowa-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52249,
+   "bytes": 52221,
    "path": "data/latest/polymarket/IA.json"
   },
   "polymarket_CONTROL": {
    "url": "https://gamma-api.polymarket.com/events?slug=balance-of-power-2026-midterms",
    "status": 200,
    "ok": true,
-   "bytes": 41013,
+   "bytes": 40985,
    "path": "data/latest/polymarket/CONTROL.json"
   },
   "kalshi_api_TX": {
@@ -411,14 +411,14 @@
    "candidates": [
     [
      "Cooper",
-     "49.4"
+     "49.3"
     ],
     [
      "Whatley",
-     "41.8"
+     "41.0"
     ]
    ],
-   "n_flagged": 8,
+   "n_flagged": 6,
    "n_rows": 29
   },
   "IA": {
@@ -467,19 +467,19 @@
    "n_rows": 15
   },
   "GA": {
-   "window": "6/23 - 9/14",
+   "window": "6/23 - 9/16",
    "candidates": [
     [
      "Ossoff",
-     "50.8"
+     "50.6"
     ],
     [
      "Collins",
-     "42.8"
+     "43.1"
     ]
    ],
-   "n_flagged": 6,
-   "n_rows": 12
+   "n_flagged": 7,
+   "n_rows": 13
   }
  }
 }
