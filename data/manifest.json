@@ -1,5 +1,5 @@
 {
- "fetched_at_utc": "2026-09-19T11:33:19+00:00",
+ "fetched_at_utc": "2026-09-19T12:03:37+00:00",
  "items": {
   "rcp_json_OH": {
    "url": "https://www.realclearpolitics.com/poll/race/8689/polling_data.json",
@@ -138,42 +138,42 @@
    "url": "https://gamma-api.polymarket.com/events?slug=north-carolina-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52941,
+   "bytes": 52917,
    "path": "data/latest/polymarket/NC.json"
   },
   "polymarket_GA": {
    "url": "https://gamma-api.polymarket.com/events?slug=georgia-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 51943,
+   "bytes": 51975,
    "path": "data/latest/polymarket/GA.json"
   },
   "polymarket_NH": {
    "url": "https://gamma-api.polymarket.com/events?slug=new-hampshire-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52533,
+   "bytes": 52512,
    "path": "data/latest/polymarket/NH.json"
   },
   "polymarket_TX": {
    "url": "https://gamma-api.polymarket.com/events?slug=texas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53046,
+   "bytes": 53032,
    "path": "data/latest/polymarket/TX.json"
   },
   "polymarket_OH": {
    "url": "https://gamma-api.polymarket.com/events?slug=ohio-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53751,
+   "bytes": 53773,
    "path": "data/latest/polymarket/OH.json"
   },
   "polymarket_AK": {
    "url": "https://gamma-api.polymarket.com/events?slug=alaska-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 103455,
+   "bytes": 103443,
    "path": "data/latest/polymarket/AK.json"
   },
   "polymarket_ME": {
@@ -187,21 +187,21 @@
    "url": "https://gamma-api.polymarket.com/events?slug=michigan-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53129,
+   "bytes": 53115,
    "path": "data/latest/polymarket/MI.json"
   },
   "polymarket_IA": {
    "url": "https://gamma-api.polymarket.com/events?slug=iowa-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52268,
+   "bytes": 52245,
    "path": "data/latest/polymarket/IA.json"
   },
   "polymarket_CONTROL": {
    "url": "https://gamma-api.polymarket.com/events?slug=balance-of-power-2026-midterms",
    "status": 200,
    "ok": true,
-   "bytes": 41013,
+   "bytes": 41008,
    "path": "data/latest/polymarket/CONTROL.json"
   },
   "kalshi_api_TX": {
@@ -243,7 +243,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATENC-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4325,
+   "bytes": 4324,
    "path": "data/latest/kalshi/NC.json"
   },
   "kalshi_api_AK": {
@@ -257,7 +257,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATENH-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4444,
+   "bytes": 4443,
    "path": "data/latest/kalshi/NH.json"
   },
   "kalshi_api_GA": {
@@ -271,7 +271,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/KXBALANCEPOWERCOMBO-27FEB?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 9317,
+   "bytes": 9314,
    "path": "data/latest/kalshi/CONTROL.json"
   },
   "kalshi_page_TX": {
@@ -348,14 +348,14 @@
    "url": "https://en.wikipedia.org/w/api.php?action=parse&prop=wikitext&format=json&formatversion=2&page=2026%20United%20States%20Senate%20special%20election%20in%20Ohio",
    "status": 200,
    "ok": true,
-   "bytes": 70607,
+   "bytes": 70553,
    "path": "data/latest/wikipedia/OH.json"
   },
   "wikipedia_TX": {
    "url": "https://en.wikipedia.org/w/api.php?action=parse&prop=wikitext&format=json&formatversion=2&page=2026%20United%20States%20Senate%20election%20in%20Texas",
    "status": 200,
    "ok": true,
-   "bytes": 292626,
+   "bytes": 292488,
    "path": "data/latest/wikipedia/TX.json"
   },
   "wikipedia_AK": {
@@ -390,7 +390,7 @@
    "url": "https://en.wikipedia.org/w/api.php?action=parse&prop=wikitext&format=json&formatversion=2&page=2026%20United%20States%20Senate%20election%20in%20Michigan",
    "status": 200,
    "ok": true,
-   "bytes": 210187,
+   "bytes": 210177,
    "path": "data/latest/wikipedia/MI.json"
   },
   "wikipedia_NH": {
