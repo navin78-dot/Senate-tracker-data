@@ -20,12 +20,13 @@ jobs:
           #!/usr/bin/env python3
           """Snapshot the 2026 Senate tracker's sources. Runs inside GitHub Actions every 30 minutes.
           Writes everything under data/latest/ plus data/manifest.json (what was fetched, when, HTTP status)."""
-          import json, os, sys, time, urllib.request, urllib.error
+          import json, os, sys, time, urllib.request, urllib.error, urllib.parse
           from datetime import datetime, timezone
 
           UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36 senate-tracker-relay/1.0"
           OUT = "data/latest"
           os.makedirs(OUT + "/rcp", exist_ok=True); os.makedirs(OUT + "/polymarket", exist_ok=True); os.makedirs(OUT + "/kalshi", exist_ok=True)
+          os.makedirs(OUT + "/wikipedia", exist_ok=True); os.makedirs(OUT + "/votehub", exist_ok=True)
 
           RCP_IDS = {"OH": 8689, "TX": 8867, "AK": 8754, "ME": 9100, "NC": 8753, "IA": 8930, "MI": 8802, "NH": 8845, "GA": 8718}
           RCP_PAGES = {
@@ -55,6 +56,21 @@ jobs:
                           "NH": "https://kalshi.com/markets/senatenh/new-hampshire-senate-race/senatenh-26",
                           "GA": "https://kalshi.com/markets/senatega/georgia-senate-race/senatega-26",
                           "CONTROL": "https://kalshi.com/markets/kxbalancepowercombo/congress-balance-of-power-combo/kxbalancepowercombo-27feb"}
+
+          # Wikipedia race pages, added Sept 19 2026 for the pending-polls watch. Fetched as raw
+          # article source through Wikipedia's API, not the web page; saved as JSON with the
+          # wikitext inside. The reader in the job parses the polling tables out of it.
+          WIKI_TITLES = {
+              "OH": "2026 United States Senate special election in Ohio",
+              "TX": "2026 United States Senate election in Texas",
+              "AK": "2026 United States Senate election in Alaska",
+              "ME": "2026 United States Senate election in Maine",
+              "NC": "2026 United States Senate election in North Carolina",
+              "IA": "2026 United States Senate election in Iowa",
+              "MI": "2026 United States Senate election in Michigan",
+              "NH": "2026 United States Senate election in New Hampshire",
+              "GA": "2026 United States Senate election in Georgia",
+          }
 
           manifest = {"fetched_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"), "items": {}}
 
@@ -95,6 +111,15 @@ jobs:
                   save(f"kalshi_api_{st}_kx", f"https://api.elections.kalshi.com/trade-api/v2/events/KX{ev}?with_nested_markets=true", f"{OUT}/kalshi/{st}.json", expect_json=True)
           for st, url in KALSHI_PAGES.items():
               save(f"kalshi_page_{st}", url, f"{OUT}/kalshi/{st}.html")
+          for st, title in WIKI_TITLES.items():
+              url = "https://en.wikipedia.org/w/api.php?action=parse&prop=wikitext&format=json&formatversion=2&page=" + urllib.parse.quote(title)
+              save(f"wikipedia_{st}", url, f"{OUT}/wikipedia/{st}.json", expect_json=True)
+              # a missing page still returns JSON, so check the article source actually came back
+              it = manifest["items"][f"wikipedia_{st}"]
+              if it["ok"] and b'"wikitext"' not in open(it["path"], "rb").read():
+                  it["ok"] = False; it["note"] = "no wikitext in response (page title wrong?)"
+          # VoteHub's free poll feed, a probe: we do not yet know whether it carries race-level Senate polls
+          save("votehub_polls", "https://api.votehub.com/polls", f"{OUT}/votehub/polls.json", expect_json=True)
 
           # A compact summary of the RCP averages straight from the JSON, so the reader never has to parse HTML
           summary = {}
