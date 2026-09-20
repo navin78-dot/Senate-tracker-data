@@ -1,5 +1,5 @@
 {
- "fetched_at_utc": "2026-09-20T10:34:23+00:00",
+ "fetched_at_utc": "2026-09-20T11:11:45+00:00",
  "items": {
   "rcp_json_OH": {
    "url": "https://www.realclearpolitics.com/poll/race/8689/polling_data.json",
@@ -64,6 +64,20 @@
    "bytes": 18387,
    "path": "data/latest/rcp/GA.json"
   },
+  "rcp_json_KS": {
+   "url": "https://www.realclearpolitics.com/poll/race/9106/polling_data.json",
+   "status": 200,
+   "ok": true,
+   "bytes": 12511,
+   "path": "data/latest/rcp/KS.json"
+  },
+  "rcp_json_MN": {
+   "url": "https://www.realclearpolitics.com/poll/race/8922/polling_data.json",
+   "status": 200,
+   "ok": true,
+   "bytes": 13989,
+   "path": "data/latest/rcp/MN.json"
+  },
   "rcp_page_OH": {
    "url": "https://www.realclearpolling.com/polls/senate/special-election/2026/ohio/husted-vs-brown",
    "status": 403,
@@ -127,6 +141,20 @@
    "bytes": 0,
    "path": null
   },
+  "rcp_page_KS": {
+   "url": "https://www.realclearpolling.com/polls/senate/general/2026/kansas/marshall-vs-hamilton",
+   "status": 403,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "rcp_page_MN": {
+   "url": "https://www.realclearpolling.com/polls/senate/general/2026/minnesota/tafoya-vs-flanagan",
+   "status": 403,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
   "rcp_feed": {
    "url": "https://www.realclearpolling.com/latest-polls/senate",
    "status": 403,
@@ -138,70 +166,84 @@
    "url": "https://gamma-api.polymarket.com/events?slug=north-carolina-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53045,
+   "bytes": 53033,
    "path": "data/latest/polymarket/NC.json"
   },
   "polymarket_GA": {
    "url": "https://gamma-api.polymarket.com/events?slug=georgia-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52190,
+   "bytes": 52198,
    "path": "data/latest/polymarket/GA.json"
   },
   "polymarket_NH": {
    "url": "https://gamma-api.polymarket.com/events?slug=new-hampshire-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52495,
+   "bytes": 52498,
    "path": "data/latest/polymarket/NH.json"
   },
   "polymarket_TX": {
    "url": "https://gamma-api.polymarket.com/events?slug=texas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53025,
+   "bytes": 53004,
    "path": "data/latest/polymarket/TX.json"
   },
   "polymarket_OH": {
    "url": "https://gamma-api.polymarket.com/events?slug=ohio-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53738,
+   "bytes": 53718,
    "path": "data/latest/polymarket/OH.json"
   },
   "polymarket_AK": {
    "url": "https://gamma-api.polymarket.com/events?slug=alaska-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 103453,
+   "bytes": 103484,
    "path": "data/latest/polymarket/AK.json"
   },
   "polymarket_ME": {
    "url": "https://gamma-api.polymarket.com/events?slug=maine-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53014,
+   "bytes": 53023,
    "path": "data/latest/polymarket/ME.json"
   },
   "polymarket_MI": {
    "url": "https://gamma-api.polymarket.com/events?slug=michigan-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 53112,
+   "bytes": 53147,
    "path": "data/latest/polymarket/MI.json"
   },
   "polymarket_IA": {
    "url": "https://gamma-api.polymarket.com/events?slug=iowa-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 52299,
+   "bytes": 52300,
    "path": "data/latest/polymarket/IA.json"
+  },
+  "polymarket_KS": {
+   "url": "https://gamma-api.polymarket.com/events?slug=kansas-senate-election-winner",
+   "status": 200,
+   "ok": true,
+   "bytes": 52008,
+   "path": "data/latest/polymarket/KS.json"
+  },
+  "polymarket_MN": {
+   "url": "https://gamma-api.polymarket.com/events?slug=minnesota-senate-election-winner",
+   "status": 200,
+   "ok": true,
+   "bytes": 51514,
+   "path": "data/latest/polymarket/MN.json"
   },
   "polymarket_CONTROL": {
    "url": "https://gamma-api.polymarket.com/events?slug=balance-of-power-2026-midterms",
    "status": 200,
    "ok": true,
-   "bytes": 41036,
+   "bytes": 41005,
    "path": "data/latest/polymarket/CONTROL.json"
   },
   "kalshi_api_TX": {
@@ -267,11 +309,25 @@
    "bytes": 4416,
    "path": "data/latest/kalshi/GA.json"
   },
+  "kalshi_api_KS": {
+   "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEKS-26?with_nested_markets=true",
+   "status": 200,
+   "ok": true,
+   "bytes": 4429,
+   "path": "data/latest/kalshi/KS.json"
+  },
+  "kalshi_api_MN": {
+   "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEMN-26?with_nested_markets=true",
+   "status": 200,
+   "ok": true,
+   "bytes": 4464,
+   "path": "data/latest/kalshi/MN.json"
+  },
   "kalshi_api_CONTROL": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/KXBALANCEPOWERCOMBO-27FEB?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 9311,
+   "bytes": 9318,
    "path": "data/latest/kalshi/CONTROL.json"
   },
   "kalshi_page_TX": {
@@ -332,6 +388,20 @@
   },
   "kalshi_page_GA": {
    "url": "https://kalshi.com/markets/senatega/georgia-senate-race/senatega-26",
+   "status": 429,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "kalshi_page_KS": {
+   "url": "https://kalshi.com/markets/senateks/kansas-senate-race/senateks-26",
+   "status": 429,
+   "ok": false,
+   "bytes": 0,
+   "path": null
+  },
+  "kalshi_page_MN": {
+   "url": "https://kalshi.com/markets/senatemn/minnesota-senate-race/senatemn-26",
    "status": 429,
    "ok": false,
    "bytes": 0,
@@ -406,6 +476,20 @@
    "ok": true,
    "bytes": 85362,
    "path": "data/latest/wikipedia/GA.json"
+  },
+  "wikipedia_KS": {
+   "url": "https://en.wikipedia.org/w/api.php?action=parse&prop=wikitext&format=json&formatversion=2&page=2026%20United%20States%20Senate%20election%20in%20Kansas",
+   "status": 200,
+   "ok": true,
+   "bytes": 36863,
+   "path": "data/latest/wikipedia/KS.json"
+  },
+  "wikipedia_MN": {
+   "url": "https://en.wikipedia.org/w/api.php?action=parse&prop=wikitext&format=json&formatversion=2&page=2026%20United%20States%20Senate%20election%20in%20Minnesota",
+   "status": 429,
+   "ok": false,
+   "bytes": 0,
+   "path": null
   },
   "votehub_polls": {
    "url": "https://api.votehub.com/polls",
@@ -550,6 +634,36 @@
    ],
    "n_flagged": 7,
    "n_rows": 13
+  },
+  "KS": {
+   "window": "9/8 - 9/16",
+   "candidates": [
+    [
+     "Marshall",
+     "46.0"
+    ],
+    [
+     "Hamilton",
+     "44.5"
+    ]
+   ],
+   "n_flagged": 2,
+   "n_rows": 5
+  },
+  "MN": {
+   "window": "8/31 - 9/15",
+   "candidates": [
+    [
+     "Flanagan",
+     "44.3"
+    ],
+    [
+     "Tafoya",
+     "42.5"
+    ]
+   ],
+   "n_flagged": 4,
+   "n_rows": 7
   }
  }
 }
