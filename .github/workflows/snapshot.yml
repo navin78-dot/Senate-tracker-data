@@ -28,7 +28,8 @@ jobs:
           os.makedirs(OUT + "/rcp", exist_ok=True); os.makedirs(OUT + "/polymarket", exist_ok=True); os.makedirs(OUT + "/kalshi", exist_ok=True)
           os.makedirs(OUT + "/wikipedia", exist_ok=True); os.makedirs(OUT + "/votehub", exist_ok=True)
 
-          RCP_IDS = {"OH": 8689, "TX": 8867, "AK": 8754, "ME": 9100, "NC": 8753, "IA": 8930, "MI": 8802, "NH": 8845, "GA": 8718}
+          RCP_IDS = {"OH": 8689, "TX": 8867, "AK": 8754, "ME": 9100, "NC": 8753, "IA": 8930, "MI": 8802, "NH": 8845, "GA": 8718,
+                     "KS": 9106, "MN": 8922}  # Kansas and Minnesota added Sept 20 2026, Navin widened the board to 11 races
           RCP_PAGES = {
               "OH": "https://www.realclearpolling.com/polls/senate/special-election/2026/ohio/husted-vs-brown",
               "TX": "https://www.realclearpolling.com/polls/senate/general/2026/texas/talarico-vs-paxton",
@@ -39,13 +40,16 @@ jobs:
               "MI": "https://www.realclearpolling.com/polls/senate/general/2026/michigan/rogers-vs-el-sayed",
               "NH": "https://www.realclearpolling.com/polls/senate/general/2026/new-hampshire/pappas-vs-sununu",
               "GA": "https://www.realclearpolling.com/polls/senate/general/2026/georgia/ossoff-vs-collins",
+              "KS": "https://www.realclearpolling.com/polls/senate/general/2026/kansas/marshall-vs-hamilton",
+              "MN": "https://www.realclearpolling.com/polls/senate/general/2026/minnesota/tafoya-vs-flanagan",
           }
           POLY_SLUGS = {st: f"{name}-senate-election-winner" for st, name in {
               "NC": "north-carolina", "GA": "georgia", "NH": "new-hampshire", "TX": "texas", "OH": "ohio",
-              "AK": "alaska", "ME": "maine", "MI": "michigan", "IA": "iowa"}.items()}
+              "AK": "alaska", "ME": "maine", "MI": "michigan", "IA": "iowa", "KS": "kansas", "MN": "minnesota"}.items()}
           POLY_SLUGS["CONTROL"] = "balance-of-power-2026-midterms"
           KALSHI_EVENTS = {"TX": "SENATETX-26", "MI": "SENATEMI-26", "IA": "SENATEIA-26", "ME": "SENATEME-26", "OH": "SENATEOHS-26",
-                           "NC": "SENATENC-26", "AK": "SENATEAK-26", "NH": "SENATENH-26", "GA": "SENATEGA-26", "CONTROL": "KXBALANCEPOWERCOMBO-27FEB"}
+                           "NC": "SENATENC-26", "AK": "SENATEAK-26", "NH": "SENATENH-26", "GA": "SENATEGA-26",
+                           "KS": "SENATEKS-26", "MN": "SENATEMN-26", "CONTROL": "KXBALANCEPOWERCOMBO-27FEB"}
           KALSHI_PAGES = {"TX": "https://kalshi.com/markets/senatetx/texas-senate-race/senatetx-26",
                           "MI": "https://kalshi.com/markets/senatemi/michigan-senate-race/senatemi-26",
                           "IA": "https://kalshi.com/markets/senateia/iowa-senate-race/senateia-26",
@@ -55,6 +59,8 @@ jobs:
                           "AK": "https://kalshi.com/markets/senateak/alaska-senate-race/senateak-26",
                           "NH": "https://kalshi.com/markets/senatenh/new-hampshire-senate-race/senatenh-26",
                           "GA": "https://kalshi.com/markets/senatega/georgia-senate-race/senatega-26",
+                          "KS": "https://kalshi.com/markets/senateks/kansas-senate-race/senateks-26",
+                          "MN": "https://kalshi.com/markets/senatemn/minnesota-senate-race/senatemn-26",
                           "CONTROL": "https://kalshi.com/markets/kxbalancepowercombo/congress-balance-of-power-combo/kxbalancepowercombo-27feb"}
 
           # Wikipedia race pages, added Sept 19 2026 for the pending-polls watch. Fetched as raw
@@ -70,6 +76,8 @@ jobs:
               "MI": "2026 United States Senate election in Michigan",
               "NH": "2026 United States Senate election in New Hampshire",
               "GA": "2026 United States Senate election in Georgia",
+              "KS": "2026 United States Senate election in Kansas",
+              "MN": "2026 United States Senate election in Minnesota",
           }
 
           manifest = {"fetched_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"), "items": {}}
