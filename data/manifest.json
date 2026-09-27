@@ -1,11 +1,11 @@
 {
- "fetched_at_utc": "2026-09-27T00:04:20+00:00",
+ "fetched_at_utc": "2026-09-27T00:42:40+00:00",
  "items": {
   "rcp_json_OH": {
    "url": "https://www.realclearpolitics.com/poll/race/8689/polling_data.json",
    "status": 200,
    "ok": true,
-   "bytes": 20380,
+   "bytes": 21215,
    "path": "data/latest/rcp/OH.json"
   },
   "rcp_json_TX": {
@@ -54,7 +54,7 @@
    "url": "https://www.realclearpolitics.com/poll/race/8845/polling_data.json",
    "status": 200,
    "ok": true,
-   "bytes": 23570,
+   "bytes": 24413,
    "path": "data/latest/rcp/NH.json"
   },
   "rcp_json_GA": {
@@ -166,84 +166,84 @@
    "url": "https://gamma-api.polymarket.com/events?slug=north-carolina-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57203,
+   "bytes": 57171,
    "path": "data/latest/polymarket/NC.json"
   },
   "polymarket_GA": {
    "url": "https://gamma-api.polymarket.com/events?slug=georgia-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56378,
+   "bytes": 56362,
    "path": "data/latest/polymarket/GA.json"
   },
   "polymarket_NH": {
    "url": "https://gamma-api.polymarket.com/events?slug=new-hampshire-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56912,
+   "bytes": 56905,
    "path": "data/latest/polymarket/NH.json"
   },
   "polymarket_TX": {
    "url": "https://gamma-api.polymarket.com/events?slug=texas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57390,
+   "bytes": 57391,
    "path": "data/latest/polymarket/TX.json"
   },
   "polymarket_OH": {
    "url": "https://gamma-api.polymarket.com/events?slug=ohio-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 58093,
+   "bytes": 58089,
    "path": "data/latest/polymarket/OH.json"
   },
   "polymarket_AK": {
    "url": "https://gamma-api.polymarket.com/events?slug=alaska-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 103499,
+   "bytes": 103498,
    "path": "data/latest/polymarket/AK.json"
   },
   "polymarket_ME": {
    "url": "https://gamma-api.polymarket.com/events?slug=maine-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57576,
+   "bytes": 57559,
    "path": "data/latest/polymarket/ME.json"
   },
   "polymarket_MI": {
    "url": "https://gamma-api.polymarket.com/events?slug=michigan-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57523,
+   "bytes": 57531,
    "path": "data/latest/polymarket/MI.json"
   },
   "polymarket_IA": {
    "url": "https://gamma-api.polymarket.com/events?slug=iowa-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56767,
+   "bytes": 56751,
    "path": "data/latest/polymarket/IA.json"
   },
   "polymarket_KS": {
    "url": "https://gamma-api.polymarket.com/events?slug=kansas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56408,
+   "bytes": 56448,
    "path": "data/latest/polymarket/KS.json"
   },
   "polymarket_MN": {
    "url": "https://gamma-api.polymarket.com/events?slug=minnesota-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56333,
+   "bytes": 56349,
    "path": "data/latest/polymarket/MN.json"
   },
   "polymarket_CONTROL": {
    "url": "https://gamma-api.polymarket.com/events?slug=balance-of-power-2026-midterms",
    "status": 200,
    "ok": true,
-   "bytes": 41011,
+   "bytes": 41010,
    "path": "data/latest/polymarket/CONTROL.json"
   },
   "kalshi_api_TX": {
@@ -257,7 +257,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEMI-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4419,
+   "bytes": 4423,
    "path": "data/latest/kalshi/MI.json"
   },
   "kalshi_api_IA": {
@@ -271,7 +271,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEME-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4423,
+   "bytes": 4424,
    "path": "data/latest/kalshi/ME.json"
   },
   "kalshi_api_OH": {
@@ -306,21 +306,21 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEGA-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4416,
+   "bytes": 4415,
    "path": "data/latest/kalshi/GA.json"
   },
   "kalshi_api_KS": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEKS-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4428,
+   "bytes": 4429,
    "path": "data/latest/kalshi/KS.json"
   },
   "kalshi_api_MN": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEMN-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4466,
+   "bytes": 4467,
    "path": "data/latest/kalshi/MN.json"
   },
   "kalshi_api_CONTROL": {
@@ -425,7 +425,7 @@
    "url": "https://en.wikipedia.org/w/api.php?action=parse&prop=wikitext&format=json&formatversion=2&page=2026%20United%20States%20Senate%20election%20in%20Texas",
    "status": 200,
    "ok": true,
-   "bytes": 295318,
+   "bytes": 295331,
    "path": "data/latest/wikipedia/TX.json"
   },
   "wikipedia_AK": {
@@ -505,15 +505,15 @@
    "candidates": [
     [
      "Brown",
-     "48.2"
+     "47.8"
     ],
     [
      "Husted",
-     "44.2"
+     "44.0"
     ]
    ],
-   "n_flagged": 5,
-   "n_rows": 15
+   "n_flagged": 6,
+   "n_rows": 16
   },
   "TX": {
    "window": "9/8 - 9/22",
@@ -606,19 +606,19 @@
    "n_rows": 31
   },
   "NH": {
-   "window": "8/17 - 9/22",
+   "window": "8/17 - 9/25",
    "candidates": [
     [
      "Pappas",
-     "47.8"
+     "47.6"
     ],
     [
      "Sununu",
-     "41.3"
+     "41.4"
     ]
    ],
-   "n_flagged": 6,
-   "n_rows": 17
+   "n_flagged": 7,
+   "n_rows": 18
   },
   "GA": {
    "window": "7/13 - 9/23",
