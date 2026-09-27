@@ -1,5 +1,5 @@
 {
- "fetched_at_utc": "2026-09-27T19:02:42+00:00",
+ "fetched_at_utc": "2026-09-27T19:33:51+00:00",
  "items": {
   "rcp_json_OH": {
    "url": "https://www.realclearpolitics.com/poll/race/8689/polling_data.json",
@@ -166,42 +166,42 @@
    "url": "https://gamma-api.polymarket.com/events?slug=north-carolina-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57110,
+   "bytes": 57135,
    "path": "data/latest/polymarket/NC.json"
   },
   "polymarket_GA": {
    "url": "https://gamma-api.polymarket.com/events?slug=georgia-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56049,
+   "bytes": 56047,
    "path": "data/latest/polymarket/GA.json"
   },
   "polymarket_NH": {
    "url": "https://gamma-api.polymarket.com/events?slug=new-hampshire-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56965,
+   "bytes": 56982,
    "path": "data/latest/polymarket/NH.json"
   },
   "polymarket_TX": {
    "url": "https://gamma-api.polymarket.com/events?slug=texas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57378,
+   "bytes": 57374,
    "path": "data/latest/polymarket/TX.json"
   },
   "polymarket_OH": {
    "url": "https://gamma-api.polymarket.com/events?slug=ohio-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 58087,
+   "bytes": 58105,
    "path": "data/latest/polymarket/OH.json"
   },
   "polymarket_AK": {
    "url": "https://gamma-api.polymarket.com/events?slug=alaska-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 103468,
+   "bytes": 103471,
    "path": "data/latest/polymarket/AK.json"
   },
   "polymarket_ME": {
@@ -215,21 +215,21 @@
    "url": "https://gamma-api.polymarket.com/events?slug=michigan-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57484,
+   "bytes": 57460,
    "path": "data/latest/polymarket/MI.json"
   },
   "polymarket_IA": {
    "url": "https://gamma-api.polymarket.com/events?slug=iowa-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56674,
+   "bytes": 56677,
    "path": "data/latest/polymarket/IA.json"
   },
   "polymarket_KS": {
    "url": "https://gamma-api.polymarket.com/events?slug=kansas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56384,
+   "bytes": 56359,
    "path": "data/latest/polymarket/KS.json"
   },
   "polymarket_MN": {
@@ -243,28 +243,28 @@
    "url": "https://gamma-api.polymarket.com/events?slug=balance-of-power-2026-midterms",
    "status": 200,
    "ok": true,
-   "bytes": 40928,
+   "bytes": 40930,
    "path": "data/latest/polymarket/CONTROL.json"
   },
   "kalshi_api_TX": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATETX-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4424,
+   "bytes": 4423,
    "path": "data/latest/kalshi/TX.json"
   },
   "kalshi_api_MI": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEMI-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4422,
+   "bytes": 4423,
    "path": "data/latest/kalshi/MI.json"
   },
   "kalshi_api_IA": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEIA-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4415,
+   "bytes": 4414,
    "path": "data/latest/kalshi/IA.json"
   },
   "kalshi_api_ME": {
@@ -292,7 +292,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEAK-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4313,
+   "bytes": 4314,
    "path": "data/latest/kalshi/AK.json"
   },
   "kalshi_api_NH": {
@@ -320,7 +320,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEMN-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4461,
+   "bytes": 4467,
    "path": "data/latest/kalshi/MN.json"
   },
   "kalshi_api_CONTROL": {
@@ -467,7 +467,7 @@
    "url": "https://en.wikipedia.org/w/api.php?action=parse&prop=wikitext&format=json&formatversion=2&page=2026%20United%20States%20Senate%20election%20in%20New%20Hampshire",
    "status": 200,
    "ok": true,
-   "bytes": 86129,
+   "bytes": 85808,
    "path": "data/latest/wikipedia/NH.json"
   },
   "wikipedia_GA": {
