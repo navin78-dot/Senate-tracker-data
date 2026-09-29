@@ -1,5 +1,5 @@
 {
- "fetched_at_utc": "2026-09-29T00:43:18+00:00",
+ "fetched_at_utc": "2026-09-29T01:05:20+00:00",
  "items": {
   "rcp_json_OH": {
    "url": "https://www.realclearpolitics.com/poll/race/8689/polling_data.json",
@@ -166,84 +166,84 @@
    "url": "https://gamma-api.polymarket.com/events?slug=north-carolina-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56230,
+   "bytes": 56242,
    "path": "data/latest/polymarket/NC.json"
   },
   "polymarket_GA": {
    "url": "https://gamma-api.polymarket.com/events?slug=georgia-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55646,
+   "bytes": 55635,
    "path": "data/latest/polymarket/GA.json"
   },
   "polymarket_NH": {
    "url": "https://gamma-api.polymarket.com/events?slug=new-hampshire-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56306,
+   "bytes": 56331,
    "path": "data/latest/polymarket/NH.json"
   },
   "polymarket_TX": {
    "url": "https://gamma-api.polymarket.com/events?slug=texas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56582,
+   "bytes": 56583,
    "path": "data/latest/polymarket/TX.json"
   },
   "polymarket_OH": {
    "url": "https://gamma-api.polymarket.com/events?slug=ohio-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57428,
+   "bytes": 57429,
    "path": "data/latest/polymarket/OH.json"
   },
   "polymarket_AK": {
    "url": "https://gamma-api.polymarket.com/events?slug=alaska-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 102789,
+   "bytes": 102778,
    "path": "data/latest/polymarket/AK.json"
   },
   "polymarket_ME": {
    "url": "https://gamma-api.polymarket.com/events?slug=maine-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56814,
+   "bytes": 56793,
    "path": "data/latest/polymarket/ME.json"
   },
   "polymarket_MI": {
    "url": "https://gamma-api.polymarket.com/events?slug=michigan-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56817,
+   "bytes": 56818,
    "path": "data/latest/polymarket/MI.json"
   },
   "polymarket_IA": {
    "url": "https://gamma-api.polymarket.com/events?slug=iowa-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56024,
+   "bytes": 56020,
    "path": "data/latest/polymarket/IA.json"
   },
   "polymarket_KS": {
    "url": "https://gamma-api.polymarket.com/events?slug=kansas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55808,
+   "bytes": 55805,
    "path": "data/latest/polymarket/KS.json"
   },
   "polymarket_MN": {
    "url": "https://gamma-api.polymarket.com/events?slug=minnesota-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55494,
+   "bytes": 55504,
    "path": "data/latest/polymarket/MN.json"
   },
   "polymarket_CONTROL": {
    "url": "https://gamma-api.polymarket.com/events?slug=balance-of-power-2026-midterms",
    "status": 200,
    "ok": true,
-   "bytes": 40529,
+   "bytes": 40503,
    "path": "data/latest/polymarket/CONTROL.json"
   },
   "kalshi_api_TX": {
@@ -285,7 +285,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATENC-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4327,
+   "bytes": 4328,
    "path": "data/latest/kalshi/NC.json"
   },
   "kalshi_api_AK": {
@@ -418,7 +418,7 @@
    "url": "https://en.wikipedia.org/w/api.php?action=parse&prop=wikitext&format=json&formatversion=2&page=2026%20United%20States%20Senate%20special%20election%20in%20Ohio",
    "status": 200,
    "ok": true,
-   "bytes": 72806,
+   "bytes": 73241,
    "path": "data/latest/wikipedia/OH.json"
   },
   "wikipedia_TX": {
@@ -432,14 +432,14 @@
    "url": "https://en.wikipedia.org/w/api.php?action=parse&prop=wikitext&format=json&formatversion=2&page=2026%20United%20States%20Senate%20election%20in%20Alaska",
    "status": 200,
    "ok": true,
-   "bytes": 85706,
+   "bytes": 86170,
    "path": "data/latest/wikipedia/AK.json"
   },
   "wikipedia_ME": {
    "url": "https://en.wikipedia.org/w/api.php?action=parse&prop=wikitext&format=json&formatversion=2&page=2026%20United%20States%20Senate%20election%20in%20Maine",
    "status": 200,
    "ok": true,
-   "bytes": 214795,
+   "bytes": 214360,
    "path": "data/latest/wikipedia/ME.json"
   },
   "wikipedia_NC": {
