@@ -1,5 +1,5 @@
 {
- "fetched_at_utc": "2026-09-30T13:38:29+00:00",
+ "fetched_at_utc": "2026-09-30T14:07:08+00:00",
  "items": {
   "rcp_json_OH": {
    "url": "https://www.realclearpolitics.com/poll/race/8689/polling_data.json",
@@ -40,7 +40,7 @@
    "url": "https://www.realclearpolitics.com/poll/race/8930/polling_data.json",
    "status": 200,
    "ok": true,
-   "bytes": 27084,
+   "bytes": 27925,
    "path": "data/latest/rcp/IA.json"
   },
   "rcp_json_MI": {
@@ -166,84 +166,84 @@
    "url": "https://gamma-api.polymarket.com/events?slug=north-carolina-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56261,
+   "bytes": 56266,
    "path": "data/latest/polymarket/NC.json"
   },
   "polymarket_GA": {
    "url": "https://gamma-api.polymarket.com/events?slug=georgia-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55627,
+   "bytes": 55605,
    "path": "data/latest/polymarket/GA.json"
   },
   "polymarket_NH": {
    "url": "https://gamma-api.polymarket.com/events?slug=new-hampshire-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56336,
+   "bytes": 56300,
    "path": "data/latest/polymarket/NH.json"
   },
   "polymarket_TX": {
    "url": "https://gamma-api.polymarket.com/events?slug=texas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56685,
+   "bytes": 56684,
    "path": "data/latest/polymarket/TX.json"
   },
   "polymarket_OH": {
    "url": "https://gamma-api.polymarket.com/events?slug=ohio-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57427,
+   "bytes": 57432,
    "path": "data/latest/polymarket/OH.json"
   },
   "polymarket_AK": {
    "url": "https://gamma-api.polymarket.com/events?slug=alaska-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 102376,
+   "bytes": 102363,
    "path": "data/latest/polymarket/AK.json"
   },
   "polymarket_ME": {
    "url": "https://gamma-api.polymarket.com/events?slug=maine-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56806,
+   "bytes": 56814,
    "path": "data/latest/polymarket/ME.json"
   },
   "polymarket_MI": {
    "url": "https://gamma-api.polymarket.com/events?slug=michigan-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56822,
+   "bytes": 56809,
    "path": "data/latest/polymarket/MI.json"
   },
   "polymarket_IA": {
    "url": "https://gamma-api.polymarket.com/events?slug=iowa-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56011,
+   "bytes": 56027,
    "path": "data/latest/polymarket/IA.json"
   },
   "polymarket_KS": {
    "url": "https://gamma-api.polymarket.com/events?slug=kansas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55894,
+   "bytes": 55887,
    "path": "data/latest/polymarket/KS.json"
   },
   "polymarket_MN": {
    "url": "https://gamma-api.polymarket.com/events?slug=minnesota-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55884,
+   "bytes": 55897,
    "path": "data/latest/polymarket/MN.json"
   },
   "polymarket_CONTROL": {
    "url": "https://gamma-api.polymarket.com/events?slug=balance-of-power-2026-midterms",
    "status": 200,
    "ok": true,
-   "bytes": 40515,
+   "bytes": 40499,
    "path": "data/latest/polymarket/CONTROL.json"
   },
   "kalshi_api_TX": {
@@ -285,14 +285,14 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATENC-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4324,
+   "bytes": 4328,
    "path": "data/latest/kalshi/NC.json"
   },
   "kalshi_api_AK": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEAK-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4318,
+   "bytes": 4319,
    "path": "data/latest/kalshi/AK.json"
   },
   "kalshi_api_NH": {
@@ -306,7 +306,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEGA-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4420,
+   "bytes": 4418,
    "path": "data/latest/kalshi/GA.json"
   },
   "kalshi_api_KS": {
@@ -327,7 +327,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/KXBALANCEPOWERCOMBO-27FEB?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 9405,
+   "bytes": 9404,
    "path": "data/latest/kalshi/CONTROL.json"
   },
   "kalshi_page_TX": {
@@ -339,14 +339,14 @@
   },
   "kalshi_page_MI": {
    "url": "https://kalshi.com/markets/senatemi/michigan-senate-race/senatemi-26",
-   "status": 429,
+   "status": "<urlopen error [Errno 104] Connection reset by peer>",
    "ok": false,
    "bytes": 0,
    "path": null
   },
   "kalshi_page_IA": {
    "url": "https://kalshi.com/markets/senateia/iowa-senate-race/senateia-26",
-   "status": 429,
+   "status": "<urlopen error [Errno 104] Connection reset by peer>",
    "ok": false,
    "bytes": 0,
    "path": null
@@ -360,7 +360,7 @@
   },
   "kalshi_page_OH": {
    "url": "https://kalshi.com/markets/senateohs/special-senate-election-in-ohio/senateohs-26",
-   "status": 429,
+   "status": "<urlopen error [Errno 104] Connection reset by peer>",
    "ok": false,
    "bytes": 0,
    "path": null
@@ -374,14 +374,14 @@
   },
   "kalshi_page_AK": {
    "url": "https://kalshi.com/markets/senateak/alaska-senate-race/senateak-26",
-   "status": 429,
+   "status": "<urlopen error [Errno 104] Connection reset by peer>",
    "ok": false,
    "bytes": 0,
    "path": null
   },
   "kalshi_page_NH": {
    "url": "https://kalshi.com/markets/senatenh/new-hampshire-senate-race/senatenh-26",
-   "status": 429,
+   "status": "<urlopen error [Errno 104] Connection reset by peer>",
    "ok": false,
    "bytes": 0,
    "path": null
@@ -576,19 +576,19 @@
    "n_rows": 34
   },
   "IA": {
-   "window": "8/31 - 9/23",
+   "window": "8/31 - 9/29",
    "candidates": [
     [
-     "Hinson",
-     "44.5"
+     "Turek",
+     "45.1"
     ],
     [
-     "Turek",
-     "45.0"
+     "Hinson",
+     "44.8"
     ]
    ],
-   "n_flagged": 8,
-   "n_rows": 21
+   "n_flagged": 9,
+   "n_rows": 22
   },
   "MI": {
    "window": "9/7 - 9/27",
