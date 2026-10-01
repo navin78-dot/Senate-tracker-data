@@ -1,5 +1,5 @@
 {
- "fetched_at_utc": "2026-10-01T14:41:07+00:00",
+ "fetched_at_utc": "2026-10-01T15:04:48+00:00",
  "items": {
   "rcp_json_OH": {
    "url": "https://www.realclearpolitics.com/poll/race/8689/polling_data.json",
@@ -166,91 +166,91 @@
    "url": "https://gamma-api.polymarket.com/events?slug=north-carolina-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56258,
+   "bytes": 56277,
    "path": "data/latest/polymarket/NC.json"
   },
   "polymarket_GA": {
    "url": "https://gamma-api.polymarket.com/events?slug=georgia-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55748,
+   "bytes": 55723,
    "path": "data/latest/polymarket/GA.json"
   },
   "polymarket_NH": {
    "url": "https://gamma-api.polymarket.com/events?slug=new-hampshire-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57057,
+   "bytes": 57056,
    "path": "data/latest/polymarket/NH.json"
   },
   "polymarket_TX": {
    "url": "https://gamma-api.polymarket.com/events?slug=texas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57495,
+   "bytes": 57475,
    "path": "data/latest/polymarket/TX.json"
   },
   "polymarket_OH": {
    "url": "https://gamma-api.polymarket.com/events?slug=ohio-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 58240,
+   "bytes": 58211,
    "path": "data/latest/polymarket/OH.json"
   },
   "polymarket_AK": {
    "url": "https://gamma-api.polymarket.com/events?slug=alaska-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 102358,
+   "bytes": 102372,
    "path": "data/latest/polymarket/AK.json"
   },
   "polymarket_ME": {
    "url": "https://gamma-api.polymarket.com/events?slug=maine-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56801,
+   "bytes": 56785,
    "path": "data/latest/polymarket/ME.json"
   },
   "polymarket_MI": {
    "url": "https://gamma-api.polymarket.com/events?slug=michigan-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57550,
+   "bytes": 57552,
    "path": "data/latest/polymarket/MI.json"
   },
   "polymarket_IA": {
    "url": "https://gamma-api.polymarket.com/events?slug=iowa-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56814,
+   "bytes": 56809,
    "path": "data/latest/polymarket/IA.json"
   },
   "polymarket_KS": {
    "url": "https://gamma-api.polymarket.com/events?slug=kansas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55817,
+   "bytes": 55811,
    "path": "data/latest/polymarket/KS.json"
   },
   "polymarket_MN": {
    "url": "https://gamma-api.polymarket.com/events?slug=minnesota-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55877,
+   "bytes": 55898,
    "path": "data/latest/polymarket/MN.json"
   },
   "polymarket_CONTROL": {
    "url": "https://gamma-api.polymarket.com/events?slug=balance-of-power-2026-midterms",
    "status": 200,
    "ok": true,
-   "bytes": 40493,
+   "bytes": 40476,
    "path": "data/latest/polymarket/CONTROL.json"
   },
   "kalshi_api_TX": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATETX-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4437,
+   "bytes": 4439,
    "path": "data/latest/kalshi/TX.json"
   },
   "kalshi_api_MI": {
@@ -320,7 +320,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEMN-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4482,
+   "bytes": 4483,
    "path": "data/latest/kalshi/MN.json"
   },
   "kalshi_api_CONTROL": {
@@ -353,7 +353,7 @@
   },
   "kalshi_page_ME": {
    "url": "https://kalshi.com/markets/senateme/maine-senate-race/senateme-26",
-   "status": "<urlopen error [Errno 104] Connection reset by peer>",
+   "status": 429,
    "ok": false,
    "bytes": 0,
    "path": null
@@ -486,16 +486,16 @@
   },
   "wikipedia_MN": {
    "url": "https://en.wikipedia.org/w/api.php?action=parse&prop=wikitext&format=json&formatversion=2&page=2026%20United%20States%20Senate%20election%20in%20Minnesota",
-   "status": 200,
-   "ok": true,
-   "bytes": 117913,
-   "path": "data/latest/wikipedia/MN.json"
+   "status": 429,
+   "ok": false,
+   "bytes": 0,
+   "path": null
   },
   "votehub_polls": {
    "url": "https://api.votehub.com/polls",
    "status": 200,
    "ok": true,
-   "bytes": 2744411,
+   "bytes": 2745793,
    "path": "data/latest/votehub/polls.json"
   }
  },
