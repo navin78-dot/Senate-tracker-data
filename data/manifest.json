@@ -1,5 +1,5 @@
 {
- "fetched_at_utc": "2026-10-07T07:07:19+00:00",
+ "fetched_at_utc": "2026-10-07T07:40:21+00:00",
  "items": {
   "rcp_json_OH": {
    "url": "https://www.realclearpolitics.com/poll/race/8689/polling_data.json",
@@ -166,84 +166,84 @@
    "url": "https://gamma-api.polymarket.com/events?slug=north-carolina-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55933,
+   "bytes": 55903,
    "path": "data/latest/polymarket/NC.json"
   },
   "polymarket_GA": {
    "url": "https://gamma-api.polymarket.com/events?slug=georgia-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55330,
+   "bytes": 55337,
    "path": "data/latest/polymarket/GA.json"
   },
   "polymarket_NH": {
    "url": "https://gamma-api.polymarket.com/events?slug=new-hampshire-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56619,
+   "bytes": 56614,
    "path": "data/latest/polymarket/NH.json"
   },
   "polymarket_TX": {
    "url": "https://gamma-api.polymarket.com/events?slug=texas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56981,
+   "bytes": 56973,
    "path": "data/latest/polymarket/TX.json"
   },
   "polymarket_OH": {
    "url": "https://gamma-api.polymarket.com/events?slug=ohio-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57691,
+   "bytes": 57711,
    "path": "data/latest/polymarket/OH.json"
   },
   "polymarket_AK": {
    "url": "https://gamma-api.polymarket.com/events?slug=alaska-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 101307,
+   "bytes": 101332,
    "path": "data/latest/polymarket/AK.json"
   },
   "polymarket_ME": {
    "url": "https://gamma-api.polymarket.com/events?slug=maine-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56442,
+   "bytes": 56450,
    "path": "data/latest/polymarket/ME.json"
   },
   "polymarket_MI": {
    "url": "https://gamma-api.polymarket.com/events?slug=michigan-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57068,
+   "bytes": 57046,
    "path": "data/latest/polymarket/MI.json"
   },
   "polymarket_IA": {
    "url": "https://gamma-api.polymarket.com/events?slug=iowa-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56311,
+   "bytes": 56292,
    "path": "data/latest/polymarket/IA.json"
   },
   "polymarket_KS": {
    "url": "https://gamma-api.polymarket.com/events?slug=kansas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55474,
+   "bytes": 55487,
    "path": "data/latest/polymarket/KS.json"
   },
   "polymarket_MN": {
    "url": "https://gamma-api.polymarket.com/events?slug=minnesota-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55542,
+   "bytes": 55517,
    "path": "data/latest/polymarket/MN.json"
   },
   "polymarket_CONTROL": {
    "url": "https://gamma-api.polymarket.com/events?slug=balance-of-power-2026-midterms",
    "status": 200,
    "ok": true,
-   "bytes": 40430,
+   "bytes": 40452,
    "path": "data/latest/polymarket/CONTROL.json"
   },
   "kalshi_api_TX": {
@@ -257,7 +257,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEMI-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4436,
+   "bytes": 4434,
    "path": "data/latest/kalshi/MI.json"
   },
   "kalshi_api_IA": {
@@ -285,7 +285,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATENC-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4341,
+   "bytes": 4343,
    "path": "data/latest/kalshi/NC.json"
   },
   "kalshi_api_AK": {
@@ -320,14 +320,14 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEMN-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4477,
+   "bytes": 4478,
    "path": "data/latest/kalshi/MN.json"
   },
   "kalshi_api_CONTROL": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/KXBALANCEPOWERCOMBO-27FEB?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 9435,
+   "bytes": 9433,
    "path": "data/latest/kalshi/CONTROL.json"
   },
   "kalshi_page_TX": {
