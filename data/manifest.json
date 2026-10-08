@@ -1,5 +1,5 @@
 {
- "fetched_at_utc": "2026-10-08T17:05:44+00:00",
+ "fetched_at_utc": "2026-10-08T17:39:42+00:00",
  "items": {
   "rcp_json_OH": {
    "url": "https://www.realclearpolitics.com/poll/race/8689/polling_data.json",
@@ -33,7 +33,7 @@
    "url": "https://www.realclearpolitics.com/poll/race/8753/polling_data.json",
    "status": 200,
    "ok": true,
-   "bytes": 40418,
+   "bytes": 41264,
    "path": "data/latest/rcp/NC.json"
   },
   "rcp_json_IA": {
@@ -166,98 +166,98 @@
    "url": "https://gamma-api.polymarket.com/events?slug=north-carolina-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55346,
+   "bytes": 55347,
    "path": "data/latest/polymarket/NC.json"
   },
   "polymarket_GA": {
    "url": "https://gamma-api.polymarket.com/events?slug=georgia-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55316,
+   "bytes": 55318,
    "path": "data/latest/polymarket/GA.json"
   },
   "polymarket_NH": {
    "url": "https://gamma-api.polymarket.com/events?slug=new-hampshire-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56612,
+   "bytes": 56643,
    "path": "data/latest/polymarket/NH.json"
   },
   "polymarket_TX": {
    "url": "https://gamma-api.polymarket.com/events?slug=texas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57017,
+   "bytes": 57015,
    "path": "data/latest/polymarket/TX.json"
   },
   "polymarket_OH": {
    "url": "https://gamma-api.polymarket.com/events?slug=ohio-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57679,
+   "bytes": 57683,
    "path": "data/latest/polymarket/OH.json"
   },
   "polymarket_AK": {
    "url": "https://gamma-api.polymarket.com/events?slug=alaska-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 101356,
+   "bytes": 101350,
    "path": "data/latest/polymarket/AK.json"
   },
   "polymarket_ME": {
    "url": "https://gamma-api.polymarket.com/events?slug=maine-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56327,
+   "bytes": 56322,
    "path": "data/latest/polymarket/ME.json"
   },
   "polymarket_MI": {
    "url": "https://gamma-api.polymarket.com/events?slug=michigan-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 57153,
+   "bytes": 57151,
    "path": "data/latest/polymarket/MI.json"
   },
   "polymarket_IA": {
    "url": "https://gamma-api.polymarket.com/events?slug=iowa-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 56341,
+   "bytes": 56326,
    "path": "data/latest/polymarket/IA.json"
   },
   "polymarket_KS": {
    "url": "https://gamma-api.polymarket.com/events?slug=kansas-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55542,
+   "bytes": 55545,
    "path": "data/latest/polymarket/KS.json"
   },
   "polymarket_MN": {
    "url": "https://gamma-api.polymarket.com/events?slug=minnesota-senate-election-winner",
    "status": 200,
    "ok": true,
-   "bytes": 55485,
+   "bytes": 55445,
    "path": "data/latest/polymarket/MN.json"
   },
   "polymarket_CONTROL": {
    "url": "https://gamma-api.polymarket.com/events?slug=balance-of-power-2026-midterms",
    "status": 200,
    "ok": true,
-   "bytes": 40447,
+   "bytes": 40432,
    "path": "data/latest/polymarket/CONTROL.json"
   },
   "kalshi_api_TX": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATETX-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4436,
+   "bytes": 4440,
    "path": "data/latest/kalshi/TX.json"
   },
   "kalshi_api_MI": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEMI-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4434,
+   "bytes": 4435,
    "path": "data/latest/kalshi/MI.json"
   },
   "kalshi_api_IA": {
@@ -271,7 +271,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEME-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4436,
+   "bytes": 4438,
    "path": "data/latest/kalshi/ME.json"
   },
   "kalshi_api_OH": {
@@ -285,14 +285,14 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATENC-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4345,
+   "bytes": 4346,
    "path": "data/latest/kalshi/NC.json"
   },
   "kalshi_api_AK": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEAK-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4330,
+   "bytes": 4331,
    "path": "data/latest/kalshi/AK.json"
   },
   "kalshi_api_NH": {
@@ -306,14 +306,14 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEGA-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4432,
+   "bytes": 4435,
    "path": "data/latest/kalshi/GA.json"
   },
   "kalshi_api_KS": {
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/SENATEKS-26?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 4443,
+   "bytes": 4447,
    "path": "data/latest/kalshi/KS.json"
   },
   "kalshi_api_MN": {
@@ -327,7 +327,7 @@
    "url": "https://api.elections.kalshi.com/trade-api/v2/events/KXBALANCEPOWERCOMBO-27FEB?with_nested_markets=true",
    "status": 200,
    "ok": true,
-   "bytes": 9436,
+   "bytes": 9439,
    "path": "data/latest/kalshi/CONTROL.json"
   },
   "kalshi_page_TX": {
@@ -561,7 +561,7 @@
    "n_rows": 21
   },
   "NC": {
-   "window": "9/6 - 9/29",
+   "window": "9/6 - 10/3",
    "candidates": [
     [
      "Cooper",
@@ -569,11 +569,11 @@
     ],
     [
      "Whatley",
-     "40.8"
+     "41.0"
     ]
    ],
-   "n_flagged": 9,
-   "n_rows": 36
+   "n_flagged": 10,
+   "n_rows": 37
   },
   "IA": {
    "window": "9/9 - 10/5",
