@@ -34,9 +34,10 @@ export default async (req, context) => {
       if (!Number.isFinite(m) || m < 0 || m > MAX_MARGIN) return Response.json({ error: st + ": the margin must be a number of points between 0 and " + MAX_MARGIN }, { status: 400 });
       clean[st] = { w: p.w, m: r1(m) };
     }
+    const cal = body.cal === "fw" ? "fw" : body.cal === "sept" ? "sept" : null;   // which rules the person had the board on when they saved
     const dems = HELD_ELSEWHERE + STATES.filter(st => clean[st].w === "D").length;
     const old = await s.get(key, { type: "json" });
-    const rec = { ...who(user), call: { ts: new Date().toISOString(), picks: clean, dems, reps: 100 - dems, verdict: dems >= NEED ? "D" : "R" }, changes: old && old.call ? (old.changes || 0) + 1 : 0, previous: old && old.call ? [...(old.previous || []).slice(-19), old.call] : [] };
+    const rec = { ...who(user), call: { ts: new Date().toISOString(), picks: clean, cal, dems, reps: 100 - dems, verdict: dems >= NEED ? "D" : "R" }, changes: old && old.call ? (old.changes || 0) + 1 : 0, previous: old && old.call ? [...(old.previous || []).slice(-19), old.call] : [] };
     await s.setJSON(key, rec);
     const { previous, ...out } = rec;
     return Response.json({ saved: true, replaced: !!(old && old.call), record: out });

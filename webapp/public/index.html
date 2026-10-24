@@ -154,9 +154,23 @@ details summary{cursor:pointer;font-size:13.5px;color:var(--muted)}
 .hrow .ver{display:flex;gap:10px;flex-wrap:wrap;padding:4px 0;border-bottom:1px dashed var(--line)}
 .hrow .ver:last-child{border-bottom:none}
 .hrow .ver .when{min-width:150px;color:var(--muted)}
-.cons{display:grid;grid-template-columns:auto 1fr auto;gap:6px 10px;align-items:center;font-size:13.5px;margin-top:8px}
-.cons .b{height:10px;border-radius:5px;background:var(--r);overflow:hidden}
-.cons .b i{display:block;height:100%;background:var(--d)}
+/* who picked what: one column per person */
+.agree{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+.agree th{font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);padding:6px 4px;border-bottom:1px solid var(--line);text-align:center;vertical-align:bottom;font-weight:600}
+.agree th:first-child,.agree td:first-child{text-align:left}
+.agree td{padding:6px 4px;border-bottom:1px solid var(--line);text-align:center;vertical-align:middle}
+.agree td.race b{display:block;font-size:13px} .agree td.race small{color:var(--muted);font-size:11px;white-space:nowrap}
+.agree tr.split td{background:color-mix(in srgb,var(--soft) 75%,transparent)}
+.agree .chip{display:inline-block;border-radius:8px;padding:3px 7px;font-weight:700;font-size:12.5px;white-space:nowrap;color:#fff}
+.agree .chip.d{background:var(--d)} .agree .chip.r{background:var(--r)}
+.agree .chip.b{background:var(--card);color:var(--ink);border:1.5px solid var(--line);font-weight:600} .agree .chip.b.d{color:var(--d);border-color:var(--d)} .agree .chip.b.r{color:var(--r);border-color:var(--r)}
+.agree .ph{display:flex;flex-direction:column;align-items:center;gap:3px;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink)}
+.agree .ph .av{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--bg);font-style:normal;font-weight:700;font-size:12px;overflow:hidden}
+.agree .ph .av img{width:100%;height:100%;object-fit:cover;display:block}
+.agree th.me .ph span{text-decoration:underline;text-underline-offset:2px}
+.agree td.sum{font-size:12px;white-space:nowrap}
+.agree .nar{display:none}
+@media (max-width:640px){ .agree{font-size:12px} .agree .wide{display:none} .agree .nar{display:inline} .agree td,.agree th{padding:4px 1px} .agree .chip{padding:2px 3px;font-size:11.5px;border-radius:6px} .agree td.race{padding-left:0} .agree td.race b{font-size:12px} .agree td.race small{display:none} .agree td.sum{font-size:11.5px} .agree .ph{font-size:11px} .agree .ph .av{width:22px;height:22px;font-size:11px} .agree .ph span{max-width:44px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap} }
 .rules .rule{padding:8px 0;border-bottom:1px solid var(--line);font-size:14.5px}
 .rules .rule:last-child{border-bottom:none}
 .rules .rule b{display:block;margin-bottom:2px}
@@ -366,9 +380,9 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
       <h2 id="calls-title">Everyone's calls</h2>
       <p class="ctx" id="calls-ctx">One row per person, their current call, newest change first. Tap a row to see the 11 picks with margins.</p>
       <div class="tscroll"><table class="calls" id="callstbl"><thead id="callshead"></thead><tbody id="callsbody"></tbody></table></div>
-      <h3>Where friends agree and disagree</h3>
-      <p class="ctx small">Share of people picking the Democrat in each race.</p>
-      <div class="cons" id="cons"></div>
+      <h3>Who picked what, race by race</h3>
+      <p class="ctx small">One column per person. A <span class="chip d" style="display:inline-block;border-radius:8px;padding:1px 6px;font-weight:700;color:#fff;background:var(--d)">blue</span> chip is a pick for the Democrat, a <span style="display:inline-block;border-radius:8px;padding:1px 6px;font-weight:700;color:#fff;background:var(--r)">red</span> chip for the Republican; the number is the margin in points. The first column is what the board says today. Rows where you disagree are shaded, and the last column shows the split.</p>
+      <div class="tscroll"><table class="agree" id="agree"></table></div>
     </div>
 
     <div class="card" id="rescard">
@@ -614,6 +628,8 @@ $$("#range button").forEach(b=>b.onclick=()=>{ RANGE=b.dataset.r; $$("#range but
 
 /* ---------- call it ---------- */
 // PICKS is {ST:{w:"D"|"R", m:number|null}}; CALLS comes from /api/calls (one record per person, plus results and scores).
+const calTag=c=>c==="fw"?"Last 3 weeks rules":c==="sept"?"September rules":"rules not recorded";
+const calShort=c=>c==="fw"?"3 wks":c==="sept"?"Sept":"—";
 function myCall(){ if(!CALLS||!ME) return null; const me=CALLS.calls.find(c=>c.id===CALLS.me); return me?me.call:null; }
 function isLocked(){ return !!(CALLS&&(CALLS.locked||Date.now()>=Date.parse(CALLS.deadline))); }
 function dlText(){ return CALLS&&CALLS.deadlineText?CALLS.deadlineText:"Monday, November 2 at 9:00am ET"; }
@@ -650,7 +666,7 @@ $("#pre-clear").onclick=()=>{ if(isLocked()) return; PICKS={}; for(const st of S
 $("#save").onclick=async()=>{
   $("#save").disabled=true; $("#savestatus").textContent="Saving…";
   try{ const picks={}; for(const st of STATES) picks[st]={w:PICKS[st].w,m:mval(st)};
-    const res=await api("/api/calls",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({picks})});
+    const res=await api("/api/calls",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({picks,cal:CAL})});
     $("#savestatus").textContent=(res.replaced?"Replaced your earlier call. ":"Saved. ")+"Your call as of "+fmtWhen(res.record.call.ts)+" is in the list below.";
     CALLS=await api("/api/calls"); renderCalls(); updateTally();
   }catch(e){ $("#savestatus").textContent="Could not save: "+e.message; $("#save").disabled=false; }
@@ -660,12 +676,12 @@ function renderCalls(){
   const res=CALLS.results||{}, called=STATES.filter(st=>res[st]), scored=called.length>0;
   const head=$("#callshead"), body=$("#callsbody");
   $("#calls-title").textContent=scored?`Leaderboard · ${called.length} of 11 races called`:"Everyone's calls";
-  $("#calls-ctx").textContent=scored?"Ranked by races called right, then by the smallest total margin error. Tap a row to see every pick against the result.":"One row per person, their current call, newest change first. Tap a row to see the 11 picks with margins.";
+  $("#calls-ctx").textContent=scored?"Ranked by races called right, then by the smallest total margin error. Tap a row to see every pick against the result.":"One row per person, their current call, newest change first, with the rules they had the board on when they saved. Tap a row to see the 11 picks with margins.";
   head.innerHTML=scored?`<tr><th class="rank">#</th><th>Who</th><th class="num">Right</th><th class="num">Error</th><th class="num">Seats</th><th>Senate</th></tr>`:`<tr><th>Who</th><th class="num">Seats D–R</th><th>Senate</th><th>Last changed (ET)</th></tr>`;
-  if(!CALLS.calls.length){ body.innerHTML=`<tr><td colspan="6" class="muted">Nobody has saved a call yet. Be first.</td></tr>`; $("#cons").innerHTML=""; renderResults(); return; }
+  if(!CALLS.calls.length){ body.innerHTML=`<tr><td colspan="6" class="muted">Nobody has saved a call yet. Be first.</td></tr>`; $("#agree").innerHTML=""; renderResults(); return; }
   body.innerHTML=CALLS.calls.map(c=>{ const v=c.call, mine=c.id===CALLS.me; const who=`${c.picture?`<img src="${esc(c.picture)}" alt="">`:""}${esc(c.name)}${mine?" (you)":""}`;
-    return scored?`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="rank">${c.rank}</td><td class="person">${who}</td><td class="num"><b>${c.score.right}</b> of ${c.score.called}</td><td class="num">${c.score.err.toFixed(1)}</td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td><span class="pill ${v.verdict==="D"?"d":"r"}">${v.verdict==="D"?"Democrats":"Republicans"}</span></td></tr>`
-                 :`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="person">${who}${c.changes?`<small>changed ${c.changes} time${c.changes===1?"":"s"}</small>`:""}</td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td><span class="pill ${v.verdict==="D"?"d":"r"}">${v.verdict==="D"?"Democrats":"Republicans"}</span></td><td class="small" style="white-space:nowrap">${fmtShort(v.ts)}</td></tr>`; }).join("");
+    return scored?`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="rank">${c.rank}</td><td class="person">${who}<small>${calTag(v.cal)}</small></td><td class="num"><b>${c.score.right}</b> of ${c.score.called}</td><td class="num">${c.score.err.toFixed(1)}</td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td><span class="pill ${v.verdict==="D"?"d":"r"}">${v.verdict==="D"?"Democrats":"Republicans"}</span></td></tr>`
+                 :`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="person">${who}<small>${calTag(v.cal)}${c.changes?` · changed ${c.changes} time${c.changes===1?"":"s"}`:""}</small></td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td><span class="pill ${v.verdict==="D"?"d":"r"}">${v.verdict==="D"?"Democrats":"Republicans"}</span></td><td class="small" style="white-space:nowrap">${fmtShort(v.ts)}</td></tr>`; }).join("");
   const toggle=id=>{
     const ex=$(`#callsbody tr.hrow[data-for="${CSS.escape(id)}"]`); if(ex){ ex.remove(); return; }
     const c=CALLS.calls.find(x=>x.id===id), row=$(`#callsbody tr.main[data-id="${CSS.escape(id)}"]`); if(!c||!row) return; const v=c.call;
@@ -674,10 +690,10 @@ function renderCalls(){
       const actual=a?` <em>· result ${esc(r?(a.w==="D"?r.dem:r.rep):a.w)} by ${a.m}</em>`:""; const mark=pr?(pr.ok?`<span class="ok">✓ off by ${pr.err}</span>`:`<span class="bad">✗ off by ${pr.err}</span>`):"";
       const held=r?r.held:null, flip=held&&p.w!==held; const seat=held?` <span class="pill ${held==="D"?"d":"r"}">${held==="D"?"D":"R"} seat now</span>`:"";
       return `<span><em>${n+1}. ${esc(r?r.name:st)}${seat}</em><span><b class="${p.w==="D"?"fav-d":"fav-r"}">${esc(who)} by ${p.m}</b>${flip?` <span class="flip">flip</span>`:""}${actual} ${mark}</span></span>`; }).join("");
-    const tr=document.createElement("tr"); tr.className="hrow"; tr.dataset.for=id; tr.innerHTML=`<td colspan="6"><div class="small muted">${esc(c.name)}'s call, saved ${fmtWhen(v.ts)}${c.changes?`, changed ${c.changes} time${c.changes===1?"":"s"} before that`:""}. Each race shows which party holds the seat now; <b>flip</b> means the pick would take it from the other party${c.id===CALLS.me&&!isLocked()?` · <button class="hist" data-act="del">Delete my call</button>`:""}</div><div class="sel">${grid}</div></td>`; row.after(tr);
+    const tr=document.createElement("tr"); tr.className="hrow"; tr.dataset.for=id; tr.innerHTML=`<td colspan="6"><div class="small muted">${esc(c.name)}'s call, saved ${fmtWhen(v.ts)} with the board on the <b>${calTag(v.cal)}</b>${c.changes?`, changed ${c.changes} time${c.changes===1?"":"s"} before that`:""}. Each race shows which party holds the seat now; <b>flip</b> means the pick would take it from the other party${c.id===CALLS.me&&!isLocked()?` · <button class="hist" data-act="del">Delete my call</button>`:""}</div><div class="sel">${grid}</div></td>`; row.after(tr);
     const del=tr.querySelector('button[data-act="del"]'); if(del) del.onclick=async e=>{ e.stopPropagation(); if(!confirm("Delete your call? You can save a new one until the deadline.")) return; try{ await api("/api/calls",{method:"DELETE"}); PICKS={}; CALLS=await api("/api/calls"); renderCalls(); buildPicks(); updateTally(); $("#savestatus").textContent="Your call was deleted."; }catch(err){ $("#savestatus").textContent="Could not delete: "+err.message; } }; };
   $$("#callsbody tr.main").forEach(tr=>tr.onclick=()=>toggle(tr.dataset.id));
-  if(B){ const n=CALLS.calls.length; $("#cons").innerHTML=STATES.map(st=>{ const r=B.races[st]; const d=CALLS.calls.filter(c=>c.call.picks[st].w==="D").length, sh=100*d/n; return `<span>${esc(r.name)}</span><div class="b"><i style="width:${sh}%"></i></div><span class="${sh>50?"fav-d":sh<50?"fav-r":"muted"}">${d} of ${n} say ${esc(r.dem)}, ${n-d} say ${esc(r.rep)}</span>`; }).join(""); }
+  if(B) renderAgree(B);
   renderResults();
 }
 $("#vis-load").onclick=async()=>{
@@ -687,6 +703,18 @@ $("#vis-load").onclick=async()=>{
     $("#vis-log").innerHTML=`<h3>Every visit, newest first (last ${v.visits.length})</h3><table class="calls"><thead><tr><th>When (ET)</th><th>Email</th><th>Name</th></tr></thead><tbody>${v.visits.map(x=>`<tr><td class="small" style="white-space:nowrap">${fmtWhen(x.ts)}</td><td>${esc(x.email||"")}</td><td>${esc(x.name||"")}</td></tr>`).join("")}</tbody></table>`;
   }catch(e){ $("#vis-summary").textContent="Could not load: "+e.message; }
 };
+function renderAgree(B){
+  const people=CALLS.calls, n=people.length, k=CAL||"sept";
+  const order=[...STATES].sort((a,b)=>B.races[b][k].adj-B.races[a][k].adj);
+  const first=nm=>String(nm||"friend").trim().split(/\s+/)[0];
+  const head=`<thead><tr><th>Race</th><th><div class="ph"><i class="av" style="background:var(--soft);color:var(--muted)">B</i><span>Board</span></div></th>${people.map(c=>`<th class="${c.id===CALLS.me?"me":""}"><div class="ph"><i class="av">${c.picture?`<img src="${esc(c.picture)}" alt="">`:esc(first(c.name).slice(0,1).toUpperCase())}</i><span>${esc(first(c.name))}<span class="wide">${c.id===CALLS.me?" (you)":""}</span></span><small class="muted" style="font-size:10px">${calShort(c.call.cal)}</small></div></th>`).join("")}<th>Split</th></tr></thead>`;
+  const chip=(w,m,r,extra="")=>`<span class="chip ${w==="D"?"d":"r"}${extra}"><span class="wide">${esc(w==="D"?r.dem:r.rep)}</span><span class="nar">${w}</span> ${m}</span>`;
+  const rows=order.map(st=>{ const r=B.races[st], a=r[k].adj; const bw=a>=0?"D":"R", bm=Math.abs(a).toFixed(1);
+    const nD=people.filter(c=>c.call.picks[st].w==="D").length, split=nD>0&&nD<n;
+    const sum=n===0?"":nD===n?`<span class="fav-d"><span class="wide">all ${n}: ${esc(r.dem)}</span><span class="nar">${n}–0</span></span>`:nD===0?`<span class="fav-r"><span class="wide">all ${n}: ${esc(r.rep)}</span><span class="nar">0–${n}</span></span>`:`<b>${nD}–${n-nD}</b><span class="wide"> split</span>`;
+    return `<tr class="${split?"split":""}"><td class="race"><b>${esc(r.name)}</b><small>${esc(r.dem)} v ${esc(r.rep)} · ${r.held} seat now</small></td><td>${chip(bw,bm,r," b")}</td>${people.map(c=>{ const p=c.call.picks[st]; return `<td>${chip(p.w,p.m,r)}</td>`; }).join("")}<td class="sum">${sum}</td></tr>`; }).join("");
+  $("#agree").innerHTML=head+`<tbody>${rows}</tbody>`;
+}
 function renderResults(){
   $("#visitcard").hidden=!(CALLS&&CALLS.admin);
   if(!CALLS||!DATA) return; const B=DATA.board, res=CALLS.results||{}, open=!!CALLS.resultsOpen, called=STATES.filter(st=>res[st]).length;
