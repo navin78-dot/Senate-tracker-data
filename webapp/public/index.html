@@ -145,7 +145,7 @@ details summary{cursor:pointer;font-size:13.5px;color:var(--muted)}
 .calls{width:100%;border-collapse:collapse;font-size:14px}
 .calls th{font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:left;padding:6px;border-bottom:1px solid var(--line);font-weight:600}
 .calls td{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:middle;font-size:13.5px}
-.calls td:first-child{white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis}
+.calls td{white-space:normal;overflow:visible}
 .calls tr.me td{background:var(--soft)}
 .calls td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .calls img{width:24px;height:24px;border-radius:50%;vertical-align:middle;margin-right:6px;background:var(--soft)}
@@ -196,7 +196,6 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
 .calls .nar{display:none}
 @media (max-width:640px){
   .calls{table-layout:fixed} .calls th,.calls td{padding:7px 3px} .calls th{font-size:10.5px}
-  .calls td:first-child{white-space:normal;max-width:none;overflow:visible}
   .calls col.c-who{width:30%} .calls col.c-seats{width:14%} .calls col.c-sen{width:17%} .calls col.c-when{width:20%} .calls col.c-act{width:19%}
   .calls .wide{display:none} .calls .nar{display:inline} .calls img{display:none}
   .calls .acts{flex-direction:column;align-items:stretch} .calls button.hist{padding:4px 4px;font-size:12px}
