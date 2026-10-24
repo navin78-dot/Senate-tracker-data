@@ -78,7 +78,7 @@ nav.tabs button[aria-selected="true"] small{color:var(--bg);opacity:.75}
 .tbl td.race b{display:block}
 .tbl td.race small{color:var(--muted);font-size:12px}
 .tbl .pill.narrow{display:none;font-size:10.5px;padding:1px 6px;vertical-align:1px}
-@media (max-width:640px){ .tbl .wide{display:none} .tbl .pill.narrow{display:inline-block} .tbl{font-size:13px;table-layout:fixed} .tbl td{padding:7px 3px} .tbl th{padding:6px 3px;white-space:normal;font-size:10.5px;vertical-align:bottom} .tbl col.c-race{width:40%} .tbl col.c-num{width:15%} .tbl td.race small{font-size:11.5px} .tscroll{margin:0 -12px;padding:0 4px} }
+@media (max-width:640px){ .tbl .wide{display:none} .tbl .nar{display:inline} .tbl .pill.narrow{display:inline-block} .tbl{font-size:13px;table-layout:fixed} .tbl td{padding:7px 3px} .tbl th{padding:6px 3px;white-space:normal;font-size:10.5px;vertical-align:bottom} .tbl col.c-race{width:40%} .tbl col.c-num{width:15%} .tbl td.race small{font-size:11.5px} .tscroll{margin:0 -12px;padding:0 4px} }
 .tbl tr.dl td{background:color-mix(in srgb,var(--d-soft) 55%,transparent)}
 .tbl tr.rl td{background:color-mix(in srgb,var(--r-soft) 55%,transparent)}
 .tbl .lead.d{color:var(--d);font-weight:700} .tbl .lead.r{color:var(--r);font-weight:700}
@@ -124,12 +124,12 @@ details summary{cursor:pointer;font-size:13.5px;color:var(--muted)}
 .polls td{padding:4px 4px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
 .polls td:first-child{text-align:left;white-space:normal}
 .bar{height:8px;border-radius:4px;background:var(--soft);overflow:hidden;grid-column:1/-1}
-.bar i{display:block;height:100%;background:var(--d)}
+.bar{display:flex} .bar i{display:block;height:100%;background:var(--d)} .bar i.rr{background:var(--r)}
 /* call it */
 .pickrow{display:grid;grid-template-columns:1fr 1fr;gap:6px 8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
 .pickrow .st{grid-column:1/-1}
 @media (min-width:641px){ .pickrow{grid-template-columns:1.3fr 1fr 1fr} .pickrow .st{grid-column:auto} }
-.pickrow .st b{display:block;font-size:15px}
+.pickrow .st > b{display:block;font-size:15px}
 .pickrow .st small{color:var(--muted);font-size:12px}
 .pickrow button{border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:10px 8px;cursor:pointer;font-weight:600;font-size:14px;min-height:44px;transition:all .12s}
 .pickrow button.d[aria-pressed="true"]{background:var(--d);border-color:var(--d);color:#fff}
@@ -155,7 +155,7 @@ details summary{cursor:pointer;font-size:13.5px;color:var(--muted)}
 .hrow .ver:last-child{border-bottom:none}
 .hrow .ver .when{min-width:150px;color:var(--muted)}
 .cons{display:grid;grid-template-columns:auto 1fr auto;gap:6px 10px;align-items:center;font-size:13.5px;margin-top:8px}
-.cons .b{height:10px;border-radius:5px;background:var(--r-soft);overflow:hidden}
+.cons .b{height:10px;border-radius:5px;background:var(--r);overflow:hidden}
 .cons .b i{display:block;height:100%;background:var(--d)}
 .signin{max-width:520px;margin:48px auto;text-align:center}
 .signin .g{display:inline-flex;align-items:center;gap:10px;border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:12px 18px;font-weight:700;font-size:16px;cursor:pointer;margin-top:16px}
@@ -166,6 +166,30 @@ details summary{cursor:pointer;font-size:13.5px;color:var(--muted)}
 footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px solid var(--line);padding-top:12px}
 .warn{background:var(--r-soft);color:var(--r);border-radius:10px;padding:8px 12px;font-size:13.5px;margin:8px 0}
 .sr{position:absolute;left:-9999px}
+/* blue favors Democrats, red favors Republicans */
+.fav-d{color:var(--d);font-weight:700} .fav-r{color:var(--r);font-weight:700}
+.tbl .nar{display:none}
+.cal:not(.compact) .calopt .num{display:none}
+.cal.compact h2{font-size:15px;margin-bottom:0}
+.cal.compact .ctx.long{display:none}
+.cal.compact .calgrid{grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.cal.compact .calopt{padding:10px 10px 10px 38px}
+.cal.compact .calopt:before{left:12px;top:12px;width:16px;height:16px}
+.cal.compact .calopt[aria-checked="true"]:before{box-shadow:inset 0 0 0 3px var(--soft)}
+.cal.compact .calopt .t{font-size:14.5px}
+.cal.compact .calopt .x{display:none}
+.cal.compact .calopt .num{margin-top:4px;font-size:12.5px}
+.cal.compact.open .calopt .x{display:block}
+.cal.compact.open .ctx.long{display:block}
+.calopt .t small{font-weight:500;color:var(--muted);font-size:13px}
+.calgate{font-size:14px;margin:10px 0 0}
+.sel{display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;font-size:13.5px;margin:6px 0 4px}
+@media (max-width:560px){ .sel{grid-template-columns:1fr} }
+.sel span{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed var(--line);padding:4px 0}
+.sel span em{font-style:normal;color:var(--muted)}
+.sel span.chg em:after{content:" · changed";font-size:11px}
+.hrow details{margin:4px 0;padding:4px 0} .hrow details summary{cursor:pointer;font-size:13px;color:var(--ink)}
+.calls tr.main{cursor:pointer}
 </style>
 </head>
 <body>
@@ -178,6 +202,31 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
     <div class="who" id="who"></div>
   </header>
 
+  <div class="card" id="intro">
+    <h2>What you're looking at</h2>
+    <p class="ctx">Eleven Senate seats are in play this November. Democrats already hold 43 of the other 89, so they need to win <b>8 of these 11</b> to reach 51. A 50-50 Senate stays Republican because Vice President Vance breaks ties. This board takes the RealClearPolitics polling average in each race, trims it for the way polls have missed in recent elections, and turns the result into one number: the chance Democrats end up with the Senate. Everywhere on the site, <b class="fav-d">blue numbers favor Democrats</b> and <b class="fav-r">red numbers favor Republicans</b>.</p>
+  </div>
+
+  <div class="card cal" id="calcard">
+    <h2 id="caltitle">First, choose how much to trust the polls</h2>
+    <p class="ctx long">In the last two midterms (2018 and 2022), Senate polls made Democrats look a little stronger than they turned out to be, especially in states that lean Republican. So before this board counts a Democratic lead, it shaves a bit off it first. There are two ways of deciding how much to shave off, and you pick one. Every number on the site is then shown under your choice, and you can switch at any time.</p>
+    <div class="calgrid" role="radiogroup" aria-label="How much to trust the polls">
+      <button class="calopt" role="radio" data-cal="sept" aria-checked="false">
+        <div class="t">September rules <small>· more cautious: shaves more off Democratic leads</small></div>
+        <div class="x">Navin's original rules, written on September 5 and not changed since. They assume this year's polls will be about as far off as 2018 and 2022 polls were when measured two months before Election Day, so they allow both for polls being wrong and for races drifting over the final weeks. In practice they take between a fraction of a point and about three points off each Democratic lead, more in states Trump won big in 2024. This is the official board.</div>
+        <div class="num">Chance Democrats win the Senate: <b id="cal-sept-n">—</b></div>
+      </button>
+      <button class="calopt" role="radio" data-cal="fw" aria-checked="false">
+        <div class="t">Last 3 weeks rules <small>· trusts the polls more: shaves less off</small></div>
+        <div class="x">Added on October 18. These rules only allow for how far the final three weeks of polls were off in 2018 and 2022 (54 races, Patrick Ruffini's count) and assume no further drift between now and Election Day. So they take about half as much off each Democratic lead, and Democrats come out looking a little better. Navin decides on October 25 whether this becomes the official board.</div>
+        <div class="num">Chance Democrats win the Senate: <b id="cal-fw-n">—</b></div>
+      </button>
+    </div>
+    <p class="calgate" id="calgate">Tap one of the two to open the board. No numbers are shown until you choose, and you can change your mind at any time.</p>
+    <button class="btn ghost" id="calmore" hidden style="padding:7px 12px;font-size:13.5px;margin-top:10px">Explain the two options</button>
+  </div>
+
+  <div id="gated" hidden>
   <nav class="tabs" aria-label="Pages">
     <div class="hint">Four pages — tap one</div>
     <div class="row" role="tablist">
@@ -190,11 +239,6 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
 
   <!-- BOARD -->
   <section class="page on" id="page-board" role="tabpanel">
-    <div class="card">
-      <h2>What you're looking at</h2>
-      <p class="ctx">Eleven Senate seats are in play this November. Democrats already hold 43 of the other 89, so they need to win <b>8 of these 11</b> to reach 51. A 50-50 Senate stays Republican because Vice President Vance breaks ties. This board takes the RealClearPolitics polling average in each race, trims it for the way polls have missed in recent elections, and turns the result into one number: the chance Democrats end up with the Senate.</p>
-    </div>
-
     <div class="card">
       <div class="head">
         <div>
@@ -212,35 +256,18 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
       <div id="problems"></div>
     </div>
 
-    <div class="card cal">
-      <h2>Two ways to read the polls — pick one</h2>
-      <p class="ctx">In the 2018 and 2022 Senate races the polling averages ended up a little too kind to Democrats on average, and more so in states that lean Republican, so the board subtracts a "fade" from every Democratic lead before counting it. The two options below differ in how that fade was measured and how big it is. Your pick changes every number on this site.</p>
-      <div class="calgrid" role="radiogroup" aria-label="Fade rules">
-        <button class="calopt" role="radio" data-cal="sept" aria-checked="true">
-          <div class="t">September rules <span class="pill">board of record</span></div>
-          <div class="x">Measured on 18 Senate races from 2018 and 2022: how far the polling average stood from the final result 59 days before the election. That covers two things at once, the drift between September and Election Day and the miss in the final polls. It trims each Democratic lead by between a fraction of a point and about three points, more where Trump ran stronger in 2024. Written on September 5 and untouched since.</div>
-          <div class="num">Chance Democrats win: <b id="cal-sept-n">—%</b></div>
-        </button>
-        <button class="calopt" role="radio" data-cal="fw" aria-checked="false">
-          <div class="t">Last 3 weeks rules <span class="pill">smaller fade</span></div>
-          <div class="x">Measured on 54 Senate races from 2018 and 2022 (Patrick Ruffini's tally): how far the final three weeks of polls missed the result. It assumes no further drift, only the usual final-poll miss, so the trim is about half as big. Added October 18. Navin decides on October 25 whether it becomes the board of record.</div>
-          <div class="num">Chance Democrats win: <b id="cal-fw-n">—%</b></div>
-        </button>
-      </div>
-    </div>
-
     <div class="card">
       <h2>The eleven races</h2>
-      <p class="ctx">Sorted from safest Democratic lead to safest Republican lead, after the fade you picked above. "Polls say" is the RealClearPolitics average. "After fade" is what the board actually counts. Blue rows are seats the board currently gives to Democrats, red rows to Republicans.</p>
+      <p class="ctx">Sorted from safest Democratic lead to safest Republican lead, after the fade you picked above. "Polls say" is the RealClearPolitics average. "After fade" is what the board actually counts. "Market favorite" is who Polymarket bettors have ahead, and the price they put on that person winning. Blue rows are seats the board currently gives to Democrats, red rows to Republicans; blue numbers favor the Democrat, red numbers the Republican.</p>
       <div class="tscroll">
       <table class="tbl" id="t4">
         <colgroup><col class="c-race"><col class="wide"><col class="c-num"><col class="wide"><col class="c-num"><col class="c-num"><col class="c-num"></colgroup>
-        <thead><tr><th>Race</th><th class="wide">Seat now</th><th>Polls say</th><th class="wide">Fade</th><th>After fade</th><th>Chance D wins</th><th>Market</th></tr></thead>
+        <thead><tr><th>Race</th><th class="wide">Seat now</th><th>Polls say</th><th class="wide">Fade</th><th>After fade</th><th>Chance D wins</th><th>Market<span class="wide"> favorite</span></th></tr></thead>
         <tbody id="t4body"></tbody>
         <tfoot id="t4foot"></tfoot>
       </table>
       </div>
-      <div class="legend"><span><i class="dl"></i>Democrat ahead after the fade</span><span><i class="rl"></i>Republican ahead after the fade</span></div>
+      <div class="legend"><span><i class="dl"></i>Democrat ahead after the fade</span><span><i class="rl"></i>Republican ahead after the fade</span><span><b class="fav-d">Blue</b> favors Democrats, <b class="fav-r">red</b> favors Republicans</span></div>
       <div id="seats"></div>
     </div>
 
@@ -256,7 +283,7 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
   <section class="page" id="page-trend" role="tabpanel">
     <div class="card">
       <h2>How the headline number has moved</h2>
-      <p class="ctx">The solid line is the board under the rules you picked on the Board page; the thin dashed line is the other set of rules. The market line is Polymarket. "Raw polls" is what the chance would be with no fade at all. Before October 24 the history comes from Navin's twice-daily board; since then the site reads the relay itself about every half hour.</p>
+      <p class="ctx">The shaded halves show which side is favored: above 50% Democrats, below 50% Republicans. The solid line is the board under the rules you picked at the top of the page; the thin dashed line is the other set of rules. The market line is Polymarket. "Raw polls" is what the chance would be with no fade at all. Before October 24 the history comes from Navin's twice-daily board; since then the site reads the relay itself about every half hour.</p>
       <div class="chips" id="range"><button data-r="all" aria-pressed="true">All</button><button data-r="30">30 days</button><button data-r="14">14 days</button><button data-r="7">7 days</button></div>
       <svg class="chart" id="chart-ctrl" viewBox="0 0 720 300" role="img" aria-label="Headline chance over time"></svg>
       <div class="readout" id="read-ctrl">Touch or hover the chart to read a point.</div>
@@ -264,7 +291,7 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
     </div>
     <div class="card">
       <h2>One race at a time: the polling lead</h2>
-      <p class="ctx">Democratic lead in the RealClearPolitics average (positive means the Democrat is ahead), since Navin froze the baseline on September 5. The dashed line is the same lead after the fade you picked, which is what the board counts.</p>
+      <p class="ctx">The lead in the RealClearPolitics average since Navin froze the baseline on September 5: blue where the Democrat is ahead, red where the Republican is. The thin dashed line is the same lead after the fade you picked, which is what the board counts.</p>
       <div class="chips" id="racepick"></div>
       <svg class="chart" id="chart-race" viewBox="0 0 720 260" role="img" aria-label="Polling lead over time for one race"></svg>
       <div class="readout" id="read-race"></div>
@@ -276,7 +303,7 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
   <section class="page" id="page-races" role="tabpanel">
     <div class="card">
       <h2>The eleven races, one by one</h2>
-      <p class="ctx">Seven seats are held by Republicans and four by Democrats. Each card shows the polling average, the lead after the fade you picked, the chance the Democrat wins, and the prediction-market price. Open "polls in the average" to see exactly which polls RealClearPolitics is counting right now.</p>
+      <p class="ctx">Seven seats are held by Republicans and four by Democrats. Each card shows the polling average, the lead after the fade you picked, the chance the Democrat wins, and who the prediction market has as the favorite. Blue means the Democrat is favored, red the Republican. Open "polls in the average" to see exactly which polls RealClearPolitics is counting right now.</p>
     </div>
     <div id="racecards"></div>
     <div class="pagenav"><button data-go="trend">← Trend</button><button data-go="call">Next: Call it →</button></div>
@@ -286,7 +313,7 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
   <section class="page" id="page-call" role="tabpanel">
     <div class="card">
       <h2>Make your call</h2>
-      <p class="ctx">Pick a winner in each of the 11 races, then save. Your call is stored with the date. You can change it as often as you like; every version is kept, so after Election Day we can see who called it, who changed their mind, and when. The small grey text under each state is what the polls say right now.</p>
+      <p class="ctx">Pick a winner in each of the 11 races, then save. Each save is a new entry stamped with the date and time, and nothing is overwritten, so you can log a call as often as you like, even the same picks again on a later day. After Election Day we can see who called it, who changed their mind, and when. The small text under each state is what the polls and the market say right now.</p>
       <div class="chips"><button id="pre-model">Start from the board</button><button id="pre-market">Start from the market</button><button id="pre-clear">Clear</button></div>
       <div id="picks"></div>
       <div class="tally">
@@ -300,14 +327,15 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
     </div>
     <div class="card">
       <h2>Everyone's calls</h2>
-      <p class="ctx">The latest version from each person, newest first. "History" counts how many times they have saved; tap it to see every version and what changed.</p>
-      <div class="tscroll"><table class="calls" id="callstbl"><thead><tr><th>Who</th><th class="num">Seats D–R</th><th>Senate</th><th>Saved (ET)</th><th>History</th></tr></thead><tbody id="callsbody"></tbody></table></div>
+      <p class="ctx">Each person's latest entry, newest first. Tap a person to see their picks race by race, and every earlier entry they saved, each with its date and time.</p>
+      <div class="tscroll"><table class="calls" id="callstbl"><thead><tr><th>Who</th><th class="num">Seats D–R</th><th>Senate</th><th>Saved (ET)</th><th>Entries</th></tr></thead><tbody id="callsbody"></tbody></table></div>
       <h3>Where friends agree and disagree</h3>
       <p class="ctx small">Share of saved calls picking the Democrat in each race, latest version per person.</p>
       <div class="cons" id="cons"></div>
     </div>
     <div class="pagenav"><button data-go="races">← Races</button><button></button></div>
   </section>
+  </div>
 
   <footer class="site">
     Model and rules by Navin. Polling averages are RealClearPolitics; prices are Polymarket; both arrive through Navin's relay and the site re-reads them every 30 minutes. Fixed since September 5: the baseline, the fade formulas and the simulation settings. Only the inputs change.
@@ -333,17 +361,26 @@ const fmtDay=iso=>new Date(iso).toLocaleString("en-US",{...ET,month:"short",day:
 const sgn=v=>(v>0?"D +":v<0?"R +":"Even ")+(v===0?"":Math.abs(v).toFixed(1));
 const sgnNum=v=>(v>0?"+":"")+v.toFixed(1);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+// colour rule used everywhere: blue when a number favours Democrats, red when it favours Republicans
+const pc=v=>v>50?"fav-d":v<50?"fav-r":"";                 // a chance or price that Democrats win
+const mc=v=>v>0?"fav-d":v<0?"fav-r":"";                   // a margin, positive = Democrat ahead
+const pct=v=>`<b class="${pc(v)}">${v}%</b>`, pctOr=v=>v==null?"—":pct(v), mar=v=>`<b class="${mc(v)}">${sgn(v)}</b>`;
+const mktFav=r=>r.mkt>50?{who:r.dem,pty:"D",p:r.mkt,c:"fav-d"}:r.mkt<50?{who:r.rep,pty:"R",p:100-r.mkt,c:"fav-r"}:{who:"Even",pty:"",p:50,c:""};
+const mktHtml=r=>{ const f=mktFav(r); return `<b class="${f.c}">${esc(f.who)} ${f.p}%</b>`; };
+const seatsHtml=(d,r)=>`<b class="fav-d">Democrats ${d}</b> · <b class="fav-r">Republicans ${r}</b>`;
+const verdictHtml=d=>d>=51?`<b class="fav-d">Democrats take the Senate</b>`:`<b class="fav-r">Republicans keep the Senate${d===50?" (50-50, Vance breaks the tie)":""}</b>`;
 
-let DATA=null, CALLS=null, ME=null, CAL="sept", PAGE="board", RANGE="all", RACE="TX", PICKS={};
-try{ CAL=localStorage.getItem("sb-cal")||"sept"; PAGE=location.hash.slice(1)||localStorage.getItem("sb-page")||"board"; RACE=localStorage.getItem("sb-race")||"TX"; }catch{}
+let DATA=null, CALLS=null, ME=null, CAL=null, PAGE="board", RANGE="all", RACE="TX", PICKS={};
+try{ CAL=localStorage.getItem("sb-cal")||null; PAGE=location.hash.slice(1)||localStorage.getItem("sb-page")||"board"; RACE=localStorage.getItem("sb-race")||"TX"; }catch{}
 if(!["board","trend","races","call"].includes(PAGE)) PAGE="board";
+if(!["sept","fw"].includes(CAL)) CAL=null;
 
 /* ---------- auth ---------- */
 async function boot(){
   try{ await handleAuthCallback(); }catch(e){ console.warn("auth callback",e); }
   let user=null; try{ user=await getUser(); }catch(e){ console.warn("getUser",e); }
   if(!user){ $("#signin").hidden=false; $("#app").hidden=true; return; }
-  ME=user; $("#signin").hidden=true; $("#app").hidden=false;
+  ME=user; $("#signin").hidden=true; $("#app").hidden=false; applyGate();
   $("#who").innerHTML=(user.pictureUrl?`<img src="${esc(user.pictureUrl)}" alt="">`:"")+`<span>${esc(user.name||user.email||"you")}</span><button id="logout">Sign out</button>`;
   $("#logout").onclick=async()=>{ try{ await logout(); }finally{ location.reload(); } };
   await loadAll();
@@ -382,61 +419,71 @@ $$(".pagenav button[data-go]").forEach(b=>b.onclick=()=>showPage(b.dataset.go));
 let rsz; window.addEventListener("resize",()=>{ clearTimeout(rsz); rsz=setTimeout(()=>{ if(PAGE==="trend") drawCharts(); },150); });
 window.addEventListener("hashchange",()=>{ const p=location.hash.slice(1); if(["board","trend","races","call"].includes(p)&&p!==PAGE) showPage(p); });
 
-/* ---------- calibration ---------- */
-function setCal(c){ CAL=c; try{ localStorage.setItem("sb-cal",c); }catch{} $$(".calopt").forEach(b=>b.setAttribute("aria-checked", b.dataset.cal===c?"true":"false")); if(DATA) renderAll(); }
+/* ---------- calibration (the gate at the top of every page) ---------- */
+const CALNAME={sept:"September rules",fw:"Last 3 weeks rules"}, CALLOWER={sept:"September rules",fw:"last 3 weeks rules"};
+function applyGate(){
+  const chosen=!!CAL;
+  $("#gated").hidden=!chosen; $("#calgate").hidden=chosen; $("#calmore").hidden=!chosen;
+  $("#calcard").classList.toggle("compact",chosen);
+  $("#caltitle").textContent=chosen?"How much to trust the polls (your pick, change it any time)":"First, choose how much to trust the polls";
+  if(chosen){ const intro=$("#intro"), pb=$("#page-board"); if(intro.parentElement!==pb) pb.prepend(intro); }
+  $$(".calopt").forEach(b=>b.setAttribute("aria-checked", b.dataset.cal===CAL?"true":"false"));
+}
+function setCal(c){ const first=!CAL; CAL=c; try{ localStorage.setItem("sb-cal",c); }catch{} applyGate(); if(DATA) renderAll(); if(first) showPage(PAGE); }
 $$(".calopt").forEach(b=>b.onclick=()=>setCal(b.dataset.cal));
+$("#calmore").onclick=()=>{ const o=$("#calcard").classList.toggle("open"); $("#calmore").textContent=o?"Hide the explanation":"Explain the two options"; };
 
 /* ---------- render ---------- */
 function renderAll(){
-  const B=DATA.board, k=CAL, calName=k==="sept"?"September rules":"Last 3 weeks rules", calLower=k==="sept"?"September rules":"last 3 weeks rules";
-  $$(".calopt").forEach(b=>b.setAttribute("aria-checked", b.dataset.cal===k?"true":"false"));
+  const B=DATA.board;
+  $("#cal-sept-n").innerHTML=pct(B.ctrl.sept); $("#cal-fw-n").innerHTML=pct(B.ctrl.fw);
+  if(!CAL){ $("#subline").textContent=`Navin's forecast · updated ${fmtWhen(B.fetchedAt)} · pick an option below`; return; }
+  const k=CAL, calName=CALNAME[k], calLower=CALLOWER[k], other=k==="sept"?"fw":"sept", v=B.ctrl[k], mk=B.senateMkt;
   $("#subline").textContent=`Navin's forecast · ${calName} · updated ${fmtWhen(B.fetchedAt)}`;
-  $("#bignum").innerHTML=`${B.ctrl[k]}<small>%</small>`;
-  const other=k==="sept"?"fw":"sept";
-  $("#bigsub").textContent=`Under the ${calLower}. The other rules give ${B.ctrl[other]}%. With no fade at all, raw polls: ${B.ctrl.raw}%.`;
-  $("#mktnum").textContent=B.senateMkt+"%";
-  $("#cal-sept-n").textContent=B.ctrl.sept+"%"; $("#cal-fw-n").textContent=B.ctrl.fw+"%";
+  $("#bignum").innerHTML=`<span class="${pc(v)}">${v}</span><small>%</small>`;
+  $("#bigsub").innerHTML=`Under the ${calLower}: ${v>50?'<b class="fav-d">Democrats are favored</b>':v<50?'<b class="fav-r">Republicans are favored</b>':'<b>a toss-up</b>'}. The other rules give ${pct(B.ctrl[other])}. With no fade at all, raw polls: ${pct(B.ctrl.raw)}.`;
+  $("#mktnum").innerHTML=`<span class="${pc(mk)}">${mk}%</span>`;
+  $("#mktsub").innerHTML=`Polymarket's price for "Democrats win the Senate". ${mk>50?'<b class="fav-d">Bettors favor Democrats.</b>':mk<50?'<b class="fav-r">Bettors favor Republicans.</b>':'Bettors have it even.'}`;
   const age=Math.round((Date.now()-Date.parse(B.fetchedAt))/60000);
   $("#updated").textContent=`Polls and prices as of ${fmtWhen(B.fetchedAt)} (${age<60?age+" minutes":Math.round(age/60*10)/10+" hours"} ago). The site re-reads Navin's relay every 30 minutes; the relay itself refreshes a few times a day.`+(B.relayError?" The last re-read failed, so this is the previous copy.":"");
   let pr=""; if(B.carried&&B.carried.length) pr+=`<div class="warn">Some inputs could not be read this time and were carried over from the previous board: ${esc(B.carried.join(", "))}.</div>`; if(B.problems&&B.problems.length) pr+=`<div class="warn">${esc(B.problems.join(" · "))}</div>`; $("#problems").innerHTML=pr;
 
   // table
   const rows=STATES.map(st=>B.races[st]).sort((a,b)=>b[k].adj-a[k].adj);
-  $("#t4body").innerHTML=rows.map(r=>{ const a=r[k]; const cls=a.adj>0?"dl":a.adj<0?"rl":""; return `<tr class="${cls}"><td class="race"><b>${esc(r.name)}</b><small>${esc(r.dem)} v ${esc(r.rep)} <span class="pill narrow ${r.held==="D"?"d":"r"}">${r.held==="D"?"D seat":"R seat"}</span></small></td><td class="wide"><span class="pill ${r.held==="D"?"d":"r"}">${r.held==="D"?"Dem":"Rep"}</span></td><td class="lead ${r.m>0?"d":r.m<0?"r":""}">${sgn(r.m)}</td><td class="muted wide">${a.fade.toFixed(1)}</td><td class="lead ${a.adj>0?"d":a.adj<0?"r":""}">${sgn(a.adj)}</td><td>${a.win}%</td><td class="muted">${r.mkt}%</td></tr>`; }).join("");
-  const S=B.seats, s1=S[k], s2=S.raw, mk=43+STATES.filter(st=>B.races[st].mkt>50).length;
-  const verdict=(d)=>d>=51?`Democrats take the Senate`:`Republicans keep the Senate${d===50?" (50-50, Vance breaks the tie)":""}`;
-  $("#t4foot").innerHTML=`<tr><td colspan="7">Seats if every "after fade" leader won: <span class="n">Democrats ${s1.dems} · Republicans ${s1.reps}</span> → ${verdict(s1.dems)}.</td></tr>
-  <tr><td colspan="7">Seats if the raw polls were exactly right: <span class="n">Democrats ${s2.dems} · Republicans ${s2.reps}</span> → ${verdict(s2.dems)}.</td></tr>
-  <tr><td colspan="7">Seats if the market favorite won every race: <span class="n">Democrats ${mk} · Republicans ${100-mk}</span> → ${verdict(mk)}.</td></tr>`;
-  $("#seats").innerHTML=`<h3>Seat count under the ${calLower}</h3><div class="seatbar"><i class="dd" style="width:${s1.dems}%"></i><i class="rr" style="width:${s1.reps}%"></i></div><div class="seatrow"><span>Democrats ${s1.dems}</span><span>51 needed</span><span>Republicans ${s1.reps}</span></div><p class="small muted" style="margin-top:8px">Averaged over all the simulated outcomes, Democrats end with about ${S.expected[k]} seats under these rules. The seat counts above treat every leader as a sure winner; the headline chance does not.</p>`;
+  $("#t4body").innerHTML=rows.map(r=>{ const a=r[k], f=mktFav(r); const cls=a.adj>0?"dl":a.adj<0?"rl":""; return `<tr class="${cls}"><td class="race"><b>${esc(r.name)}</b><small>${esc(r.dem)} v ${esc(r.rep)} <span class="pill narrow ${r.held==="D"?"d":"r"}">${r.held==="D"?"D seat":"R seat"}</span></small></td><td class="wide"><span class="pill ${r.held==="D"?"d":"r"}">${r.held==="D"?"Dem":"Rep"}</span></td><td class="${mc(r.m)}">${sgn(r.m)}</td><td class="muted wide">${a.fade.toFixed(1)}</td><td class="${mc(a.adj)}">${sgn(a.adj)}</td><td class="${pc(a.win)}">${a.win}%</td><td class="${f.c}"><span class="wide">${esc(f.who)}</span><span class="nar">${f.pty}</span> ${f.p}%</td></tr>`; }).join("");
+  const S=B.seats, s1=S[k], s2=S.raw, mkd=43+STATES.filter(st=>B.races[st].mkt>50).length;
+  $("#t4foot").innerHTML=`<tr><td colspan="7">Seats if every "after fade" leader won: ${seatsHtml(s1.dems,s1.reps)} → ${verdictHtml(s1.dems)}.</td></tr>
+  <tr><td colspan="7">Seats if the raw polls were exactly right: ${seatsHtml(s2.dems,s2.reps)} → ${verdictHtml(s2.dems)}.</td></tr>
+  <tr><td colspan="7">Seats if the market favorite won every race: ${seatsHtml(mkd,100-mkd)} → ${verdictHtml(mkd)}.</td></tr>`;
+  $("#seats").innerHTML=`<h3>Seat count under the ${calLower}</h3><div class="seatbar"><i class="dd" style="width:${s1.dems}%"></i><i class="rr" style="width:${s1.reps}%"></i></div><div class="seatrow"><span class="fav-d">Democrats ${s1.dems}</span><span>51 needed</span><span class="fav-r">Republicans ${s1.reps}</span></div><p class="small muted" style="margin-top:8px">Averaged over all the simulated outcomes, Democrats end with about <b class="${S.expected[k]>=51?"fav-d":"fav-r"}">${S.expected[k]}</b> seats under these rules. The seat counts above treat every leader as a sure winner; the headline chance does not.</p>`;
 
   // worked example on Ohio
   const oh=B.races.OH, a=oh[k];
-  $("#worked").innerHTML=`Take Ohio. The polls say ${esc(oh.dem)} leads ${esc(oh.rep)} by <b>${oh.m.toFixed(1)}</b> (${oh.d}% to ${oh.r}%). The ${calLower} subtract <b>${Math.abs(a.fade).toFixed(1)}</b> for the usual polling miss in a state Trump won by ${oh.trump24.toFixed(0)}, leaving <b>${sgn(a.adj)}</b>. A lead that size, with polls assumed to be off by a typical 5 points either way, wins about <b>${a.win}%</b> of the time. The market has ${esc(oh.dem)} at ${oh.mkt}%.`;
+  $("#worked").innerHTML=`Take Ohio. The polls say ${esc(oh.dem)} leads ${esc(oh.rep)} by <b class="${mc(oh.m)}">${oh.m.toFixed(1)}</b> (${oh.d}% to ${oh.r}%). The ${calLower} subtract <b>${Math.abs(a.fade).toFixed(1)}</b> for the usual polling miss in a state Trump won by ${oh.trump24.toFixed(0)}, leaving ${mar(a.adj)}. A lead that size, with polls assumed to be off by a typical 5 points either way, wins about ${pct(a.win)} of the time. The market favorite is ${mktHtml(oh)}.`;
 
   renderRaces(); buildPicks(); updateTally(); if(PAGE==="trend") drawCharts(); if(CALLS) renderCalls();
 }
 
 function renderRaces(){
-  const B=DATA.board, k=CAL; const calLower=k==="sept"?"September rules":"last 3 weeks rules";
+  const B=DATA.board, k=CAL; const calLower=CALLOWER[k];
   const rows=STATES.map(st=>B.races[st]).sort((a,b)=>Math.abs(a[k].adj)-Math.abs(b[k].adj));
   $("#racecards").innerHTML=rows.map(r=>{
-    const a=r[k]; const lead=a.adj>0?r.dem:a.adj<0?r.rep:"nobody";
+    const a=r[k]; const lead=a.adj>0?r.dem:a.adj<0?r.rep:"nobody", leadC=a.adj>0?"fav-d":a.adj<0?"fav-r":"";
     const drift=r.drift===0?"unchanged since September 5":`${r.drift>0?"moved toward the Democrat":"moved toward the Republican"} by ${Math.abs(r.drift).toFixed(1)} since September 5`;
     const story=a.adj>0&&a.win>=75?`A comfortable Democratic lead even after the fade.`:a.adj<0&&a.win<=25?`A comfortable Republican lead; the fade only widens it.`:Math.abs(a.adj)<1?`Essentially a coin flip after the fade.`:a.adj>0?`Democrat ahead after the fade, but not by much.`:`Republican ahead after the fade, but not by much.`;
-    const polls=(r.polls||[]).map(p=>`<tr><td>${esc(p.pollster)}<br><span class="muted">${esc(p.date)} · ${esc(p.sample||"")}</span></td><td>${esc(r.dem)} ${p.d}</td><td>${esc(r.rep)} ${p.r}</td><td class="${p.m>0?"lead d":p.m<0?"lead r":""}">${sgn(p.m)}</td></tr>`).join("");
+    const polls=(r.polls||[]).map(p=>`<tr><td>${esc(p.pollster)}<br><span class="muted">${esc(p.date)} · ${esc(p.sample||"")}</span></td><td>${esc(r.dem)} ${p.d}</td><td>${esc(r.rep)} ${p.r}</td><td class="${mc(p.m)}">${sgn(p.m)}</td></tr>`).join("");
     return `<div class="card rcard">
       <div><div class="nm">${esc(r.name)} <span class="pill ${r.held==="D"?"d":"r"}">${r.held==="D"?"Democratic seat":"Republican seat"}</span></div>
       <div class="cands"><b class="d">${esc(r.dem)}</b> (D) vs <b class="r">${esc(r.rep)}</b> (R)</div></div>
-      <div class="right"><div class="pct">${a.win}%</div><div class="lbl">chance ${esc(r.dem)} wins</div></div>
-      <div class="bar"><i style="width:${a.win}%"></i></div>
+      <div class="right"><div class="pct ${pc(a.win)}">${a.win}%</div><div class="lbl">chance ${esc(r.dem)} (D) wins</div></div>
+      <div class="bar"><i style="width:${a.win}%"></i><i class="rr" style="width:${100-a.win}%"></i></div>
       <div class="nums">
-        <div><div class="k">Polls say</div><div class="v">${sgn(r.m)} <small>${r.d}–${r.r}</small></div></div>
-        <div><div class="k">After fade</div><div class="v">${sgn(a.adj)} <small>fade ${a.fade.toFixed(1)}</small></div></div>
-        <div><div class="k">Market</div><div class="v">${r.mkt}% <small>${esc(r.dem)}</small></div></div>
-        <div><div class="k">Trump 2024</div><div class="v">${r.trump24>0?"+":""}${r.trump24.toFixed(1)} <small>sets the fade</small></div></div>
+        <div><div class="k">Polls say</div><div class="v ${mc(r.m)}">${sgn(r.m)} <small>${r.d}–${r.r}</small></div></div>
+        <div><div class="k">After fade</div><div class="v ${mc(a.adj)}">${sgn(a.adj)} <small>fade ${a.fade.toFixed(1)}</small></div></div>
+        <div><div class="k">Market favorite</div><div class="v">${mktHtml(r)} <small>Polymarket</small></div></div>
+        <div><div class="k">Trump 2024</div><div class="v ${r.trump24>0?"fav-r":r.trump24<0?"fav-d":""}">${r.trump24>0?"+":""}${r.trump24.toFixed(1)} <small>sets the fade</small></div></div>
       </div>
-      <div class="story">${story} Under the ${calLower} the board gives this seat to <b>${esc(lead)}</b>. The polling average has ${drift}${r.window?`; RealClearPolitics is averaging polls taken ${esc(r.window)}`:""}.</div>
+      <div class="story">${story} Under the ${calLower} the board gives this seat to <b class="${leadC}">${esc(lead)}</b>. The polling average has ${drift}${r.window?`; RealClearPolitics is averaging polls taken ${esc(r.window)}`:""}.</div>
       <details><summary>Polls in the average (${(r.polls||[]).length}${r.totalListed?` of ${r.totalListed} listed`:""})</summary><table class="polls"><tbody>${polls||"<tr><td>Not available</td></tr>"}</tbody></table></details>
     </div>`; }).join("");
 }
@@ -446,10 +493,10 @@ const COL={sept:"var(--ink)",fw:"var(--ink)",mkt:"#c47f17",raw:"#1f8f8f",d:"var(
 function cw(svg){ const w=svg.clientWidth||svg.parentElement.clientWidth||720; return Math.max(320,Math.round(w)); }
 function pts(){ return (DATA.trend||[]).filter(p=>p.ts).map(p=>({...p,t:Date.parse(p.ts)})).sort((a,b)=>a.t-b.t); }
 function rangeFilter(arr){ if(RANGE==="all") return arr; const cut=Date.now()-Number(RANGE)*864e5; return arr.filter(p=>p.t>=cut); }
-function drawCharts(){ if(!DATA) return; drawCtrl(); buildRaceChips(); drawRace(); }
+function drawCharts(){ if(!DATA||!CAL) return; drawCtrl(); buildRaceChips(); drawRace(); }
 function axes(svg,W,H,pad,x0,x1,y0,y1,yfmt){
   let g=""; const ny=5; for(let i=0;i<=ny;i++){ const y=pad.t+(H-pad.t-pad.b)*i/ny; const v=y1-(y1-y0)*i/ny; g+=`<line class="grid" x1="${pad.l}" x2="${W-pad.r}" y1="${y}" y2="${y}"/><text x="${pad.l-6}" y="${y+4}" text-anchor="end">${yfmt(v)}</text>`; }
-  const days=(x1-x0)/864e5; const step=days>40?7:days>16?3:1; const d0=new Date(x0); d0.setUTCHours(0,0,0,0);
+  const days=(x1-x0)/864e5, room=Math.max(3,Math.floor((W-pad.l-pad.r)/64)); const per=days/room; const step=per<=1?1:per<=3?3:per<=7?7:14; const d0=new Date(x0); d0.setUTCHours(0,0,0,0);
   for(let t=d0.getTime();t<=x1;t+=step*864e5){ if(t<x0) continue; const x=pad.l+(W-pad.l-pad.r)*(t-x0)/(x1-x0); g+=`<text x="${x}" y="${H-pad.b+16}" text-anchor="middle">${fmtDay(new Date(t).toISOString())}</text>`; }
   return g;
 }
@@ -460,7 +507,9 @@ function drawCtrl(){
   const x0=arr[0].t, x1=arr[arr.length-1].t, y0=20, y1=80;
   const fx=t=>pad.l+(W-pad.l-pad.r)*(t-x0)/(x1-x0), fy=v=>pad.t+(H-pad.t-pad.b)*(1-(Math.min(y1,Math.max(y0,v))-y0)/(y1-y0));
   const main=CAL==="sept"?"T4":"T4fw", other=CAL==="sept"?"T4fw":"T4";
-  let s=axes(svg,W,H,pad,x0,x1,y0,y1,v=>v.toFixed(0)+"%");
+  const iw=W-pad.l-pad.r;
+  let s=`<rect x="${pad.l}" y="${pad.t}" width="${iw}" height="${Math.max(0,fy(50)-pad.t)}" style="fill:var(--d-soft);opacity:.35"/><rect x="${pad.l}" y="${fy(50)}" width="${iw}" height="${Math.max(0,H-pad.b-fy(50))}" style="fill:var(--r-soft);opacity:.35"/>`;
+  s+=axes(svg,W,H,pad,x0,x1,y0,y1,v=>v.toFixed(0)+"%");
   s+=`<line class="grid" x1="${pad.l}" x2="${W-pad.r}" y1="${fy(50)}" y2="${fy(50)}" style="stroke:var(--muted);stroke-dasharray:2 4"/>`;
   s+=`<path class="ln" d="${line(arr,fx,fy,"raw")}" style="stroke:${COL.raw}"/>`;
   s+=`<path class="ln" d="${line(arr,fx,fy,"mkt")}" style="stroke:${COL.mkt}"/>`;
@@ -468,13 +517,13 @@ function drawCtrl(){
   s+=`<path class="ln" d="${line(arr,fx,fy,main)}" style="stroke:${COL.sept};stroke-width:3"/>`;
   s+=`<g id="cur-ctrl"></g>`;
   svg.innerHTML=s;
-  $("#key-ctrl").innerHTML=`<span><i style="background:var(--ink);height:4px"></i>${CAL==="sept"?"September rules":"Last 3 weeks rules"} (your pick)</span><span><i style="background:var(--ink);height:2px;opacity:.6"></i>${CAL==="sept"?"Last 3 weeks rules":"September rules"}</span><span><i style="background:${COL.mkt}"></i>Polymarket</span><span><i style="background:${COL.raw}"></i>Raw polls, no fade</span>`;
-  const last=arr[arr.length-1];
-  $("#read-ctrl").textContent=`Latest, ${fmtWhen(last.ts)}: ${CAL==="sept"?"September":"Last 3 weeks"} ${last[main]??"—"}% · other rules ${last[other]??"— (only exists since Oct 18)"}${last[other]!=null?"%":""} · market ${last.mkt}% · raw ${last.raw}%.`;
-  hover(svg,arr,fx,p=>`${fmtWhen(p.ts)}${p.label?" (board "+p.label+")":""}: ${CAL==="sept"?"September":"Last 3 weeks"} ${p[main]??"—"}% · other rules ${p[other]??"—"}${p[other]!=null?"%":""} · market ${p.mkt}% · raw ${p.raw}%`, "#read-ctrl", "#cur-ctrl", p=>fy(p[main]??p.raw));
+  $("#key-ctrl").innerHTML=`<span><i style="background:var(--ink);height:4px"></i>${CALNAME[CAL]} (your pick)</span><span><i style="background:var(--ink);height:2px;opacity:.6"></i>${CAL==="sept"?"Last 3 weeks rules":"September rules"}</span><span><i style="background:${COL.mkt}"></i>Polymarket</span><span><i style="background:${COL.raw}"></i>Raw polls, no fade</span><span><i style="background:var(--d-soft);height:10px;border:1px solid var(--d)"></i>above 50%: Democrats favored</span><span><i style="background:var(--r-soft);height:10px;border:1px solid var(--r)"></i>below: Republicans favored</span>`;
+  const last=arr[arr.length-1], nm=CAL==="sept"?"September":"Last 3 weeks";
+  $("#read-ctrl").innerHTML=`Latest, ${fmtWhen(last.ts)}: ${nm} ${pctOr(last[main])} · other rules ${last[other]==null?"— (only exists since Oct 18)":pct(last[other])} · market ${pctOr(last.mkt)} · raw ${pctOr(last.raw)}.`;
+  hover(svg,arr,fx,p=>`${fmtWhen(p.ts)}${p.label?" (board "+esc(p.label)+")":""}: ${nm} ${pctOr(p[main])} · other rules ${pctOr(p[other])} · market ${pctOr(p.mkt)} · raw ${pctOr(p.raw)}`, "#read-ctrl", "#cur-ctrl", p=>fy(p[main]??p.raw));
 }
 function hover(svg,arr,fx,text,readSel,curSel,fyp){
-  const move=ev=>{ const r=svg.getBoundingClientRect(); const x=(ev.clientX-r.left)/r.width*svg.viewBox.baseVal.width; let best=arr[0],bd=1e9; for(const p of arr){ const d=Math.abs(fx(p.t)-x); if(d<bd){bd=d;best=p;} } $(readSel).textContent=text(best); $(curSel).innerHTML=`<line x1="${fx(best.t)}" x2="${fx(best.t)}" y1="10" y2="${svg.viewBox.baseVal.height-28}" style="stroke:var(--muted)"/><circle cx="${fx(best.t)}" cy="${fyp(best)}" r="4" style="fill:var(--ink)"/>`; };
+  const move=ev=>{ const r=svg.getBoundingClientRect(); const x=(ev.clientX-r.left)/r.width*svg.viewBox.baseVal.width; let best=arr[0],bd=1e9; for(const p of arr){ const d=Math.abs(fx(p.t)-x); if(d<bd){bd=d;best=p;} } $(readSel).innerHTML=text(best); $(curSel).innerHTML=`<line x1="${fx(best.t)}" x2="${fx(best.t)}" y1="10" y2="${svg.viewBox.baseVal.height-28}" style="stroke:var(--muted)"/><circle cx="${fx(best.t)}" cy="${fyp(best)}" r="4" style="fill:var(--ink)"/>`; };
   svg.onpointermove=move; svg.onpointerdown=move;
 }
 function buildRaceChips(){
@@ -495,14 +544,19 @@ function drawRace(){
   const vals=arr.flatMap(p=>[p.m,p.adj]); let lo=Math.floor(Math.min(...vals,0)-1), hi=Math.ceil(Math.max(...vals,0)+1); if(hi-lo<6){ hi=lo+6; }
   const x0=arr[0].t, x1=arr[arr.length-1].t;
   const fx=t=>pad.l+(W-pad.l-pad.r)*(t-x0)/(x1-x0), fy=v=>pad.t+(H-pad.t-pad.b)*(1-(v-lo)/(hi-lo));
-  let s=axes(svg,W,H,pad,x0,x1,lo,hi,v=>(v>0?"D+":v<0?"R+":"")+Math.abs(v).toFixed(0));
-  s+=`<line x1="${pad.l}" x2="${W-pad.r}" y1="${fy(0)}" y2="${fy(0)}" style="stroke:var(--muted);stroke-width:1.5"/>`;
+  const iw=W-pad.l-pad.r, z=fy(0);
+  const above=`<rect x="${pad.l}" y="${pad.t}" width="${iw}" height="${Math.max(0,z-pad.t)}"/>`, below=`<rect x="${pad.l}" y="${z}" width="${iw}" height="${Math.max(0,H-pad.b-z)}"/>`;
+  let s=`<defs><clipPath id="cp-a">${above}</clipPath><clipPath id="cp-b">${below}</clipPath></defs>`;
+  s+=`<g style="fill:var(--d-soft);opacity:.35">${above}</g><g style="fill:var(--r-soft);opacity:.35">${below}</g>`;
+  s+=axes(svg,W,H,pad,x0,x1,lo,hi,v=>(v>0?"D+":v<0?"R+":"")+Math.abs(v).toFixed(0));
+  s+=`<line x1="${pad.l}" x2="${W-pad.r}" y1="${z}" y2="${z}" style="stroke:var(--muted);stroke-width:1.5"/>`;
+  const dm=line(arr,fx,fy,"m");
   s+=`<path class="ln thin" d="${line(arr,fx,fy,"adj")}" style="stroke:var(--ink)"/>`;
-  s+=`<path class="ln" d="${line(arr,fx,fy,"m")}" style="stroke:var(--d);stroke-width:3"/>`;
+  s+=`<path class="ln" d="${dm}" clip-path="url(#cp-a)" style="stroke:var(--d);stroke-width:3"/><path class="ln" d="${dm}" clip-path="url(#cp-b)" style="stroke:var(--r);stroke-width:3"/>`;
   s+=`<g id="cur-race"></g>`; svg.innerHTML=s;
   const last=arr[arr.length-1];
-  $("#read-race").textContent=`${r.name}: ${r.dem} (D) vs ${r.rep} (R). Latest polling lead ${sgn(last.m)}, after fade ${sgn(last.adj)}. On September 5 it was ${sgn(r.baseline)}.`;
-  hover(svg,arr,fx,p=>`${fmtWhen(p.ts)}${p.label?" (board "+p.label+")":""}: polls ${sgn(p.m)} · after fade ${sgn(p.adj)}`, "#read-race", "#cur-race", p=>fy(p.m));
+  $("#read-race").innerHTML=`${esc(r.name)}: <b class="d">${esc(r.dem)}</b> (D) vs <b class="r">${esc(r.rep)}</b> (R). Latest polling lead ${mar(last.m)}, after fade ${mar(last.adj)}. On September 5 it was ${mar(r.baseline)}.`;
+  hover(svg,arr,fx,p=>`${fmtWhen(p.ts)}${p.label?" (board "+esc(p.label)+")":""}: polls ${mar(p.m)} · after fade ${mar(p.adj)}`, "#read-race", "#cur-race", p=>fy(p.m));
 }
 $$("#range button").forEach(b=>b.onclick=()=>{ RANGE=b.dataset.r; $$("#range button").forEach(x=>x.setAttribute("aria-pressed", x===b?"true":"false")); drawCharts(); });
 
@@ -512,15 +566,15 @@ function buildPicks(){
   const B=DATA.board, k=CAL;
   if(!Object.keys(PICKS).length){ const last=myLatest(); if(last) PICKS={...last.picks}; }
   const rows=STATES.map(st=>B.races[st]).sort((a,b)=>Math.abs(a[k].adj)-Math.abs(b[k].adj));
-  $("#picks").innerHTML=rows.map(r=>`<div class="pickrow" data-st="${r.st}"><div class="st"><b>${esc(r.name)}</b><small>polls ${sgn(r.m)} · after fade ${sgn(r[k].adj)} · market ${r.mkt}%</small></div><button class="d" data-v="D" aria-pressed="${PICKS[r.st]==="D"}">${esc(r.dem)} (D)</button><button class="r" data-v="R" aria-pressed="${PICKS[r.st]==="R"}">${esc(r.rep)} (R)</button></div>`).join("");
+  $("#picks").innerHTML=rows.map(r=>`<div class="pickrow" data-st="${r.st}"><div class="st"><b>${esc(r.name)}</b><small>polls ${mar(r.m)} · after fade ${mar(r[k].adj)} · market favorite ${mktHtml(r)}</small></div><button class="d" data-v="D" aria-pressed="${PICKS[r.st]==="D"}">${esc(r.dem)} (D)</button><button class="r" data-v="R" aria-pressed="${PICKS[r.st]==="R"}">${esc(r.rep)} (R)</button></div>`).join("");
   $$("#picks .pickrow button").forEach(b=>b.onclick=()=>{ const st=b.closest(".pickrow").dataset.st; PICKS[st]=b.dataset.v; b.parentElement.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed", x===b?"true":"false")); updateTally(); });
 }
 function updateTally(){
   const n=STATES.filter(st=>PICKS[st]).length, dems=43+STATES.filter(st=>PICKS[st]==="D").length;
   const last=myLatest(); const same=last&&STATES.every(st=>last.picks[st]===PICKS[st]);
   if(n<11){ $("#tallyline").textContent=`${n} of 11 picked — ${11-n} to go`; $("#save").disabled=true; }
-  else { $("#tallyline").textContent=`Your call: Democrats ${dems} · Republicans ${100-dems} → ${dems>=51?"Democrats take the Senate":"Republicans keep it"+(dems===50?" (50-50, Vance breaks the tie)":"")}`; $("#save").disabled=!!same; }
-  $("#tallysub").textContent=same?`This is exactly your last saved call (${fmtWhen(last.ts)}). Change a race to save a new version.`:`Democrats hold 43 seats outside these races; 51 takes the Senate, 50 does not.`;
+  else { $("#tallyline").innerHTML=`Your call: ${seatsHtml(dems,100-dems)} → ${verdictHtml(dems)}`; $("#save").disabled=false; }
+  $("#tallysub").innerHTML=same?`Same picks as your last entry (${fmtWhen(last.ts)}). Saving adds a new entry stamped with today's date and time.`:`Democrats hold 43 seats outside these races; 51 takes the Senate, 50 does not.`;
 }
 $("#pre-model").onclick=()=>{ for(const st of STATES) PICKS[st]=DATA.board.races[st][CAL].adj>0?"D":"R"; buildPicks(); updateTally(); };
 $("#pre-market").onclick=()=>{ for(const st of STATES) PICKS[st]=DATA.board.races[st].mkt>50?"D":"R"; buildPicks(); updateTally(); };
@@ -528,7 +582,7 @@ $("#pre-clear").onclick=()=>{ PICKS={}; buildPicks(); updateTally(); };
 $("#save").onclick=async()=>{
   $("#save").disabled=true; $("#savestatus").textContent="Saving…";
   try{ const res=await api("/api/calls",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({picks:PICKS,note:$("#notebox").value})});
-    if(res.saved){ $("#savestatus").textContent="Saved "+fmtWhen(res.record.log[res.record.log.length-1].ts)+". Version "+res.record.log.length+"."; $("#notebox").value=""; }
+    if(res.saved){ const n=res.record.log.length; $("#savestatus").textContent=`Saved ${fmtWhen(res.record.log[n-1].ts)} as your entry ${n}. It is now in the list below.`; $("#notebox").value=""; }
     else $("#savestatus").textContent="Not saved: "+res.reason+".";
     CALLS=await api("/api/calls"); renderCalls(); updateTally();
   }catch(e){ $("#savestatus").textContent="Could not save: "+e.message; $("#save").disabled=false; }
@@ -537,12 +591,19 @@ function renderCalls(){
   if(!CALLS) return; const B=DATA&&DATA.board;
   const body=$("#callsbody");
   if(!CALLS.calls.length){ body.innerHTML=`<tr><td colspan="5" class="muted">Nobody has saved a call yet. Be first.</td></tr>`; $("#cons").innerHTML=""; return; }
-  body.innerHTML=CALLS.calls.map(c=>{ const l=c.log[c.log.length-1]; return `<tr class="${c.id===CALLS.me?"me":""}" data-id="${esc(c.id)}"><td>${c.picture?`<img src="${esc(c.picture)}" alt="">`:""}${esc(c.name)}${c.id===CALLS.me?" (you)":""}</td><td class="num">${l.dems}–${l.reps}</td><td><span class="pill ${l.verdict==="D"?"d":"r"}">${l.verdict==="D"?"Democrats":"Republicans"}</span></td><td class="small" style="white-space:nowrap">${fmtShort(l.ts)}</td><td><button class="hist" data-id="${esc(c.id)}">${c.log.length} save${c.log.length===1?"":"s"}</button></td></tr>`; }).join("");
-  $$("#callsbody button.hist").forEach(b=>b.onclick=()=>{ const id=b.dataset.id; const ex=$(`#callsbody tr.hrow[data-for="${CSS.escape(id)}"]`); if(ex){ ex.remove(); return; }
-    const c=CALLS.calls.find(x=>x.id===id); const row=b.closest("tr");
-    const vers=[...c.log].reverse().map((v,i,all)=>{ const prev=c.log[c.log.length-2-i]; const ch=prev?v.changed.map(st=>`${B?B.races[st].name:st}: ${prev.picks[st]}→${v.picks[st]}`).join(", "):"first call"; return `<div class="ver"><span class="when">${fmtWhen(v.ts)}</span><span><b>D ${v.dems} · R ${v.reps}</b> → ${v.verdict==="D"?"Democrats":"Republicans"}</span><span class="muted">${esc(ch)}${v.note?` · “${esc(v.note)}”`:""}</span><span class="muted">${STATES.map(st=>st+":"+v.picks[st]).join(" ")}</span></div>`; }).join("");
-    const tr=document.createElement("tr"); tr.className="hrow"; tr.dataset.for=id; tr.innerHTML=`<td colspan="5">${vers}</td>`; row.after(tr); });
-  if(B){ const n=CALLS.calls.length; $("#cons").innerHTML=STATES.map(st=>{ const d=CALLS.calls.filter(c=>c.log[c.log.length-1].picks[st]==="D").length; return `<span>${esc(B.races[st].name)}</span><div class="b"><i style="width:${100*d/n}%"></i></div><span class="muted">${d} of ${n} say ${esc(B.races[st].dem)}</span>`; }).join(""); }
+  body.innerHTML=CALLS.calls.map(c=>{ const l=c.log[c.log.length-1], n=c.log.length; return `<tr class="main ${c.id===CALLS.me?"me":""}" data-id="${esc(c.id)}"><td>${c.picture?`<img src="${esc(c.picture)}" alt="">`:""}${esc(c.name)}${c.id===CALLS.me?" (you)":""}</td><td class="num"><b class="fav-d">${l.dems}</b>–<b class="fav-r">${l.reps}</b></td><td><span class="pill ${l.verdict==="D"?"d":"r"}">${l.verdict==="D"?"Democrats":"Republicans"}</span></td><td class="small" style="white-space:nowrap">${fmtShort(l.ts)}</td><td><button class="hist" data-id="${esc(c.id)}">${n} ${n===1?"entry":"entries"} · see picks</button></td></tr>`; }).join("");
+  const toggle=id=>{
+    const ex=$(`#callsbody tr.hrow[data-for="${CSS.escape(id)}"]`); if(ex){ ex.remove(); return; }
+    const c=CALLS.calls.find(x=>x.id===id); const row=$(`#callsbody tr.main[data-id="${CSS.escape(id)}"]`); if(!c||!row) return;
+    const vers=[...c.log].reverse().map((v,i)=>{
+      const idx=c.log.length-1-i, prev=idx>0?c.log[idx-1]:null; const chg=new Set(prev?(v.changed||[]):[]);
+      const what=!prev?"first entry":chg.size?`changed ${chg.size} race${chg.size===1?"":"s"} from the entry before`:"same picks as the entry before";
+      const grid=STATES.map(st=>{ const p=v.picks[st], r=B&&B.races[st]; const who=r?(p==="D"?r.dem:r.rep):p; return `<span class="${chg.has(st)?"chg":""}"><em>${esc(r?r.name:st)}</em><b class="${p==="D"?"fav-d":"fav-r"}">${esc(who)} (${p})</b></span>`; }).join("");
+      return `<details${i===0?" open":""}><summary><b>${fmtWhen(v.ts)}</b> · <b class="fav-d">D ${v.dems}</b> · <b class="fav-r">R ${v.reps}</b> → ${v.verdict==="D"?'<b class="fav-d">Democrats</b>':'<b class="fav-r">Republicans</b>'} <span class="muted">· ${what}</span></summary>${v.note?`<p class="small muted" style="margin:4px 0">“${esc(v.note)}”</p>`:""}<div class="sel">${grid}</div></details>`; }).join("");
+    const tr=document.createElement("tr"); tr.className="hrow"; tr.dataset.for=id; tr.innerHTML=`<td colspan="5"><div class="small muted" style="margin-bottom:4px">${esc(c.name)}'s entries, newest first, each with its date and time. Tap an older one to open it.</div>${vers}</td>`; row.after(tr); };
+  $$("#callsbody tr.main").forEach(tr=>tr.onclick=e=>{ if(e.target.closest("button")) return; toggle(tr.dataset.id); });
+  $$("#callsbody button.hist").forEach(b=>b.onclick=()=>toggle(b.dataset.id));
+  if(B){ const n=CALLS.calls.length; $("#cons").innerHTML=STATES.map(st=>{ const r=B.races[st]; const d=CALLS.calls.filter(c=>c.log[c.log.length-1].picks[st]==="D").length, sh=100*d/n; return `<span>${esc(r.name)}</span><div class="b"><i style="width:${sh}%"></i></div><span class="${sh>50?"fav-d":sh<50?"fav-r":"muted"}">${d} of ${n} say ${esc(r.dem)}, ${n-d} say ${esc(r.rep)}</span>`; }).join(""); }
 }
 
 boot();

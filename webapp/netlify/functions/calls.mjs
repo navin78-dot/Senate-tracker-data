@@ -1,4 +1,4 @@
-// /api/calls — each friend's Senate call. GET returns everyone's latest call and full history; POST saves a new version.
+// /api/calls — each friend's Senate call. GET returns everyone's entries; POST appends a new date-stamped entry.
 import { getUser } from "@netlify/identity";
 import { store } from "../lib/store.mjs";
 import { STATES } from "../lib/model.mjs";
@@ -25,7 +25,7 @@ export default async (req, context) => {
     Object.assign(rec, who(user));
     const prev = rec.log.length ? rec.log[rec.log.length - 1] : null;
     const changed = prev ? STATES.filter(st => prev.picks[st] !== clean[st]) : STATES.slice();
-    if (prev && !changed.length) return Response.json({ saved: false, reason: "same as your last call", record: rec });
+    // Repeat entries are allowed: a friend may log the same picks again on a later day. "changed" is empty then.
     const note = typeof body.note === "string" ? body.note.slice(0, 140) : "";
     rec.log.push({ ts: new Date().toISOString(), picks: clean, dems, reps: 100 - dems, verdict: dems >= NEED ? "D" : "R", changed, note });
     await s.setJSON(key, rec);
