@@ -6,6 +6,7 @@ import { store } from "../lib/store.mjs";
 import { STATES } from "../lib/model.mjs";
 import { HELD_ELSEWHERE } from "../lib/board.mjs";
 import { DEADLINE, DEADLINE_TEXT, ADMIN_EMAILS, MAX_MARGIN, NEED, locked, score } from "../lib/rules.mjs";
+import { loadResults, ELECTION_DAY_TEXT } from "../lib/results.mjs";
 
 function who(user){ return { id: user.id, name: user.name || user.userMetadata?.full_name || (user.email ? user.email.split("@")[0] : "friend"), picture: user.pictureUrl || null }; }
 const r1 = v => Math.round(v * 10) / 10;
@@ -49,15 +50,15 @@ export default async (req, context) => {
   }
 
   if (req.method === "GET") {
-    const [{ blobs }, results] = await Promise.all([s.list({ prefix: "calls/" }), s.get("results", { type: "json" })]);
+    const [{ blobs }, results] = await Promise.all([s.list({ prefix: "calls/" }), loadResults(s)]);
     const recs = await Promise.all(blobs.map(b => s.get(b.key, { type: "json" })));
-    const res = (results && results.states) || {};
+    const res = results.states;
     const haveResults = Object.keys(res).length > 0;
     const calls = recs.filter(r => r && r.call).map(r => ({ id: r.id, name: r.name, picture: r.picture, call: r.call, changes: r.changes || 0, score: haveResults ? score(r.call.picks, res, STATES) : null }));
     if (haveResults) calls.sort((a, b) => (b.score.right - a.score.right) || (a.score.err - b.score.err) || (a.call.ts < b.call.ts ? -1 : 1));
     else calls.sort((a, b) => a.call.ts < b.call.ts ? 1 : a.call.ts > b.call.ts ? -1 : 0);
     if (haveResults) { let rank = 0, prevKey = null; calls.forEach((c, i) => { const k = c.score.right + "|" + c.score.err; if (k !== prevKey) { rank = i + 1; prevKey = k; } c.rank = rank; }); }
-    const body = { me: user.id, admin: isAdmin, deadline: DEADLINE, deadlineText: DEADLINE_TEXT, locked: locked(), maxMargin: MAX_MARGIN, results: res, resultsUpdated: results ? results.updated : null, calls };
+    const body = { me: user.id, admin: isAdmin, deadline: DEADLINE, deadlineText: DEADLINE_TEXT, locked: locked(), maxMargin: MAX_MARGIN, results: res, resultsUpdated: results.updated, resultsOpen: results.open, electionDayText: ELECTION_DAY_TEXT, calls };
     return new Response(JSON.stringify(body), { headers: { "content-type": "application/json", "cache-control": "private, no-store" } });
   }
   return Response.json({ error: "method" }, { status: 405 });

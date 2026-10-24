@@ -1,18 +1,20 @@
-// /api/results — the actual results, entered by Navin as each race is called. Everyone signed in can read them;
-// only the admin emails in ../lib/rules.mjs can write. Body for POST: { states: { TX: { w: "R", m: 3.4 }, ... } } (partial is fine);
+// /api/results — the actual results. They normally come from the committed scan in ../lib/results.mjs (see there);
+// everyone signed in can read them. POST is kept as a fallback for the admin emails in ../lib/rules.mjs and writes the blob;
+// the site itself no longer offers a form for it. Body for POST: { states: { TX: { w: "R", m: 3.4 }, ... } } (partial is fine);
 // a state sent as null is removed (in case a call is retracted).
 import { getUser } from "@netlify/identity";
 import { store } from "../lib/store.mjs";
 import { STATES } from "../lib/model.mjs";
 import { ADMIN_EMAILS, MAX_MARGIN } from "../lib/rules.mjs";
+import { loadResults } from "../lib/results.mjs";
 
 export default async (req, context) => {
   const user = await getUser();
   if (!user) return Response.json({ error: "sign in first" }, { status: 401 });
   const s = store();
   if (req.method === "GET") {
-    const r = await s.get("results", { type: "json" });
-    return Response.json({ states: (r && r.states) || {}, updated: r ? r.updated : null });
+    const r = await loadResults(s);
+    return Response.json({ states: r.states, updated: r.updated, open: r.open });
   }
   if (req.method === "POST") {
     if (!ADMIN_EMAILS.includes((user.email || "").toLowerCase())) return Response.json({ error: "only Navin can enter results" }, { status: 403 });
