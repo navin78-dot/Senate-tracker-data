@@ -1,4 +1,4 @@
-// /api/calls — each friend's Senate call. GET returns everyone's entries; POST appends a new date-stamped entry.
+// /api/calls — each friend's Senate call. GET returns everyone's entries; POST appends a new date-stamped entry; DELETE removes one of your own.
 import { getUser } from "@netlify/identity";
 import { store } from "../lib/store.mjs";
 import { STATES } from "../lib/model.mjs";
@@ -32,14 +32,26 @@ export default async (req, context) => {
     return Response.json({ saved: true, record: rec });
   }
 
+  if (req.method === "DELETE") {
+    let body; try { body = await req.json(); } catch { return Response.json({ error: "bad JSON" }, { status: 400 }); }
+    const ts = body && body.ts;
+    const rec = await s.get(key, { type: "json" });
+    if (!rec || !rec.log.some(e => e.ts === ts)) return Response.json({ error: "no such entry of yours" }, { status: 404 });
+    rec.log = rec.log.filter(e => e.ts !== ts);
+    // "changed" keeps meaning "different from the entry before", so recompute it after the removal
+    rec.log.forEach((e, i) => { e.changed = i ? STATES.filter(st => rec.log[i - 1].picks[st] !== e.picks[st]) : STATES.slice(); });
+    if (rec.log.length) await s.setJSON(key, rec); else await s.delete(key);
+    return Response.json({ deleted: true, record: rec });
+  }
+
   if (req.method === "GET") {
     const { blobs } = await s.list({ prefix: "calls/" });
     const recs = await Promise.all(blobs.map(b => s.get(b.key, { type: "json" })));
-    const calls = recs.filter(Boolean).map(r => ({ id: r.id, name: r.name, picture: r.picture, log: r.log }));
+    const calls = recs.filter(r => r && r.log && r.log.length).map(r => ({ id: r.id, name: r.name, picture: r.picture, log: r.log }));
     calls.sort((a, b) => { const ta = a.log[a.log.length-1]?.ts || "", tb = b.log[b.log.length-1]?.ts || ""; return ta < tb ? 1 : ta > tb ? -1 : 0; });
     return new Response(JSON.stringify({ me: user.id, calls }), { headers: { "content-type": "application/json", "cache-control": "private, no-store" } });
   }
   return Response.json({ error: "method" }, { status: 405 });
 };
 
-export const config = { path: "/api/calls", method: ["GET", "POST"] };
+export const config = { path: "/api/calls", method: ["GET", "POST", "DELETE"] };

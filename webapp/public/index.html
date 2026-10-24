@@ -190,6 +190,17 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
 .sel span.chg em:after{content:" · changed";font-size:11px}
 .hrow details{margin:4px 0;padding:4px 0} .hrow details summary{cursor:pointer;font-size:13px;color:var(--ink)}
 .calls tr.main{cursor:pointer}
+.calls .acts{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.calls button.del{color:var(--r)}
+.calls td.who small{display:block;color:var(--muted);font-size:11.5px}
+.calls .nar{display:none}
+@media (max-width:640px){
+  .calls{table-layout:fixed} .calls th,.calls td{padding:7px 3px} .calls th{font-size:10.5px}
+  .calls td:first-child{white-space:normal;max-width:none;overflow:visible}
+  .calls col.c-who{width:30%} .calls col.c-seats{width:14%} .calls col.c-sen{width:17%} .calls col.c-when{width:20%} .calls col.c-act{width:19%}
+  .calls .wide{display:none} .calls .nar{display:inline} .calls img{display:none}
+  .calls .acts{flex-direction:column;align-items:stretch} .calls button.hist{padding:4px 4px;font-size:12px}
+}
 </style>
 </head>
 <body>
@@ -327,10 +338,10 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
     </div>
     <div class="card">
       <h2>Everyone's calls</h2>
-      <p class="ctx">Each person's latest entry, newest first. Tap a person to see their picks race by race, and every earlier entry they saved, each with its date and time.</p>
-      <div class="tscroll"><table class="calls" id="callstbl"><thead><tr><th>Who</th><th class="num">Seats D–R</th><th>Senate</th><th>Saved (ET)</th><th>Entries</th></tr></thead><tbody id="callsbody"></tbody></table></div>
+      <p class="ctx">Every call anyone has saved, newest first, one row per call with its date and time. Tap a row to see the picks race by race. You can delete your own calls; nobody else can.</p>
+      <div class="tscroll"><table class="calls" id="callstbl"><colgroup><col class="c-who"><col class="c-seats"><col class="c-sen"><col class="c-when"><col class="c-act"></colgroup><thead><tr><th>Who</th><th class="num">Seats D–R</th><th>Senate</th><th>Saved (ET)</th><th></th></tr></thead><tbody id="callsbody"></tbody></table></div>
       <h3>Where friends agree and disagree</h3>
-      <p class="ctx small">Share of saved calls picking the Democrat in each race, latest version per person.</p>
+      <p class="ctx small">Share of people picking the Democrat in each race, counting each person's latest call.</p>
       <div class="cons" id="cons"></div>
     </div>
     <div class="pagenav"><button data-go="races">← Races</button><button></button></div>
@@ -590,19 +601,24 @@ $("#save").onclick=async()=>{
 function renderCalls(){
   if(!CALLS) return; const B=DATA&&DATA.board;
   const body=$("#callsbody");
-  if(!CALLS.calls.length){ body.innerHTML=`<tr><td colspan="5" class="muted">Nobody has saved a call yet. Be first.</td></tr>`; $("#cons").innerHTML=""; return; }
-  body.innerHTML=CALLS.calls.map(c=>{ const l=c.log[c.log.length-1], n=c.log.length; return `<tr class="main ${c.id===CALLS.me?"me":""}" data-id="${esc(c.id)}"><td>${c.picture?`<img src="${esc(c.picture)}" alt="">`:""}${esc(c.name)}${c.id===CALLS.me?" (you)":""}</td><td class="num"><b class="fav-d">${l.dems}</b>–<b class="fav-r">${l.reps}</b></td><td><span class="pill ${l.verdict==="D"?"d":"r"}">${l.verdict==="D"?"Democrats":"Republicans"}</span></td><td class="small" style="white-space:nowrap">${fmtShort(l.ts)}</td><td><button class="hist" data-id="${esc(c.id)}">${n} ${n===1?"entry":"entries"} · see picks</button></td></tr>`; }).join("");
-  const toggle=id=>{
-    const ex=$(`#callsbody tr.hrow[data-for="${CSS.escape(id)}"]`); if(ex){ ex.remove(); return; }
-    const c=CALLS.calls.find(x=>x.id===id); const row=$(`#callsbody tr.main[data-id="${CSS.escape(id)}"]`); if(!c||!row) return;
-    const vers=[...c.log].reverse().map((v,i)=>{
-      const idx=c.log.length-1-i, prev=idx>0?c.log[idx-1]:null; const chg=new Set(prev?(v.changed||[]):[]);
-      const what=!prev?"first entry":chg.size?`changed ${chg.size} race${chg.size===1?"":"s"} from the entry before`:"same picks as the entry before";
-      const grid=STATES.map(st=>{ const p=v.picks[st], r=B&&B.races[st]; const who=r?(p==="D"?r.dem:r.rep):p; return `<span class="${chg.has(st)?"chg":""}"><em>${esc(r?r.name:st)}</em><b class="${p==="D"?"fav-d":"fav-r"}">${esc(who)} (${p})</b></span>`; }).join("");
-      return `<details${i===0?" open":""}><summary><b>${fmtWhen(v.ts)}</b> · <b class="fav-d">D ${v.dems}</b> · <b class="fav-r">R ${v.reps}</b> → ${v.verdict==="D"?'<b class="fav-d">Democrats</b>':'<b class="fav-r">Republicans</b>'} <span class="muted">· ${what}</span></summary>${v.note?`<p class="small muted" style="margin:4px 0">“${esc(v.note)}”</p>`:""}<div class="sel">${grid}</div></details>`; }).join("");
-    const tr=document.createElement("tr"); tr.className="hrow"; tr.dataset.for=id; tr.innerHTML=`<td colspan="5"><div class="small muted" style="margin-bottom:4px">${esc(c.name)}'s entries, newest first, each with its date and time. Tap an older one to open it.</div>${vers}</td>`; row.after(tr); };
-  $$("#callsbody tr.main").forEach(tr=>tr.onclick=e=>{ if(e.target.closest("button")) return; toggle(tr.dataset.id); });
-  $$("#callsbody button.hist").forEach(b=>b.onclick=()=>toggle(b.dataset.id));
+  const rows=[]; for(const c of CALLS.calls) c.log.forEach((v,i)=>rows.push({c,v,i}));
+  rows.sort((a,b)=>a.v.ts<b.v.ts?1:a.v.ts>b.v.ts?-1:0);
+  if(!rows.length){ body.innerHTML=`<tr><td colspan="5" class="muted">Nobody has saved a call yet. Be first.</td></tr>`; $("#cons").innerHTML=""; return; }
+  body.innerHTML=rows.map(({c,v,i})=>{ const mine=c.id===CALLS.me, key=c.id+"|"+v.ts; return `<tr class="main ${mine?"me":""}" data-key="${esc(key)}"><td class="who">${c.picture?`<img src="${esc(c.picture)}" alt="">`:""}${esc(c.name)}${mine?" (you)":""}<small>call ${i+1} of ${c.log.length}</small></td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td><span class="pill ${v.verdict==="D"?"d":"r"}"><span class="wide">${v.verdict==="D"?"Democrats":"Republicans"}</span><span class="nar">${v.verdict==="D"?"Dems":"Reps"}</span></span></td><td class="small" style="white-space:nowrap">${fmtShort(v.ts)}</td><td><div class="acts"><button class="hist" data-act="picks">Picks</button>${mine?`<button class="hist del" data-act="del">Delete</button>`:""}</div></td></tr>`; }).join("");
+  const find=key=>{ const at=key.indexOf("|"), id=key.slice(0,at), ts=key.slice(at+1); const c=CALLS.calls.find(x=>x.id===id); const i=c?c.log.findIndex(e=>e.ts===ts):-1; return c&&i>=0?{c,v:c.log[i],i}:null; };
+  const toggle=key=>{
+    const ex=$(`#callsbody tr.hrow[data-for="${CSS.escape(key)}"]`); if(ex){ ex.remove(); return; }
+    const f=find(key), row=$(`#callsbody tr.main[data-key="${CSS.escape(key)}"]`); if(!f||!row) return; const {c,v,i}=f;
+    const prev=i>0?c.log[i-1]:null; const chg=new Set(prev?(v.changed||[]):[]);
+    const what=!prev?"their first call":chg.size?`changed ${chg.size} race${chg.size===1?"":"s"} from their call before`:"same picks as their call before";
+    const grid=STATES.map(st=>{ const p=v.picks[st], r=B&&B.races[st]; const who=r?(p==="D"?r.dem:r.rep):p; return `<span class="${chg.has(st)?"chg":""}"><em>${esc(r?r.name:st)}</em><b class="${p==="D"?"fav-d":"fav-r"}">${esc(who)} (${p})</b></span>`; }).join("");
+    const tr=document.createElement("tr"); tr.className="hrow"; tr.dataset.for=key; tr.innerHTML=`<td colspan="5"><div class="small muted" style="margin-bottom:4px">${esc(c.name)}, ${fmtWhen(v.ts)} · ${what}${v.note?` · “${esc(v.note)}”`:""}</div><div class="sel">${grid}</div></td>`; row.after(tr); };
+  const del=async key=>{
+    const f=find(key); if(!f) return;
+    if(!confirm(`Delete your call from ${fmtWhen(f.v.ts)}? This cannot be undone.`)) return;
+    try{ await api("/api/calls",{method:"DELETE",headers:{"content-type":"application/json"},body:JSON.stringify({ts:f.v.ts})}); CALLS=await api("/api/calls"); renderCalls(); updateTally(); $("#savestatus").textContent=`Deleted your call from ${fmtWhen(f.v.ts)}.`; }
+    catch(e){ $("#savestatus").textContent="Could not delete: "+e.message; } };
+  $$("#callsbody tr.main").forEach(tr=>tr.onclick=e=>{ const b=e.target.closest("button"); if(b&&b.dataset.act==="del") return del(tr.dataset.key); toggle(tr.dataset.key); });
   if(B){ const n=CALLS.calls.length; $("#cons").innerHTML=STATES.map(st=>{ const r=B.races[st]; const d=CALLS.calls.filter(c=>c.log[c.log.length-1].picks[st]==="D").length, sh=100*d/n; return `<span>${esc(r.name)}</span><div class="b"><i style="width:${sh}%"></i></div><span class="${sh>50?"fav-d":sh<50?"fav-r":"muted"}">${d} of ${n} say ${esc(r.dem)}, ${n-d} say ${esc(r.rep)}</span>`; }).join(""); }
 }
 
