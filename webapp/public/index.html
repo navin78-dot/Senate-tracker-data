@@ -157,6 +157,28 @@ details summary{cursor:pointer;font-size:13.5px;color:var(--muted)}
 .cons{display:grid;grid-template-columns:auto 1fr auto;gap:6px 10px;align-items:center;font-size:13.5px;margin-top:8px}
 .cons .b{height:10px;border-radius:5px;background:var(--r);overflow:hidden}
 .cons .b i{display:block;height:100%;background:var(--d)}
+.rules .rule{padding:8px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.rules .rule:last-child{border-bottom:none}
+.rules .rule b{display:block;margin-bottom:2px}
+.pickrow .mrow{display:flex;align-items:center;gap:6px;font-size:14px;grid-column:1/-1}
+@media (min-width:641px){ .pickrow{grid-template-columns:1.3fr 1fr 1fr auto} .pickrow .mrow{grid-column:auto} }
+.pickrow input.mg{width:74px;border:1.5px solid var(--line);border-radius:10px;padding:9px 8px;font:inherit;font-weight:700;font-size:15px;background:var(--card);color:var(--ink);text-align:center;min-height:44px}
+.pickrow input.mg:disabled,.pickrow button:disabled{opacity:.55;cursor:default}
+.pickrow .mrow .by{color:var(--muted);white-space:nowrap}
+.pickrow[data-w="D"] input.mg{border-color:var(--d)} .pickrow[data-w="R"] input.mg{border-color:var(--r)}
+.locked{background:var(--soft);border-radius:10px;padding:10px 12px;font-size:14px;margin:8px 0}
+.calls td.rank{font-weight:700;text-align:center}
+.sel{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px 14px;margin-top:6px}
+.sel span{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed var(--line);padding:3px 0;font-size:13px}
+.sel span em{font-style:normal;color:var(--muted)}
+.sel span .ok{color:var(--ok);font-weight:700;white-space:nowrap} .sel span .bad{color:var(--r);font-weight:700;white-space:nowrap}
+.sel span > span{display:flex;flex-direction:column;align-items:flex-end;text-align:right;gap:1px}
+.resrow{display:grid;grid-template-columns:1.2fr 1fr 1fr auto;gap:6px 8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
+.resrow button{border:1.5px solid var(--line);background:var(--card);border-radius:8px;padding:7px 6px;cursor:pointer;font-weight:600;font-size:13px}
+.resrow button.d[aria-pressed="true"]{background:var(--d);border-color:var(--d);color:#fff}
+.resrow button.r[aria-pressed="true"]{background:var(--r);border-color:var(--r);color:#fff}
+.resrow input{width:70px;border:1.5px solid var(--line);border-radius:8px;padding:7px 6px;font:inherit;text-align:center;background:var(--card);color:var(--ink)}
+.resrow .clr{font-size:12px;color:var(--muted);cursor:pointer;border:none;background:none;padding:4px}
 .signin{max-width:520px;margin:48px auto;text-align:center}
 .signin .g{display:inline-flex;align-items:center;gap:10px;border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:12px 18px;font-weight:700;font-size:16px;cursor:pointer;margin-top:16px}
 .signin .g svg{width:20px;height:20px}
@@ -320,27 +342,51 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
 
   <!-- CALL IT -->
   <section class="page" id="page-call" role="tabpanel">
-    <div class="card">
+    <div class="card rules">
+      <h2>Call it: the rules</h2>
+      <div class="rule"><b>One call per person.</b> Pick a winner in each of the 11 races and say by how many points. Saving again replaces your earlier call; there is no history, only your current call.</div>
+      <div class="rule"><b>Change your mind as often as you like until <span id="dl-text">the deadline</span>.</b> After that every call is locked and nothing can be changed. <span id="dl-count" class="muted"></span></div>
+      <div class="rule"><b>Scoring, race by race as each one is called.</b> One point for every race where you picked the winner. Ties are broken by your margins: for each called race we take the gap between the margin you predicted and the real one (a pick of Talarico by 2 against a result of Paxton by 3 is 5 points off), add those gaps up, and the smaller total wins the tie.</div>
+      <div class="rule"><b>The leaderboard appears below as results come in</b> and updates with every race called.</div>
+    </div>
+
+    <div class="card" id="callcard">
       <h2>Make your call</h2>
-      <p class="ctx">Pick a winner in each of the 11 races, then save. Each save is a new entry stamped with the date and time, and nothing is overwritten, so you can log a call as often as you like, even the same picks again on a later day. After Election Day we can see who called it, who changed their mind, and when. The small text under each state is what the polls and the market say right now.</p>
-      <div class="chips"><button id="pre-model">Start from the board</button><button id="pre-market">Start from the market</button><button id="pre-clear">Clear</button></div>
+      <p class="ctx">For each race, tap the winner, then type the winning margin in points. The small text under each state is what the polls, the board and the market say right now. "Start from the board" fills in the board's leaders and margins; edit from there.</p>
+      <div class="chips"><button id="pre-model">Start from the board</button><button id="pre-polls">Start from the polls</button><button id="pre-clear">Clear</button></div>
       <div id="picks"></div>
       <div class="tally">
         <div class="line">
           <div><div class="big2" id="tallyline">Pick all 11 races</div><div class="small muted" id="tallysub">Democrats hold 43 seats outside these races; 51 takes the Senate, 50 does not.</div></div>
           <button class="btn" id="save" disabled>Save my call</button>
         </div>
-        <input class="note" id="notebox" maxlength="140" placeholder="Optional note, e.g. “gut says Texas flips”">
         <div class="status" id="savestatus"></div>
       </div>
     </div>
+
     <div class="card">
-      <h2>Everyone's calls</h2>
-      <p class="ctx">Every call anyone has saved, newest first, one row per call with its date and time. Tap a row to see the picks race by race. You can delete your own calls; nobody else can.</p>
-      <div class="tscroll"><table class="calls" id="callstbl"><colgroup><col class="c-who"><col class="c-seats"><col class="c-sen"><col class="c-when"><col class="c-act"></colgroup><thead><tr><th>Who</th><th class="num">Seats D–R</th><th>Senate</th><th>Saved (ET)</th><th></th></tr></thead><tbody id="callsbody"></tbody></table></div>
+      <h2 id="calls-title">Everyone's calls</h2>
+      <p class="ctx" id="calls-ctx">One row per person, their current call, newest change first. Tap a row to see the 11 picks with margins.</p>
+      <div class="tscroll"><table class="calls" id="callstbl"><thead id="callshead"></thead><tbody id="callsbody"></tbody></table></div>
       <h3>Where friends agree and disagree</h3>
-      <p class="ctx small">Share of people picking the Democrat in each race, counting each person's latest call.</p>
+      <p class="ctx small">Share of people picking the Democrat in each race.</p>
       <div class="cons" id="cons"></div>
+    </div>
+
+    <div class="card" id="admincard" hidden>
+      <h2>Enter the results (Navin only)</h2>
+      <p class="ctx">As each race is called, enter the winner and the margin in points. Leave a race blank until it is called. Saving updates the leaderboard for everyone.</p>
+      <div id="resform"></div>
+      <div class="chips" style="margin-top:10px"><button class="btn" id="res-save" style="padding:9px 14px">Save results</button></div>
+      <div class="status" id="resstatus"></div>
+    </div>
+
+    <div class="card" id="visitcard" hidden>
+      <h2>Who has been to the site (Navin only)</h2>
+      <p class="ctx">Every page open by a signed-in person is logged with their Google email and the time. Nobody else can see this list.</p>
+      <div class="chips"><button id="vis-load">Load the visit log</button></div>
+      <div id="vis-summary"></div>
+      <div class="tscroll" id="vis-log"></div>
     </div>
     <div class="pagenav"><button data-go="races">← Races</button><button></button></div>
   </section>
@@ -570,55 +616,90 @@ function drawRace(){
 $$("#range button").forEach(b=>b.onclick=()=>{ RANGE=b.dataset.r; $$("#range button").forEach(x=>x.setAttribute("aria-pressed", x===b?"true":"false")); drawCharts(); });
 
 /* ---------- call it ---------- */
-function myLatest(){ if(!CALLS||!ME) return null; const me=CALLS.calls.find(c=>c.id===ME.id); return me&&me.log.length?me.log[me.log.length-1]:null; }
+// PICKS is {ST:{w:"D"|"R", m:number|null}}; CALLS comes from /api/calls (one record per person, plus results and scores).
+function myCall(){ if(!CALLS||!ME) return null; const me=CALLS.calls.find(c=>c.id===CALLS.me); return me?me.call:null; }
+function isLocked(){ return !!(CALLS&&(CALLS.locked||Date.now()>=Date.parse(CALLS.deadline))); }
+function dlText(){ return CALLS&&CALLS.deadlineText?CALLS.deadlineText:"Monday, November 2 at 9:00am ET"; }
+function countdown(){
+  if(!CALLS) return; const ms=Date.parse(CALLS.deadline)-Date.now(); const el=$("#dl-count"); $("#dl-text").textContent=dlText();
+  if(ms<=0){ el.textContent="Calls are now locked."; return; }
+  const d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5), m=Math.floor(ms%36e5/6e4);
+  el.textContent=`Time left: ${d>0?d+" day"+(d===1?"":"s")+", ":""}${h} hour${h===1?"":"s"}${d===0?", "+m+" min":""}.`;
+}
+setInterval(()=>{ if(PAGE==="call") countdown(); },60000);
+function mval(st){ const p=PICKS[st]; return p&&p.m!=null&&p.m!==""&&Number.isFinite(Number(p.m))?Number(p.m):null; }
 function buildPicks(){
-  const B=DATA.board, k=CAL;
-  if(!Object.keys(PICKS).length){ const last=myLatest(); if(last) PICKS={...last.picks}; }
+  const B=DATA.board, k=CAL, lock=isLocked();
+  if(!Object.keys(PICKS).length){ const mine=myCall(); if(mine) PICKS=JSON.parse(JSON.stringify(mine.picks)); }
   const rows=STATES.map(st=>B.races[st]).sort((a,b)=>Math.abs(a[k].adj)-Math.abs(b[k].adj));
-  $("#picks").innerHTML=rows.map(r=>`<div class="pickrow" data-st="${r.st}"><div class="st"><b>${esc(r.name)}</b><small>polls ${mar(r.m)} · after fade ${mar(r[k].adj)} · market favorite ${mktHtml(r)}</small></div><button class="d" data-v="D" aria-pressed="${PICKS[r.st]==="D"}">${esc(r.dem)} (D)</button><button class="r" data-v="R" aria-pressed="${PICKS[r.st]==="R"}">${esc(r.rep)} (R)</button></div>`).join("");
-  $$("#picks .pickrow button").forEach(b=>b.onclick=()=>{ const st=b.closest(".pickrow").dataset.st; PICKS[st]=b.dataset.v; b.parentElement.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed", x===b?"true":"false")); updateTally(); });
+  $("#picks").innerHTML=(lock?`<div class="locked">Calls locked at ${esc(dlText())}. ${myCall()?"This is your final call.":"You did not save a call before the deadline."}</div>`:"")+rows.map(r=>{ const p=PICKS[r.st]||{}; const w=p.w||""; return `<div class="pickrow" data-st="${r.st}" data-w="${w}"><div class="st"><b>${esc(r.name)}</b><small>polls ${mar(r.m)} · board ${mar(r[k].adj)} · market favorite ${mktHtml(r)}</small></div><button class="d" data-v="D" aria-pressed="${w==="D"}" ${lock?"disabled":""}>${esc(r.dem)} (D)</button><button class="r" data-v="R" aria-pressed="${w==="R"}" ${lock?"disabled":""}>${esc(r.rep)} (R)</button><div class="mrow"><span class="by">wins by</span><input class="mg" type="number" inputmode="decimal" min="0" max="${CALLS?CALLS.maxMargin:40}" step="0.1" placeholder="pts" value="${p.m!=null?p.m:""}" ${lock?"disabled":""} aria-label="${esc(r.name)} winning margin in points"><span class="by">pts</span></div></div>`; }).join("");
+  $$("#picks .pickrow button").forEach(b=>b.onclick=()=>{ const row=b.closest(".pickrow"), st=row.dataset.st; PICKS[st]={...(PICKS[st]||{}),w:b.dataset.v}; row.dataset.w=b.dataset.v; row.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed", x===b?"true":"false")); updateTally(); });
+  $$("#picks input.mg").forEach(inp=>inp.oninput=()=>{ const st=inp.closest(".pickrow").dataset.st; PICKS[st]={...(PICKS[st]||{}),m:inp.value===""?null:Number(inp.value)}; updateTally(); });
 }
+function complete(){ return STATES.every(st=>PICKS[st]&&(PICKS[st].w==="D"||PICKS[st].w==="R")&&mval(st)!=null&&mval(st)>=0&&mval(st)<=(CALLS?CALLS.maxMargin:40)); }
 function updateTally(){
-  const n=STATES.filter(st=>PICKS[st]).length, dems=43+STATES.filter(st=>PICKS[st]==="D").length;
-  const last=myLatest(); const same=last&&STATES.every(st=>last.picks[st]===PICKS[st]);
-  if(n<11){ $("#tallyline").textContent=`${n} of 11 picked — ${11-n} to go`; $("#save").disabled=true; }
-  else { $("#tallyline").innerHTML=`Your call: ${seatsHtml(dems,100-dems)} → ${verdictHtml(dems)}`; $("#save").disabled=false; }
-  $("#tallysub").innerHTML=same?`Same picks as your last entry (${fmtWhen(last.ts)}). Saving adds a new entry stamped with today's date and time.`:`Democrats hold 43 seats outside these races; 51 takes the Senate, 50 does not.`;
+  const lock=isLocked(); const nw=STATES.filter(st=>PICKS[st]&&PICKS[st].w).length, nm=STATES.filter(st=>mval(st)!=null).length;
+  const dems=43+STATES.filter(st=>PICKS[st]&&PICKS[st].w==="D").length;
+  const mine=myCall(); const same=mine&&STATES.every(st=>PICKS[st]&&mine.picks[st].w===PICKS[st].w&&Number(mine.picks[st].m)===mval(st));
+  if(lock){ $("#tallyline").innerHTML=mine?`Your final call: ${seatsHtml(mine.dems,mine.reps)} → ${verdictHtml(mine.dems)}`:"No call saved"; $("#tallysub").textContent="Locked. Scores appear below as races are called."; $("#save").disabled=true; return; }
+  if(!complete()){ $("#tallyline").textContent=`${nw} of 11 winners picked, ${nm} of 11 margins filled`; $("#save").disabled=true; $("#tallysub").textContent="Every race needs a winner and a margin in points (0 to "+(CALLS?CALLS.maxMargin:40)+")."; return; }
+  $("#tallyline").innerHTML=`Your call: ${seatsHtml(dems,100-dems)} → ${verdictHtml(dems)}`; $("#save").disabled=!!same;
+  $("#tallysub").innerHTML=same?`This is exactly your saved call (${fmtWhen(mine.ts)}). Change something to save a new one.`:mine?`Saving replaces your call from ${fmtWhen(mine.ts)}. Changes allowed until ${esc(dlText())}.`:`Democrats hold 43 seats outside these races; 51 takes the Senate, 50 does not. Changes allowed until ${esc(dlText())}.`;
+  $("#save").textContent=mine?"Save (replaces my call)":"Save my call";
 }
-$("#pre-model").onclick=()=>{ for(const st of STATES) PICKS[st]=DATA.board.races[st][CAL].adj>0?"D":"R"; buildPicks(); updateTally(); };
-$("#pre-market").onclick=()=>{ for(const st of STATES) PICKS[st]=DATA.board.races[st].mkt>50?"D":"R"; buildPicks(); updateTally(); };
-$("#pre-clear").onclick=()=>{ PICKS={}; buildPicks(); updateTally(); };
+$("#pre-model").onclick=()=>{ if(isLocked()) return; for(const st of STATES){ const a=DATA.board.races[st][CAL].adj; PICKS[st]={w:a>=0?"D":"R",m:Math.round(Math.abs(a)*10)/10}; } buildPicks(); updateTally(); };
+$("#pre-polls").onclick=()=>{ if(isLocked()) return; for(const st of STATES){ const m=DATA.board.races[st].m; PICKS[st]={w:m>=0?"D":"R",m:Math.round(Math.abs(m)*10)/10}; } buildPicks(); updateTally(); };
+$("#pre-clear").onclick=()=>{ if(isLocked()) return; PICKS={}; for(const st of STATES) PICKS[st]={}; buildPicks(); updateTally(); };
 $("#save").onclick=async()=>{
   $("#save").disabled=true; $("#savestatus").textContent="Saving…";
-  try{ const res=await api("/api/calls",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({picks:PICKS,note:$("#notebox").value})});
-    if(res.saved){ const n=res.record.log.length; $("#savestatus").textContent=`Saved ${fmtWhen(res.record.log[n-1].ts)} as your entry ${n}. It is now in the list below.`; $("#notebox").value=""; }
-    else $("#savestatus").textContent="Not saved: "+res.reason+".";
+  try{ const picks={}; for(const st of STATES) picks[st]={w:PICKS[st].w,m:mval(st)};
+    const res=await api("/api/calls",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({picks})});
+    $("#savestatus").textContent=(res.replaced?"Replaced your earlier call. ":"Saved. ")+"Your call as of "+fmtWhen(res.record.call.ts)+" is in the list below.";
     CALLS=await api("/api/calls"); renderCalls(); updateTally();
   }catch(e){ $("#savestatus").textContent="Could not save: "+e.message; $("#save").disabled=false; }
 };
 function renderCalls(){
-  if(!CALLS) return; const B=DATA&&DATA.board;
-  const body=$("#callsbody");
-  const rows=[]; for(const c of CALLS.calls) c.log.forEach((v,i)=>rows.push({c,v,i}));
-  rows.sort((a,b)=>a.v.ts<b.v.ts?1:a.v.ts>b.v.ts?-1:0);
-  if(!rows.length){ body.innerHTML=`<tr><td colspan="5" class="muted">Nobody has saved a call yet. Be first.</td></tr>`; $("#cons").innerHTML=""; return; }
-  body.innerHTML=rows.map(({c,v,i})=>{ const mine=c.id===CALLS.me, key=c.id+"|"+v.ts; return `<tr class="main ${mine?"me":""}" data-key="${esc(key)}"><td class="person">${c.picture?`<img src="${esc(c.picture)}" alt="">`:""}${esc(c.name)}${mine?" (you)":""}<small>call ${i+1} of ${c.log.length}</small></td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td><span class="pill ${v.verdict==="D"?"d":"r"}"><span class="wide">${v.verdict==="D"?"Democrats":"Republicans"}</span><span class="nar">${v.verdict==="D"?"Dems":"Reps"}</span></span></td><td class="small" style="white-space:nowrap">${fmtShort(v.ts)}</td><td><div class="acts"><button class="hist" data-act="picks">Picks</button>${mine?`<button class="hist del" data-act="del">Delete</button>`:""}</div></td></tr>`; }).join("");
-  const find=key=>{ const at=key.indexOf("|"), id=key.slice(0,at), ts=key.slice(at+1); const c=CALLS.calls.find(x=>x.id===id); const i=c?c.log.findIndex(e=>e.ts===ts):-1; return c&&i>=0?{c,v:c.log[i],i}:null; };
-  const toggle=key=>{
-    const ex=$(`#callsbody tr.hrow[data-for="${CSS.escape(key)}"]`); if(ex){ ex.remove(); return; }
-    const f=find(key), row=$(`#callsbody tr.main[data-key="${CSS.escape(key)}"]`); if(!f||!row) return; const {c,v,i}=f;
-    const prev=i>0?c.log[i-1]:null; const chg=new Set(prev?(v.changed||[]):[]);
-    const what=!prev?"their first call":chg.size?`changed ${chg.size} race${chg.size===1?"":"s"} from their call before`:"same picks as their call before";
+  if(!CALLS) return; const B=DATA&&DATA.board; countdown();
+  const res=CALLS.results||{}, called=STATES.filter(st=>res[st]), scored=called.length>0;
+  const head=$("#callshead"), body=$("#callsbody");
+  $("#calls-title").textContent=scored?`Leaderboard · ${called.length} of 11 races called`:"Everyone's calls";
+  $("#calls-ctx").textContent=scored?"Ranked by races called right, then by the smallest total margin error. Tap a row to see every pick against the result.":"One row per person, their current call, newest change first. Tap a row to see the 11 picks with margins.";
+  head.innerHTML=scored?`<tr><th class="rank">#</th><th>Who</th><th class="num">Right</th><th class="num">Error</th><th class="num">Seats</th><th>Senate</th></tr>`:`<tr><th>Who</th><th class="num">Seats D–R</th><th>Senate</th><th>Last changed (ET)</th></tr>`;
+  if(!CALLS.calls.length){ body.innerHTML=`<tr><td colspan="6" class="muted">Nobody has saved a call yet. Be first.</td></tr>`; $("#cons").innerHTML=""; renderAdmin(); return; }
+  body.innerHTML=CALLS.calls.map(c=>{ const v=c.call, mine=c.id===CALLS.me; const who=`${c.picture?`<img src="${esc(c.picture)}" alt="">`:""}${esc(c.name)}${mine?" (you)":""}`;
+    return scored?`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="rank">${c.rank}</td><td class="person">${who}</td><td class="num"><b>${c.score.right}</b> of ${c.score.called}</td><td class="num">${c.score.err.toFixed(1)}</td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td><span class="pill ${v.verdict==="D"?"d":"r"}">${v.verdict==="D"?"Democrats":"Republicans"}</span></td></tr>`
+                 :`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="person">${who}${c.changes?`<small>changed ${c.changes} time${c.changes===1?"":"s"}</small>`:""}</td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td><span class="pill ${v.verdict==="D"?"d":"r"}">${v.verdict==="D"?"Democrats":"Republicans"}</span></td><td class="small" style="white-space:nowrap">${fmtShort(v.ts)}</td></tr>`; }).join("");
+  const toggle=id=>{
+    const ex=$(`#callsbody tr.hrow[data-for="${CSS.escape(id)}"]`); if(ex){ ex.remove(); return; }
+    const c=CALLS.calls.find(x=>x.id===id), row=$(`#callsbody tr.main[data-id="${CSS.escape(id)}"]`); if(!c||!row) return; const v=c.call;
     const order=B&&CAL?[...STATES].sort((a,b)=>B.races[b][CAL].adj-B.races[a][CAL].adj):STATES.slice();
-    const grid=order.map((st,n)=>{ const p=v.picks[st], r=B&&B.races[st]; const who=r?(p==="D"?r.dem:r.rep):p; return `<span class="${chg.has(st)?"chg":""}"><em>${n+1}. ${esc(r?r.name:st)}</em><b class="${p==="D"?"fav-d":"fav-r"}">${esc(who)} (${p})</b></span>`; }).join("");
-    const tr=document.createElement("tr"); tr.className="hrow"; tr.dataset.for=key; tr.innerHTML=`<td colspan="5"><div class="small muted" style="margin-bottom:4px">${esc(c.name)}, ${fmtWhen(v.ts)} · ${what}${v.note?` · “${esc(v.note)}”`:""}</div><div class="small muted" style="margin-top:8px">All 11 races, in the board's order:</div><div class="sel">${grid}</div></td>`; row.after(tr); };
-  const del=async key=>{
-    const f=find(key); if(!f) return;
-    if(!confirm(`Delete your call from ${fmtWhen(f.v.ts)}? This cannot be undone.`)) return;
-    try{ await api("/api/calls",{method:"DELETE",headers:{"content-type":"application/json"},body:JSON.stringify({ts:f.v.ts})}); CALLS=await api("/api/calls"); renderCalls(); updateTally(); $("#savestatus").textContent=`Deleted your call from ${fmtWhen(f.v.ts)}.`; }
-    catch(e){ $("#savestatus").textContent="Could not delete: "+e.message; } };
-  $$("#callsbody tr.main").forEach(tr=>tr.onclick=e=>{ const b=e.target.closest("button"); if(b&&b.dataset.act==="del") return del(tr.dataset.key); toggle(tr.dataset.key); });
-  if(B){ const n=CALLS.calls.length; $("#cons").innerHTML=STATES.map(st=>{ const r=B.races[st]; const d=CALLS.calls.filter(c=>c.log[c.log.length-1].picks[st]==="D").length, sh=100*d/n; return `<span>${esc(r.name)}</span><div class="b"><i style="width:${sh}%"></i></div><span class="${sh>50?"fav-d":sh<50?"fav-r":"muted"}">${d} of ${n} say ${esc(r.dem)}, ${n-d} say ${esc(r.rep)}</span>`; }).join(""); }
+    const grid=order.map((st,n)=>{ const p=v.picks[st], r=B&&B.races[st]; const who=r?(p.w==="D"?r.dem:r.rep):p.w; const a=res[st]; const pr=c.score&&c.score.per[st];
+      const actual=a?` <em>· result ${esc(r?(a.w==="D"?r.dem:r.rep):a.w)} by ${a.m}</em>`:""; const mark=pr?(pr.ok?`<span class="ok">✓ off by ${pr.err}</span>`:`<span class="bad">✗ off by ${pr.err}</span>`):"";
+      return `<span><em>${n+1}. ${esc(r?r.name:st)}</em><span><b class="${p.w==="D"?"fav-d":"fav-r"}">${esc(who)} by ${p.m}</b>${actual} ${mark}</span></span>`; }).join("");
+    const tr=document.createElement("tr"); tr.className="hrow"; tr.dataset.for=id; tr.innerHTML=`<td colspan="6"><div class="small muted">${esc(c.name)}'s call, saved ${fmtWhen(v.ts)}${c.changes?`, changed ${c.changes} time${c.changes===1?"":"s"} before that`:""}${c.id===CALLS.me&&!isLocked()?` · <button class="hist" data-act="del">Delete my call</button>`:""}</div><div class="sel">${grid}</div></td>`; row.after(tr);
+    const del=tr.querySelector('button[data-act="del"]'); if(del) del.onclick=async e=>{ e.stopPropagation(); if(!confirm("Delete your call? You can save a new one until the deadline.")) return; try{ await api("/api/calls",{method:"DELETE"}); PICKS={}; CALLS=await api("/api/calls"); renderCalls(); buildPicks(); updateTally(); $("#savestatus").textContent="Your call was deleted."; }catch(err){ $("#savestatus").textContent="Could not delete: "+err.message; } }; };
+  $$("#callsbody tr.main").forEach(tr=>tr.onclick=()=>toggle(tr.dataset.id));
+  if(B){ const n=CALLS.calls.length; $("#cons").innerHTML=STATES.map(st=>{ const r=B.races[st]; const d=CALLS.calls.filter(c=>c.call.picks[st].w==="D").length, sh=100*d/n; return `<span>${esc(r.name)}</span><div class="b"><i style="width:${sh}%"></i></div><span class="${sh>50?"fav-d":sh<50?"fav-r":"muted"}">${d} of ${n} say ${esc(r.dem)}, ${n-d} say ${esc(r.rep)}</span>`; }).join(""); }
+  renderAdmin();
+}
+let RES={};
+$("#vis-load").onclick=async()=>{
+  $("#vis-summary").innerHTML="Loading…";
+  try{ const v=await api("/api/visits");
+    $("#vis-summary").innerHTML=`<h3>${v.summary.length} people · ${v.total} visits in all</h3><div class="tscroll"><table class="calls"><thead><tr><th>Email</th><th>Name</th><th class="num">Visits</th><th>First (ET)</th><th>Latest (ET)</th></tr></thead><tbody>${v.summary.map(p=>`<tr><td>${esc(p.email||"(no email on record)")}</td><td>${esc(p.name||"")}</td><td class="num">${p.visits}</td><td class="small" style="white-space:nowrap">${fmtWhen(p.first)}</td><td class="small" style="white-space:nowrap">${fmtWhen(p.last)}</td></tr>`).join("")}</tbody></table></div>`;
+    $("#vis-log").innerHTML=`<h3>Every visit, newest first (last ${v.visits.length})</h3><table class="calls"><thead><tr><th>When (ET)</th><th>Email</th><th>Name</th></tr></thead><tbody>${v.visits.map(x=>`<tr><td class="small" style="white-space:nowrap">${fmtWhen(x.ts)}</td><td>${esc(x.email||"")}</td><td>${esc(x.name||"")}</td></tr>`).join("")}</tbody></table>`;
+  }catch(e){ $("#vis-summary").textContent="Could not load: "+e.message; }
+};
+function renderAdmin(){
+  const card=$("#admincard"); $("#visitcard").hidden=!(CALLS&&CALLS.admin); if(!CALLS||!CALLS.admin||!DATA){ card.hidden=true; return; }
+  card.hidden=false; const B=DATA.board; RES=JSON.parse(JSON.stringify(CALLS.results||{}));
+  $("#resform").innerHTML=STATES.map(st=>{ const r=B.races[st], a=RES[st]||{}; return `<div class="resrow" data-st="${st}"><div><b>${esc(r.name)}</b></div><button class="d" data-v="D" aria-pressed="${a.w==="D"}">${esc(r.dem)}</button><button class="r" data-v="R" aria-pressed="${a.w==="R"}">${esc(r.rep)}</button><div style="white-space:nowrap">by <input type="number" inputmode="decimal" min="0" max="${CALLS.maxMargin}" step="0.1" value="${a.m!=null?a.m:""}"> pts <button class="clr" data-act="clr" title="not called yet">clear</button></div></div>`; }).join("");
+  $$("#resform .resrow").forEach(row=>{ const st=row.dataset.st;
+    row.querySelectorAll("button.d,button.r").forEach(b=>b.onclick=()=>{ RES[st]={...(RES[st]||{}),w:b.dataset.v}; row.querySelectorAll("button.d,button.r").forEach(x=>x.setAttribute("aria-pressed", x===b?"true":"false")); });
+    row.querySelector("input").oninput=e=>{ RES[st]={...(RES[st]||{}),m:e.target.value===""?null:Number(e.target.value)}; };
+    row.querySelector('button[data-act="clr"]').onclick=()=>{ RES[st]=null; row.querySelectorAll("button.d,button.r").forEach(x=>x.setAttribute("aria-pressed","false")); row.querySelector("input").value=""; }; });
+  $("#res-save").onclick=async()=>{ const states={}; for(const st of STATES){ const a=RES[st]; if(a===null){ states[st]=null; continue; } if(!a||!a.w||a.m==null||!Number.isFinite(Number(a.m))) continue; states[st]={w:a.w,m:Number(a.m)}; }
+    $("#resstatus").textContent="Saving…"; try{ const r=await api("/api/results",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({states})}); $("#resstatus").textContent=`Saved ${Object.keys(r.states).length} of 11 results at ${fmtWhen(r.updated)}. Leaderboard updated.`; CALLS=await api("/api/calls"); renderCalls(); }catch(e){ $("#resstatus").textContent="Could not save: "+e.message; } };
 }
 
 boot();

@@ -1,55 +1,64 @@
-// /api/calls — each friend's Senate call. GET returns everyone's entries; POST appends a new date-stamped entry; DELETE removes one of your own.
+// /api/calls — each friend's Senate call: ONE call per person. Saving again replaces the previous call.
+// GET returns everyone's current call (plus scores once results exist). POST saves or replaces yours. DELETE removes yours.
+// Every change is refused after the deadline in ../lib/rules.mjs.
 import { getUser } from "@netlify/identity";
 import { store } from "../lib/store.mjs";
 import { STATES } from "../lib/model.mjs";
 import { HELD_ELSEWHERE } from "../lib/board.mjs";
-
-const NEED = 51;   // 50-50 goes to the Republicans (Vice President Vance breaks the tie)
+import { DEADLINE, DEADLINE_TEXT, ADMIN_EMAILS, MAX_MARGIN, NEED, locked, score } from "../lib/rules.mjs";
 
 function who(user){ return { id: user.id, name: user.name || user.userMetadata?.full_name || (user.email ? user.email.split("@")[0] : "friend"), picture: user.pictureUrl || null }; }
+const r1 = v => Math.round(v * 10) / 10;
 
 export default async (req, context) => {
   const user = await getUser();
   if (!user) return Response.json({ error: "sign in first" }, { status: 401 });
   const s = store();
   const key = "calls/" + user.id;
+  const isAdmin = ADMIN_EMAILS.includes((user.email || "").toLowerCase());
+
+  if (req.method === "POST" || req.method === "DELETE") {
+    if (locked()) return Response.json({ error: "Calls locked at " + DEADLINE_TEXT + ". No more changes." }, { status: 403 });
+  }
 
   if (req.method === "POST") {
     let body; try { body = await req.json(); } catch { return Response.json({ error: "bad JSON" }, { status: 400 }); }
     const picks = body && body.picks;
     if (!picks || typeof picks !== "object") return Response.json({ error: "picks missing" }, { status: 400 });
     const clean = {};
-    for (const st of STATES) { const v = picks[st]; if (v !== "D" && v !== "R") return Response.json({ error: "every race needs a D or R pick; " + st + " is missing" }, { status: 400 }); clean[st] = v; }
-    const dems = HELD_ELSEWHERE + STATES.filter(st => clean[st] === "D").length;
-    const rec = (await s.get(key, { type: "json" })) || { ...who(user), log: [] };
-    Object.assign(rec, who(user));
-    const prev = rec.log.length ? rec.log[rec.log.length - 1] : null;
-    const changed = prev ? STATES.filter(st => prev.picks[st] !== clean[st]) : STATES.slice();
-    // Repeat entries are allowed: a friend may log the same picks again on a later day. "changed" is empty then.
-    const note = typeof body.note === "string" ? body.note.slice(0, 140) : "";
-    rec.log.push({ ts: new Date().toISOString(), picks: clean, dems, reps: 100 - dems, verdict: dems >= NEED ? "D" : "R", changed, note });
+    for (const st of STATES) {
+      const p = picks[st];
+      if (!p || (p.w !== "D" && p.w !== "R")) return Response.json({ error: "every race needs a winner; " + st + " is missing" }, { status: 400 });
+      const m = Number(p.m);
+      if (!Number.isFinite(m) || m < 0 || m > MAX_MARGIN) return Response.json({ error: st + ": the margin must be a number of points between 0 and " + MAX_MARGIN }, { status: 400 });
+      clean[st] = { w: p.w, m: r1(m) };
+    }
+    const dems = HELD_ELSEWHERE + STATES.filter(st => clean[st].w === "D").length;
+    const old = await s.get(key, { type: "json" });
+    const rec = { ...who(user), call: { ts: new Date().toISOString(), picks: clean, dems, reps: 100 - dems, verdict: dems >= NEED ? "D" : "R" }, changes: old && old.call ? (old.changes || 0) + 1 : 0, previous: old && old.call ? [...(old.previous || []).slice(-19), old.call] : [] };
     await s.setJSON(key, rec);
-    return Response.json({ saved: true, record: rec });
+    const { previous, ...out } = rec;
+    return Response.json({ saved: true, replaced: !!(old && old.call), record: out });
   }
 
   if (req.method === "DELETE") {
-    let body; try { body = await req.json(); } catch { return Response.json({ error: "bad JSON" }, { status: 400 }); }
-    const ts = body && body.ts;
     const rec = await s.get(key, { type: "json" });
-    if (!rec || !rec.log.some(e => e.ts === ts)) return Response.json({ error: "no such entry of yours" }, { status: 404 });
-    rec.log = rec.log.filter(e => e.ts !== ts);
-    // "changed" keeps meaning "different from the entry before", so recompute it after the removal
-    rec.log.forEach((e, i) => { e.changed = i ? STATES.filter(st => rec.log[i - 1].picks[st] !== e.picks[st]) : STATES.slice(); });
-    if (rec.log.length) await s.setJSON(key, rec); else await s.delete(key);
-    return Response.json({ deleted: true, record: rec });
+    if (!rec || !rec.call) return Response.json({ error: "you have no call to delete" }, { status: 404 });
+    await s.delete(key);
+    return Response.json({ deleted: true });
   }
 
   if (req.method === "GET") {
-    const { blobs } = await s.list({ prefix: "calls/" });
+    const [{ blobs }, results] = await Promise.all([s.list({ prefix: "calls/" }), s.get("results", { type: "json" })]);
     const recs = await Promise.all(blobs.map(b => s.get(b.key, { type: "json" })));
-    const calls = recs.filter(r => r && r.log && r.log.length).map(r => ({ id: r.id, name: r.name, picture: r.picture, log: r.log }));
-    calls.sort((a, b) => { const ta = a.log[a.log.length-1]?.ts || "", tb = b.log[b.log.length-1]?.ts || ""; return ta < tb ? 1 : ta > tb ? -1 : 0; });
-    return new Response(JSON.stringify({ me: user.id, calls }), { headers: { "content-type": "application/json", "cache-control": "private, no-store" } });
+    const res = (results && results.states) || {};
+    const haveResults = Object.keys(res).length > 0;
+    const calls = recs.filter(r => r && r.call).map(r => ({ id: r.id, name: r.name, picture: r.picture, call: r.call, changes: r.changes || 0, score: haveResults ? score(r.call.picks, res, STATES) : null }));
+    if (haveResults) calls.sort((a, b) => (b.score.right - a.score.right) || (a.score.err - b.score.err) || (a.call.ts < b.call.ts ? -1 : 1));
+    else calls.sort((a, b) => a.call.ts < b.call.ts ? 1 : a.call.ts > b.call.ts ? -1 : 0);
+    if (haveResults) { let rank = 0, prevKey = null; calls.forEach((c, i) => { const k = c.score.right + "|" + c.score.err; if (k !== prevKey) { rank = i + 1; prevKey = k; } c.rank = rank; }); }
+    const body = { me: user.id, admin: isAdmin, deadline: DEADLINE, deadlineText: DEADLINE_TEXT, locked: locked(), maxMargin: MAX_MARGIN, results: res, resultsUpdated: results ? results.updated : null, calls };
+    return new Response(JSON.stringify(body), { headers: { "content-type": "application/json", "cache-control": "private, no-store" } });
   }
   return Response.json({ error: "method" }, { status: 405 });
 };
