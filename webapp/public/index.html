@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Senate 2026 board</title>
+<meta name="description" content="Navin's Senate 2026 forecast board for friends: the chance Democrats take the Senate, race by race, with everyone's own calls.">
+<meta name="color-scheme" content="light dark">
+<style>
+:root{
+  --bg:#f6f5f1; --card:#ffffff; --ink:#1b1b1f; --muted:#5c5f66; --line:#dcdad3; --soft:#eeece6;
+  --d:#2457c5; --d-soft:#dbe6fb; --r:#c23b3b; --r-soft:#f9dede; --accent:#1b1b1f; --ok:#2a7a3b;
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 6px 20px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#141518; --card:#1e2024; --ink:#ecebe6; --muted:#a2a5ad; --line:#33363d; --soft:#272a30;
+  --d:#6f98f0; --d-soft:#1e2d4d; --r:#ef7373; --r-soft:#4a2224; --accent:#ecebe6; --ok:#6fcf86; --shadow:none;
+}}
+:root[data-theme="dark"]{ --bg:#141518; --card:#1e2024; --ink:#ecebe6; --muted:#a2a5ad; --line:#33363d; --soft:#272a30; --d:#6f98f0; --d-soft:#1e2d4d; --r:#ef7373; --r-soft:#4a2224; --accent:#ecebe6; --ok:#6fcf86; --shadow:none; }
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%}
+a{color:inherit}
+button{font:inherit;color:inherit}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px 48px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 6px}
+header.top h1{font-size:20px;margin:0;letter-spacing:-.01em}
+header.top .sub{color:var(--muted);font-size:13px;margin-top:2px}
+.who{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.who img{width:28px;height:28px;border-radius:50%;background:var(--soft)}
+.who button{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 9px;font-size:13px;cursor:pointer;white-space:nowrap}
+.who span{white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis}
+/* tabs */
+nav.tabs{position:static;z-index:5;background:var(--bg);padding:8px 0 10px;margin:0 -16px;padding-left:16px;padding-right:16px}
+nav.tabs .hint{font-size:12px;color:var(--muted);margin:0 0 6px 2px}
+nav.tabs .row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+nav.tabs button{display:flex;flex-direction:column;align-items:flex-start;gap:1px;border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:9px 10px;cursor:pointer;text-align:left;min-height:56px;transition:border-color .15s,background .15s}
+nav.tabs button b{font-size:15px}
+nav.tabs button small{font-size:11.5px;color:var(--muted);line-height:1.25}
+nav.tabs button[aria-selected="true"]{border-color:var(--accent);background:var(--accent);color:var(--bg)}
+nav.tabs button[aria-selected="true"] small{color:var(--bg);opacity:.75}
+@media (max-width:560px){ nav.tabs .row{grid-template-columns:repeat(2,1fr)} }
+@media (min-width:641px){ nav.tabs{position:sticky;top:0} }
+.page{display:none}
+.page.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;box-shadow:var(--shadow)}
+.card h2{font-size:17px;margin:0 0 8px}
+.card h3{font-size:14px;margin:14px 0 6px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.card p{margin:6px 0}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.ctx{font-size:14px;color:var(--muted)}
+.big{font-size:64px;line-height:1;font-weight:700;letter-spacing:-.03em;margin:4px 0 2px}
+.big small{font-size:28px;font-weight:600;color:var(--muted);margin-left:2px}
+.pill{display:inline-block;border-radius:999px;padding:2px 9px;font-size:12.5px;background:var(--soft);color:var(--muted)}
+.pill.d{background:var(--d-soft);color:var(--d)} .pill.r{background:var(--r-soft);color:var(--r)}
+.head{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:end}
+@media (max-width:560px){ .head{grid-template-columns:1fr} }
+.mkt .n{font-size:34px;font-weight:700;letter-spacing:-.02em}
+/* calibration selector */
+.cal h2{margin-bottom:4px}
+.calgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+@media (max-width:640px){ .calgrid{grid-template-columns:1fr} }
+.calopt{position:relative;border:2px solid var(--line);background:var(--card);border-radius:12px;padding:14px 14px 14px 46px;text-align:left;cursor:pointer;transition:border-color .15s,background .15s}
+.calopt:before{content:"";position:absolute;left:14px;top:16px;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);background:var(--card)}
+.calopt[aria-checked="true"]{border-color:var(--accent);background:var(--soft)}
+.calopt[aria-checked="true"]:before{border-color:var(--accent);background:var(--accent);box-shadow:inset 0 0 0 4px var(--soft)}
+.calopt .t{font-weight:700;font-size:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.calopt .t .pill{font-weight:500;border:1px solid var(--line)}
+.calopt .x{font-size:13.5px;color:var(--muted);margin-top:4px}
+.calopt .num{font-size:13px;margin-top:8px;color:var(--ink)}
+.calopt .num b{font-size:18px}
+/* tables */
+.tbl{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+.tbl th{font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:right;padding:6px 6px;border-bottom:1px solid var(--line);font-weight:600;white-space:nowrap}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl td.race{white-space:normal}
+.tbl td.race b{display:block}
+.tbl td.race small{color:var(--muted);font-size:12px}
+.tbl .pill.narrow{display:none;font-size:10.5px;padding:1px 6px;vertical-align:1px}
+@media (max-width:640px){ .tbl .wide{display:none} .tbl .pill.narrow{display:inline-block} .tbl{font-size:13px;table-layout:fixed} .tbl td{padding:7px 3px} .tbl th{padding:6px 3px;white-space:normal;font-size:10.5px;vertical-align:bottom} .tbl col.c-race{width:40%} .tbl col.c-num{width:15%} .tbl td.race small{font-size:11.5px} .tscroll{margin:0 -12px;padding:0 4px} }
+.tbl tr.dl td{background:color-mix(in srgb,var(--d-soft) 55%,transparent)}
+.tbl tr.rl td{background:color-mix(in srgb,var(--r-soft) 55%,transparent)}
+.tbl .lead.d{color:var(--d);font-weight:700} .tbl .lead.r{color:var(--r);font-weight:700}
+.tbl tfoot td{font-weight:600;background:var(--soft);text-align:left;white-space:normal}
+.tbl tfoot td span.n{font-variant-numeric:tabular-nums}
+.tscroll{overflow-x:auto;margin:0 -16px;padding:0 16px}
+.seatbar{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--soft);margin:6px 0 2px}
+.seatbar i{display:block;height:100%}
+.seatbar .dd{background:var(--d)} .seatbar .rr{background:var(--r)}
+.seatrow{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:-1px;margin-right:5px}
+.legend .dl{background:var(--d-soft);border:1px solid var(--d)} .legend .rl{background:var(--r-soft);border:1px solid var(--r)}
+/* charts */
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.chips button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:4px 11px;font-size:13px;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.chart{width:100%;height:auto;display:block;touch-action:pan-y}
+.chart text{font-size:12px;fill:var(--muted)}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.chart .ln{fill:none;stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+.chart .ln.thin{stroke-width:1.4;stroke-dasharray:3 3}
+.readout{font-size:13px;color:var(--muted);min-height:20px;margin-top:4px}
+.keyline{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+.keyline i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+/* races */
+.rcard{display:grid;grid-template-columns:1fr auto;gap:8px 16px;align-items:start}
+.rcard .nm{font-size:18px;font-weight:700}
+.rcard .cands{font-size:14px;margin-top:2px}
+.rcard .cands b.d{color:var(--d)} .rcard .cands b.r{color:var(--r)}
+.rcard .right{text-align:right}
+.rcard .right .pct{font-size:30px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.rcard .right .lbl{font-size:12px;color:var(--muted)}
+.rcard .nums{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:4px}
+.rcard .nums div{background:var(--soft);border-radius:10px;padding:8px 10px}
+.rcard .nums .k{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.rcard .nums .v{font-size:17px;font-weight:700;margin-top:2px}
+.rcard .nums .v small{font-size:12px;font-weight:400;color:var(--muted)}
+.rcard .story{grid-column:1/-1;font-size:14px;color:var(--muted)}
+details{grid-column:1/-1}
+details summary{cursor:pointer;font-size:13.5px;color:var(--muted)}
+.polls{width:100%;font-size:13px;border-collapse:collapse;margin-top:6px}
+.polls td{padding:4px 4px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.polls td:first-child{text-align:left;white-space:normal}
+.bar{height:8px;border-radius:4px;background:var(--soft);overflow:hidden;grid-column:1/-1}
+.bar i{display:block;height:100%;background:var(--d)}
+/* call it */
+.pickrow{display:grid;grid-template-columns:1fr 1fr;gap:6px 8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.pickrow .st{grid-column:1/-1}
+@media (min-width:641px){ .pickrow{grid-template-columns:1.3fr 1fr 1fr} .pickrow .st{grid-column:auto} }
+.pickrow .st b{display:block;font-size:15px}
+.pickrow .st small{color:var(--muted);font-size:12px}
+.pickrow button{border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:10px 8px;cursor:pointer;font-weight:600;font-size:14px;min-height:44px;transition:all .12s}
+.pickrow button.d[aria-pressed="true"]{background:var(--d);border-color:var(--d);color:#fff}
+.pickrow button.r[aria-pressed="true"]{background:var(--r);border-color:var(--r);color:#fff}
+.tally{position:sticky;bottom:0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-top:12px;box-shadow:var(--shadow)}
+.tally .line{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.tally .big2{font-size:22px;font-weight:700;letter-spacing:-.01em}
+.btn{border:none;background:var(--accent);color:var(--bg);border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer;font-size:15px}
+.btn[disabled]{opacity:.5;cursor:default}
+.btn.ghost{background:var(--card);color:var(--ink);border:1.5px solid var(--line);font-weight:600}
+.note{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 10px;font:inherit;background:var(--card);color:var(--ink);margin-top:8px}
+.status{font-size:13px;color:var(--muted);margin-top:6px;min-height:18px}
+.calls{width:100%;border-collapse:collapse;font-size:14px}
+.calls th{font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:left;padding:6px;border-bottom:1px solid var(--line);font-weight:600}
+.calls td{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:middle;font-size:13.5px}
+.calls td:first-child{white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis}
+.calls tr.me td{background:var(--soft)}
+.calls td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.calls img{width:24px;height:24px;border-radius:50%;vertical-align:middle;margin-right:6px;background:var(--soft)}
+.calls button.hist{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:3px 8px;font-size:12.5px;cursor:pointer}
+.hrow td{background:var(--soft);font-size:13px;white-space:normal}
+.hrow .ver{display:flex;gap:10px;flex-wrap:wrap;padding:4px 0;border-bottom:1px dashed var(--line)}
+.hrow .ver:last-child{border-bottom:none}
+.hrow .ver .when{min-width:150px;color:var(--muted)}
+.cons{display:grid;grid-template-columns:auto 1fr auto;gap:6px 10px;align-items:center;font-size:13.5px;margin-top:8px}
+.cons .b{height:10px;border-radius:5px;background:var(--r-soft);overflow:hidden}
+.cons .b i{display:block;height:100%;background:var(--d)}
+.signin{max-width:520px;margin:48px auto;text-align:center}
+.signin .g{display:inline-flex;align-items:center;gap:10px;border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:12px 18px;font-weight:700;font-size:16px;cursor:pointer;margin-top:16px}
+.signin .g svg{width:20px;height:20px}
+.pagenav{display:flex;justify-content:space-between;gap:10px;margin:14px 0 0}
+.pagenav button{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:600}
+.pagenav button:empty{visibility:hidden}
+footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px solid var(--line);padding-top:12px}
+.warn{background:var(--r-soft);color:var(--r);border-radius:10px;padding:8px 12px;font-size:13.5px;margin:8px 0}
+.sr{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+<div class="wrap" id="app" hidden>
+  <header class="top">
+    <div>
+      <h1>Senate 2026 board</h1>
+      <div class="sub" id="subline">Navin's forecast · loading…</div>
+    </div>
+    <div class="who" id="who"></div>
+  </header>
+
+  <nav class="tabs" aria-label="Pages">
+    <div class="hint">Four pages — tap one</div>
+    <div class="row" role="tablist">
+      <button role="tab" data-page="board" aria-selected="true"><b>Board</b><small>Today's chance and the 11 races</small></button>
+      <button role="tab" data-page="trend" aria-selected="false"><b>Trend</b><small>How the number has moved</small></button>
+      <button role="tab" data-page="races" aria-selected="false"><b>Races</b><small>One card per race, with the polls</small></button>
+      <button role="tab" data-page="call" aria-selected="false"><b>Call it</b><small>Save your own prediction</small></button>
+    </div>
+  </nav>
+
+  <!-- BOARD -->
+  <section class="page on" id="page-board" role="tabpanel">
+    <div class="card">
+      <h2>What you're looking at</h2>
+      <p class="ctx">Eleven Senate seats are in play this November. Democrats already hold 43 of the other 89, so they need to win <b>8 of these 11</b> to reach 51. A 50-50 Senate stays Republican because Vice President Vance breaks ties. This board takes the RealClearPolitics polling average in each race, trims it for the way polls have missed in recent elections, and turns the result into one number: the chance Democrats end up with the Senate.</p>
+    </div>
+
+    <div class="card">
+      <div class="head">
+        <div>
+          <div class="ctx">Chance Democrats win the Senate</div>
+          <div class="big" id="bignum">—<small>%</small></div>
+          <div class="small muted" id="bigsub"></div>
+        </div>
+        <div class="mkt">
+          <div class="ctx">What the prediction market says</div>
+          <div class="n" id="mktnum">—%</div>
+          <div class="small muted" id="mktsub">Polymarket, the price of "Democrats win the Senate"</div>
+        </div>
+      </div>
+      <p class="small muted" id="updated" style="margin-top:12px"></p>
+      <div id="problems"></div>
+    </div>
+
+    <div class="card cal">
+      <h2>Two ways to read the polls — pick one</h2>
+      <p class="ctx">In the 2018 and 2022 Senate races the polling averages ended up a little too kind to Democrats on average, and more so in states that lean Republican, so the board subtracts a "fade" from every Democratic lead before counting it. The two options below differ in how that fade was measured and how big it is. Your pick changes every number on this site.</p>
+      <div class="calgrid" role="radiogroup" aria-label="Fade rules">
+        <button class="calopt" role="radio" data-cal="sept" aria-checked="true">
+          <div class="t">September rules <span class="pill">board of record</span></div>
+          <div class="x">Measured on 18 Senate races from 2018 and 2022: how far the polling average stood from the final result 59 days before the election. That covers two things at once, the drift between September and Election Day and the miss in the final polls. It trims each Democratic lead by between a fraction of a point and about three points, more where Trump ran stronger in 2024. Written on September 5 and untouched since.</div>
+          <div class="num">Chance Democrats win: <b id="cal-sept-n">—%</b></div>
+        </button>
+        <button class="calopt" role="radio" data-cal="fw" aria-checked="false">
+          <div class="t">Last 3 weeks rules <span class="pill">smaller fade</span></div>
+          <div class="x">Measured on 54 Senate races from 2018 and 2022 (Patrick Ruffini's tally): how far the final three weeks of polls missed the result. It assumes no further drift, only the usual final-poll miss, so the trim is about half as big. Added October 18. Navin decides on October 25 whether it becomes the board of record.</div>
+          <div class="num">Chance Democrats win: <b id="cal-fw-n">—%</b></div>
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>The eleven races</h2>
+      <p class="ctx">Sorted from safest Democratic lead to safest Republican lead, after the fade you picked above. "Polls say" is the RealClearPolitics average. "After fade" is what the board actually counts. Blue rows are seats the board currently gives to Democrats, red rows to Republicans.</p>
+      <div class="tscroll">
+      <table class="tbl" id="t4">
+        <colgroup><col class="c-race"><col class="wide"><col class="c-num"><col class="wide"><col class="c-num"><col class="c-num"><col class="c-num"></colgroup>
+        <thead><tr><th>Race</th><th class="wide">Seat now</th><th>Polls say</th><th class="wide">Fade</th><th>After fade</th><th>Chance D wins</th><th>Market</th></tr></thead>
+        <tbody id="t4body"></tbody>
+        <tfoot id="t4foot"></tfoot>
+      </table>
+      </div>
+      <div class="legend"><span><i class="dl"></i>Democrat ahead after the fade</span><span><i class="rl"></i>Republican ahead after the fade</span></div>
+      <div id="seats"></div>
+    </div>
+
+    <div class="card">
+      <h2>How to read one row</h2>
+      <p class="ctx" id="worked"></p>
+      <p class="ctx">The headline number is not a seat count. It comes from running the election many times with the polls allowed to be wrong, partly in the same direction everywhere (a national miss) and partly race by race, and counting how often Democrats reach 51. Close seats can go either way, so the chance can sit well below 50% even when Democrats lead in eight races.</p>
+    </div>
+    <div class="pagenav"><button></button><button data-go="trend">Next: Trend →</button></div>
+  </section>
+
+  <!-- TREND -->
+  <section class="page" id="page-trend" role="tabpanel">
+    <div class="card">
+      <h2>How the headline number has moved</h2>
+      <p class="ctx">The solid line is the board under the rules you picked on the Board page; the thin dashed line is the other set of rules. The market line is Polymarket. "Raw polls" is what the chance would be with no fade at all. Before October 24 the history comes from Navin's twice-daily board; since then the site reads the relay itself about every half hour.</p>
+      <div class="chips" id="range"><button data-r="all" aria-pressed="true">All</button><button data-r="30">30 days</button><button data-r="14">14 days</button><button data-r="7">7 days</button></div>
+      <svg class="chart" id="chart-ctrl" viewBox="0 0 720 300" role="img" aria-label="Headline chance over time"></svg>
+      <div class="readout" id="read-ctrl">Touch or hover the chart to read a point.</div>
+      <div class="keyline" id="key-ctrl"></div>
+    </div>
+    <div class="card">
+      <h2>One race at a time: the polling lead</h2>
+      <p class="ctx">Democratic lead in the RealClearPolitics average (positive means the Democrat is ahead), since Navin froze the baseline on September 5. The dashed line is the same lead after the fade you picked, which is what the board counts.</p>
+      <div class="chips" id="racepick"></div>
+      <svg class="chart" id="chart-race" viewBox="0 0 720 260" role="img" aria-label="Polling lead over time for one race"></svg>
+      <div class="readout" id="read-race"></div>
+    </div>
+    <div class="pagenav"><button data-go="board">← Board</button><button data-go="races">Next: Races →</button></div>
+  </section>
+
+  <!-- RACES -->
+  <section class="page" id="page-races" role="tabpanel">
+    <div class="card">
+      <h2>The eleven races, one by one</h2>
+      <p class="ctx">Seven seats are held by Republicans and four by Democrats. Each card shows the polling average, the lead after the fade you picked, the chance the Democrat wins, and the prediction-market price. Open "polls in the average" to see exactly which polls RealClearPolitics is counting right now.</p>
+    </div>
+    <div id="racecards"></div>
+    <div class="pagenav"><button data-go="trend">← Trend</button><button data-go="call">Next: Call it →</button></div>
+  </section>
+
+  <!-- CALL IT -->
+  <section class="page" id="page-call" role="tabpanel">
+    <div class="card">
+      <h2>Make your call</h2>
+      <p class="ctx">Pick a winner in each of the 11 races, then save. Your call is stored with the date. You can change it as often as you like; every version is kept, so after Election Day we can see who called it, who changed their mind, and when. The small grey text under each state is what the polls say right now.</p>
+      <div class="chips"><button id="pre-model">Start from the board</button><button id="pre-market">Start from the market</button><button id="pre-clear">Clear</button></div>
+      <div id="picks"></div>
+      <div class="tally">
+        <div class="line">
+          <div><div class="big2" id="tallyline">Pick all 11 races</div><div class="small muted" id="tallysub">Democrats hold 43 seats outside these races; 51 takes the Senate, 50 does not.</div></div>
+          <button class="btn" id="save" disabled>Save my call</button>
+        </div>
+        <input class="note" id="notebox" maxlength="140" placeholder="Optional note, e.g. “gut says Texas flips”">
+        <div class="status" id="savestatus"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Everyone's calls</h2>
+      <p class="ctx">The latest version from each person, newest first. "History" counts how many times they have saved; tap it to see every version and what changed.</p>
+      <div class="tscroll"><table class="calls" id="callstbl"><thead><tr><th>Who</th><th class="num">Seats D–R</th><th>Senate</th><th>Saved (ET)</th><th>History</th></tr></thead><tbody id="callsbody"></tbody></table></div>
+      <h3>Where friends agree and disagree</h3>
+      <p class="ctx small">Share of saved calls picking the Democrat in each race, latest version per person.</p>
+      <div class="cons" id="cons"></div>
+    </div>
+    <div class="pagenav"><button data-go="races">← Races</button><button></button></div>
+  </section>
+
+  <footer class="site">
+    Model and rules by Navin. Polling averages are RealClearPolitics; prices are Polymarket; both arrive through Navin's relay and the site re-reads them every 30 minutes. Fixed since September 5: the baseline, the fade formulas and the simulation settings. Only the inputs change.
+  </footer>
+</div>
+
+<div class="wrap signin" id="signin" hidden>
+  <h1 style="font-size:26px;margin-bottom:6px">Senate 2026 board</h1>
+  <p class="ctx">Navin's forecast of who ends up with the Senate, race by race, plus a page where each friend saves their own call. Sign in with your Google account to open it.</p>
+  <button class="g" id="gbtn"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.3 0 11.7-2.1 15.6-5.7l-7.5-5.8c-2.1 1.4-4.8 2.3-8.1 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>Sign in with Google</button>
+  <p class="small muted" id="signinmsg" style="margin-top:16px"></p>
+</div>
+
+<script type="module">
+import { getUser, oauthLogin, handleAuthCallback, logout, onAuthChange } from "./identity.js";
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const STATES=["NC","GA","NH","TX","OH","AK","ME","MI","IA","KS","MN"];
+const ET={timeZone:"America/New_York"};
+const fmtWhen=iso=>{ const d=new Date(iso); return d.toLocaleString("en-US",{...ET,month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})+" ET"; };
+const fmtShort=iso=>{ const d=new Date(iso); return d.toLocaleString("en-US",{...ET,month:"short",day:"numeric"})+"<br>"+d.toLocaleString("en-US",{...ET,hour:"numeric",minute:"2-digit"}).toLowerCase().replace(" ",""); };
+const fmtDay=iso=>new Date(iso).toLocaleString("en-US",{...ET,month:"short",day:"numeric"});
+const sgn=v=>(v>0?"D +":v<0?"R +":"Even ")+(v===0?"":Math.abs(v).toFixed(1));
+const sgnNum=v=>(v>0?"+":"")+v.toFixed(1);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let DATA=null, CALLS=null, ME=null, CAL="sept", PAGE="board", RANGE="all", RACE="TX", PICKS={};
+try{ CAL=localStorage.getItem("sb-cal")||"sept"; PAGE=location.hash.slice(1)||localStorage.getItem("sb-page")||"board"; RACE=localStorage.getItem("sb-race")||"TX"; }catch{}
+if(!["board","trend","races","call"].includes(PAGE)) PAGE="board";
+
+/* ---------- auth ---------- */
+async function boot(){
+  try{ await handleAuthCallback(); }catch(e){ console.warn("auth callback",e); }
+  let user=null; try{ user=await getUser(); }catch(e){ console.warn("getUser",e); }
+  if(!user){ $("#signin").hidden=false; $("#app").hidden=true; return; }
+  ME=user; $("#signin").hidden=true; $("#app").hidden=false;
+  $("#who").innerHTML=(user.pictureUrl?`<img src="${esc(user.pictureUrl)}" alt="">`:"")+`<span>${esc(user.name||user.email||"you")}</span><button id="logout">Sign out</button>`;
+  $("#logout").onclick=async()=>{ try{ await logout(); }finally{ location.reload(); } };
+  await loadAll();
+}
+$("#gbtn").onclick=()=>{ try{ oauthLogin("google"); }catch(e){ $("#signinmsg").textContent="Sign-in is not switched on for this site yet (Netlify Identity with Google). "+(e.message||""); } };
+onAuthChange?.((ev)=>{ if(ev==="logout"||ev?.type==="logout"){ location.reload(); } });
+
+/* ---------- data ---------- */
+async function api(path,opts){
+  const r=await fetch(path,{credentials:"same-origin",...opts});
+  if(r.status===401){ $("#signin").hidden=false; $("#app").hidden=true; throw new Error("signed out"); }
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(j.error||("HTTP "+r.status));
+  return j;
+}
+async function loadAll(){
+  $("#subline").textContent="Navin's forecast · loading the latest numbers…";
+  const [board, calls]=await Promise.allSettled([api("/api/board"), api("/api/calls")]);
+  if(calls.status==="fulfilled") CALLS=calls.value; else $("#savestatus").textContent="Could not load everyone's calls: "+calls.reason.message;
+  if(board.status==="fulfilled"){ DATA=board.value; renderAll(); }
+  else { $("#subline").textContent="Could not load the board: "+board.reason.message; $("#problems").innerHTML=`<div class="warn">${esc(board.reason.message)}</div>`; }
+  showPage(PAGE);
+}
+
+/* ---------- tabs ---------- */
+function showPage(p){
+  PAGE=p; try{ localStorage.setItem("sb-page",p); }catch{}
+  $$("nav.tabs [role=tab]").forEach(b=>b.setAttribute("aria-selected", b.dataset.page===p?"true":"false"));
+  $$(".page").forEach(s=>s.classList.toggle("on", s.id==="page-"+p));
+  if(location.hash!=="#"+p) history.replaceState(null,"","#"+p);
+  window.scrollTo({top:0});
+  if(p==="trend") drawCharts();
+}
+$$("nav.tabs [role=tab]").forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+$$(".pagenav button[data-go]").forEach(b=>b.onclick=()=>showPage(b.dataset.go));
+let rsz; window.addEventListener("resize",()=>{ clearTimeout(rsz); rsz=setTimeout(()=>{ if(PAGE==="trend") drawCharts(); },150); });
+window.addEventListener("hashchange",()=>{ const p=location.hash.slice(1); if(["board","trend","races","call"].includes(p)&&p!==PAGE) showPage(p); });
+
+/* ---------- calibration ---------- */
+function setCal(c){ CAL=c; try{ localStorage.setItem("sb-cal",c); }catch{} $$(".calopt").forEach(b=>b.setAttribute("aria-checked", b.dataset.cal===c?"true":"false")); if(DATA) renderAll(); }
+$$(".calopt").forEach(b=>b.onclick=()=>setCal(b.dataset.cal));
+
+/* ---------- render ---------- */
+function renderAll(){
+  const B=DATA.board, k=CAL, calName=k==="sept"?"September rules":"Last 3 weeks rules", calLower=k==="sept"?"September rules":"last 3 weeks rules";
+  $$(".calopt").forEach(b=>b.setAttribute("aria-checked", b.dataset.cal===k?"true":"false"));
+  $("#subline").textContent=`Navin's forecast · ${calName} · updated ${fmtWhen(B.fetchedAt)}`;
+  $("#bignum").innerHTML=`${B.ctrl[k]}<small>%</small>`;
+  const other=k==="sept"?"fw":"sept";
+  $("#bigsub").textContent=`Under the ${calLower}. The other rules give ${B.ctrl[other]}%. With no fade at all, raw polls: ${B.ctrl.raw}%.`;
+  $("#mktnum").textContent=B.senateMkt+"%";
+  $("#cal-sept-n").textContent=B.ctrl.sept+"%"; $("#cal-fw-n").textContent=B.ctrl.fw+"%";
+  const age=Math.round((Date.now()-Date.parse(B.fetchedAt))/60000);
+  $("#updated").textContent=`Polls and prices as of ${fmtWhen(B.fetchedAt)} (${age<60?age+" minutes":Math.round(age/60*10)/10+" hours"} ago). The site re-reads Navin's relay every 30 minutes; the relay itself refreshes a few times a day.`+(B.relayError?" The last re-read failed, so this is the previous copy.":"");
+  let pr=""; if(B.carried&&B.carried.length) pr+=`<div class="warn">Some inputs could not be read this time and were carried over from the previous board: ${esc(B.carried.join(", "))}.</div>`; if(B.problems&&B.problems.length) pr+=`<div class="warn">${esc(B.problems.join(" · "))}</div>`; $("#problems").innerHTML=pr;
+
+  // table
+  const rows=STATES.map(st=>B.races[st]).sort((a,b)=>b[k].adj-a[k].adj);
+  $("#t4body").innerHTML=rows.map(r=>{ const a=r[k]; const cls=a.adj>0?"dl":a.adj<0?"rl":""; return `<tr class="${cls}"><td class="race"><b>${esc(r.name)}</b><small>${esc(r.dem)} v ${esc(r.rep)} <span class="pill narrow ${r.held==="D"?"d":"r"}">${r.held==="D"?"D seat":"R seat"}</span></small></td><td class="wide"><span class="pill ${r.held==="D"?"d":"r"}">${r.held==="D"?"Dem":"Rep"}</span></td><td class="lead ${r.m>0?"d":r.m<0?"r":""}">${sgn(r.m)}</td><td class="muted wide">${a.fade.toFixed(1)}</td><td class="lead ${a.adj>0?"d":a.adj<0?"r":""}">${sgn(a.adj)}</td><td>${a.win}%</td><td class="muted">${r.mkt}%</td></tr>`; }).join("");
+  const S=B.seats, s1=S[k], s2=S.raw, mk=43+STATES.filter(st=>B.races[st].mkt>50).length;
+  const verdict=(d)=>d>=51?`Democrats take the Senate`:`Republicans keep the Senate${d===50?" (50-50, Vance breaks the tie)":""}`;
+  $("#t4foot").innerHTML=`<tr><td colspan="7">Seats if every "after fade" leader won: <span class="n">Democrats ${s1.dems} · Republicans ${s1.reps}</span> → ${verdict(s1.dems)}.</td></tr>
+  <tr><td colspan="7">Seats if the raw polls were exactly right: <span class="n">Democrats ${s2.dems} · Republicans ${s2.reps}</span> → ${verdict(s2.dems)}.</td></tr>
+  <tr><td colspan="7">Seats if the market favorite won every race: <span class="n">Democrats ${mk} · Republicans ${100-mk}</span> → ${verdict(mk)}.</td></tr>`;
+  $("#seats").innerHTML=`<h3>Seat count under the ${calLower}</h3><div class="seatbar"><i class="dd" style="width:${s1.dems}%"></i><i class="rr" style="width:${s1.reps}%"></i></div><div class="seatrow"><span>Democrats ${s1.dems}</span><span>51 needed</span><span>Republicans ${s1.reps}</span></div><p class="small muted" style="margin-top:8px">Averaged over all the simulated outcomes, Democrats end with about ${S.expected[k]} seats under these rules. The seat counts above treat every leader as a sure winner; the headline chance does not.</p>`;
+
+  // worked example on Ohio
+  const oh=B.races.OH, a=oh[k];
+  $("#worked").innerHTML=`Take Ohio. The polls say ${esc(oh.dem)} leads ${esc(oh.rep)} by <b>${oh.m.toFixed(1)}</b> (${oh.d}% to ${oh.r}%). The ${calLower} subtract <b>${Math.abs(a.fade).toFixed(1)}</b> for the usual polling miss in a state Trump won by ${oh.trump24.toFixed(0)}, leaving <b>${sgn(a.adj)}</b>. A lead that size, with polls assumed to be off by a typical 5 points either way, wins about <b>${a.win}%</b> of the time. The market has ${esc(oh.dem)} at ${oh.mkt}%.`;
+
+  renderRaces(); buildPicks(); updateTally(); if(PAGE==="trend") drawCharts(); if(CALLS) renderCalls();
+}
+
+function renderRaces(){
+  const B=DATA.board, k=CAL; const calLower=k==="sept"?"September rules":"last 3 weeks rules";
+  const rows=STATES.map(st=>B.races[st]).sort((a,b)=>Math.abs(a[k].adj)-Math.abs(b[k].adj));
+  $("#racecards").innerHTML=rows.map(r=>{
+    const a=r[k]; const lead=a.adj>0?r.dem:a.adj<0?r.rep:"nobody";
+    const drift=r.drift===0?"unchanged since September 5":`${r.drift>0?"moved toward the Democrat":"moved toward the Republican"} by ${Math.abs(r.drift).toFixed(1)} since September 5`;
+    const story=a.adj>0&&a.win>=75?`A comfortable Democratic lead even after the fade.`:a.adj<0&&a.win<=25?`A comfortable Republican lead; the fade only widens it.`:Math.abs(a.adj)<1?`Essentially a coin flip after the fade.`:a.adj>0?`Democrat ahead after the fade, but not by much.`:`Republican ahead after the fade, but not by much.`;
+    const polls=(r.polls||[]).map(p=>`<tr><td>${esc(p.pollster)}<br><span class="muted">${esc(p.date)} · ${esc(p.sample||"")}</span></td><td>${esc(r.dem)} ${p.d}</td><td>${esc(r.rep)} ${p.r}</td><td class="${p.m>0?"lead d":p.m<0?"lead r":""}">${sgn(p.m)}</td></tr>`).join("");
+    return `<div class="card rcard">
+      <div><div class="nm">${esc(r.name)} <span class="pill ${r.held==="D"?"d":"r"}">${r.held==="D"?"Democratic seat":"Republican seat"}</span></div>
+      <div class="cands"><b class="d">${esc(r.dem)}</b> (D) vs <b class="r">${esc(r.rep)}</b> (R)</div></div>
+      <div class="right"><div class="pct">${a.win}%</div><div class="lbl">chance ${esc(r.dem)} wins</div></div>
+      <div class="bar"><i style="width:${a.win}%"></i></div>
+      <div class="nums">
+        <div><div class="k">Polls say</div><div class="v">${sgn(r.m)} <small>${r.d}–${r.r}</small></div></div>
+        <div><div class="k">After fade</div><div class="v">${sgn(a.adj)} <small>fade ${a.fade.toFixed(1)}</small></div></div>
+        <div><div class="k">Market</div><div class="v">${r.mkt}% <small>${esc(r.dem)}</small></div></div>
+        <div><div class="k">Trump 2024</div><div class="v">${r.trump24>0?"+":""}${r.trump24.toFixed(1)} <small>sets the fade</small></div></div>
+      </div>
+      <div class="story">${story} Under the ${calLower} the board gives this seat to <b>${esc(lead)}</b>. The polling average has ${drift}${r.window?`; RealClearPolitics is averaging polls taken ${esc(r.window)}`:""}.</div>
+      <details><summary>Polls in the average (${(r.polls||[]).length}${r.totalListed?` of ${r.totalListed} listed`:""})</summary><table class="polls"><tbody>${polls||"<tr><td>Not available</td></tr>"}</tbody></table></details>
+    </div>`; }).join("");
+}
+
+/* ---------- charts ---------- */
+const COL={sept:"var(--ink)",fw:"var(--ink)",mkt:"#c47f17",raw:"#1f8f8f",d:"var(--d)"};
+function cw(svg){ const w=svg.clientWidth||svg.parentElement.clientWidth||720; return Math.max(320,Math.round(w)); }
+function pts(){ return (DATA.trend||[]).filter(p=>p.ts).map(p=>({...p,t:Date.parse(p.ts)})).sort((a,b)=>a.t-b.t); }
+function rangeFilter(arr){ if(RANGE==="all") return arr; const cut=Date.now()-Number(RANGE)*864e5; return arr.filter(p=>p.t>=cut); }
+function drawCharts(){ if(!DATA) return; drawCtrl(); buildRaceChips(); drawRace(); }
+function axes(svg,W,H,pad,x0,x1,y0,y1,yfmt){
+  let g=""; const ny=5; for(let i=0;i<=ny;i++){ const y=pad.t+(H-pad.t-pad.b)*i/ny; const v=y1-(y1-y0)*i/ny; g+=`<line class="grid" x1="${pad.l}" x2="${W-pad.r}" y1="${y}" y2="${y}"/><text x="${pad.l-6}" y="${y+4}" text-anchor="end">${yfmt(v)}</text>`; }
+  const days=(x1-x0)/864e5; const step=days>40?7:days>16?3:1; const d0=new Date(x0); d0.setUTCHours(0,0,0,0);
+  for(let t=d0.getTime();t<=x1;t+=step*864e5){ if(t<x0) continue; const x=pad.l+(W-pad.l-pad.r)*(t-x0)/(x1-x0); g+=`<text x="${x}" y="${H-pad.b+16}" text-anchor="middle">${fmtDay(new Date(t).toISOString())}</text>`; }
+  return g;
+}
+function line(arr,fx,fy,key){ let d="",pen=false; for(const p of arr){ const v=p[key]; if(v==null){ pen=false; continue; } d+=(pen?"L":"M")+fx(p.t).toFixed(1)+" "+fy(v).toFixed(1); pen=true; } return d; }
+function drawCtrl(){
+  const svg=$("#chart-ctrl"), W=cw(svg),H=W<520?260:300,pad={l:38,r:10,t:12,b:28}; svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const arr=rangeFilter(pts()); if(arr.length<2){ svg.innerHTML=`<text x="${W/2}" y="${H/2}" text-anchor="middle">Not enough history yet</text>`; return; }
+  const x0=arr[0].t, x1=arr[arr.length-1].t, y0=20, y1=80;
+  const fx=t=>pad.l+(W-pad.l-pad.r)*(t-x0)/(x1-x0), fy=v=>pad.t+(H-pad.t-pad.b)*(1-(Math.min(y1,Math.max(y0,v))-y0)/(y1-y0));
+  const main=CAL==="sept"?"T4":"T4fw", other=CAL==="sept"?"T4fw":"T4";
+  let s=axes(svg,W,H,pad,x0,x1,y0,y1,v=>v.toFixed(0)+"%");
+  s+=`<line class="grid" x1="${pad.l}" x2="${W-pad.r}" y1="${fy(50)}" y2="${fy(50)}" style="stroke:var(--muted);stroke-dasharray:2 4"/>`;
+  s+=`<path class="ln" d="${line(arr,fx,fy,"raw")}" style="stroke:${COL.raw}"/>`;
+  s+=`<path class="ln" d="${line(arr,fx,fy,"mkt")}" style="stroke:${COL.mkt}"/>`;
+  s+=`<path class="ln thin" d="${line(arr,fx,fy,other)}" style="stroke:${COL.sept}"/>`;
+  s+=`<path class="ln" d="${line(arr,fx,fy,main)}" style="stroke:${COL.sept};stroke-width:3"/>`;
+  s+=`<g id="cur-ctrl"></g>`;
+  svg.innerHTML=s;
+  $("#key-ctrl").innerHTML=`<span><i style="background:var(--ink);height:4px"></i>${CAL==="sept"?"September rules":"Last 3 weeks rules"} (your pick)</span><span><i style="background:var(--ink);height:2px;opacity:.6"></i>${CAL==="sept"?"Last 3 weeks rules":"September rules"}</span><span><i style="background:${COL.mkt}"></i>Polymarket</span><span><i style="background:${COL.raw}"></i>Raw polls, no fade</span>`;
+  const last=arr[arr.length-1];
+  $("#read-ctrl").textContent=`Latest, ${fmtWhen(last.ts)}: ${CAL==="sept"?"September":"Last 3 weeks"} ${last[main]??"—"}% · other rules ${last[other]??"— (only exists since Oct 18)"}${last[other]!=null?"%":""} · market ${last.mkt}% · raw ${last.raw}%.`;
+  hover(svg,arr,fx,p=>`${fmtWhen(p.ts)}${p.label?" (board "+p.label+")":""}: ${CAL==="sept"?"September":"Last 3 weeks"} ${p[main]??"—"}% · other rules ${p[other]??"—"}${p[other]!=null?"%":""} · market ${p.mkt}% · raw ${p.raw}%`, "#read-ctrl", "#cur-ctrl", p=>fy(p[main]??p.raw));
+}
+function hover(svg,arr,fx,text,readSel,curSel,fyp){
+  const move=ev=>{ const r=svg.getBoundingClientRect(); const x=(ev.clientX-r.left)/r.width*svg.viewBox.baseVal.width; let best=arr[0],bd=1e9; for(const p of arr){ const d=Math.abs(fx(p.t)-x); if(d<bd){bd=d;best=p;} } $(readSel).textContent=text(best); $(curSel).innerHTML=`<line x1="${fx(best.t)}" x2="${fx(best.t)}" y1="10" y2="${svg.viewBox.baseVal.height-28}" style="stroke:var(--muted)"/><circle cx="${fx(best.t)}" cy="${fyp(best)}" r="4" style="fill:var(--ink)"/>`; };
+  svg.onpointermove=move; svg.onpointerdown=move;
+}
+function buildRaceChips(){
+  const B=DATA.board; const el=$("#racepick"); if(el.childElementCount) { $$("#racepick button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.st===RACE?"true":"false")); return; }
+  el.innerHTML=STATES.map(st=>`<button data-st="${st}" aria-pressed="${st===RACE}">${esc(B.races[st].name)}</button>`).join("");
+  $$("#racepick button").forEach(b=>b.onclick=()=>{ RACE=b.dataset.st; try{ localStorage.setItem("sb-race",RACE); }catch{} buildRaceChips(); drawRace(); });
+}
+function raceSeries(st){
+  const B=DATA.board, S=DATA.rcpSeed, fade=B.races[st][CAL].fade;
+  const out=[]; const n=S.labels.length;
+  for(let i=0;i<n;i++){ const m=S.raw[st][i]; if(m==null) continue; out.push({t:Date.parse(S.ts[i]), ts:S.ts[i], label:S.labels[i], m, adj:Math.round((m+fade)*10)/10}); }
+  for(const p of (DATA.trend||[])){ if(p.src!=="site"||!p.states) continue; const x=p.states[st]; out.push({t:Date.parse(p.ts), ts:p.ts, label:null, m:x.m, adj:Math.round((x.m+fade)*10)/10, mkt:x.mkt}); }
+  out.sort((a,b)=>a.t-b.t); return out;
+}
+function drawRace(){
+  const svg=$("#chart-race"), W=cw(svg),H=W<520?230:260,pad={l:38,r:10,t:12,b:28}; svg.setAttribute("viewBox",`0 0 ${W} ${H}`); const r=DATA.board.races[RACE];
+  const arr=rangeFilter(raceSeries(RACE)); if(arr.length<2){ svg.innerHTML=""; return; }
+  const vals=arr.flatMap(p=>[p.m,p.adj]); let lo=Math.floor(Math.min(...vals,0)-1), hi=Math.ceil(Math.max(...vals,0)+1); if(hi-lo<6){ hi=lo+6; }
+  const x0=arr[0].t, x1=arr[arr.length-1].t;
+  const fx=t=>pad.l+(W-pad.l-pad.r)*(t-x0)/(x1-x0), fy=v=>pad.t+(H-pad.t-pad.b)*(1-(v-lo)/(hi-lo));
+  let s=axes(svg,W,H,pad,x0,x1,lo,hi,v=>(v>0?"D+":v<0?"R+":"")+Math.abs(v).toFixed(0));
+  s+=`<line x1="${pad.l}" x2="${W-pad.r}" y1="${fy(0)}" y2="${fy(0)}" style="stroke:var(--muted);stroke-width:1.5"/>`;
+  s+=`<path class="ln thin" d="${line(arr,fx,fy,"adj")}" style="stroke:var(--ink)"/>`;
+  s+=`<path class="ln" d="${line(arr,fx,fy,"m")}" style="stroke:var(--d);stroke-width:3"/>`;
+  s+=`<g id="cur-race"></g>`; svg.innerHTML=s;
+  const last=arr[arr.length-1];
+  $("#read-race").textContent=`${r.name}: ${r.dem} (D) vs ${r.rep} (R). Latest polling lead ${sgn(last.m)}, after fade ${sgn(last.adj)}. On September 5 it was ${sgn(r.baseline)}.`;
+  hover(svg,arr,fx,p=>`${fmtWhen(p.ts)}${p.label?" (board "+p.label+")":""}: polls ${sgn(p.m)} · after fade ${sgn(p.adj)}`, "#read-race", "#cur-race", p=>fy(p.m));
+}
+$$("#range button").forEach(b=>b.onclick=()=>{ RANGE=b.dataset.r; $$("#range button").forEach(x=>x.setAttribute("aria-pressed", x===b?"true":"false")); drawCharts(); });
+
+/* ---------- call it ---------- */
+function myLatest(){ if(!CALLS||!ME) return null; const me=CALLS.calls.find(c=>c.id===ME.id); return me&&me.log.length?me.log[me.log.length-1]:null; }
+function buildPicks(){
+  const B=DATA.board, k=CAL;
+  if(!Object.keys(PICKS).length){ const last=myLatest(); if(last) PICKS={...last.picks}; }
+  const rows=STATES.map(st=>B.races[st]).sort((a,b)=>Math.abs(a[k].adj)-Math.abs(b[k].adj));
+  $("#picks").innerHTML=rows.map(r=>`<div class="pickrow" data-st="${r.st}"><div class="st"><b>${esc(r.name)}</b><small>polls ${sgn(r.m)} · after fade ${sgn(r[k].adj)} · market ${r.mkt}%</small></div><button class="d" data-v="D" aria-pressed="${PICKS[r.st]==="D"}">${esc(r.dem)} (D)</button><button class="r" data-v="R" aria-pressed="${PICKS[r.st]==="R"}">${esc(r.rep)} (R)</button></div>`).join("");
+  $$("#picks .pickrow button").forEach(b=>b.onclick=()=>{ const st=b.closest(".pickrow").dataset.st; PICKS[st]=b.dataset.v; b.parentElement.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed", x===b?"true":"false")); updateTally(); });
+}
+function updateTally(){
+  const n=STATES.filter(st=>PICKS[st]).length, dems=43+STATES.filter(st=>PICKS[st]==="D").length;
+  const last=myLatest(); const same=last&&STATES.every(st=>last.picks[st]===PICKS[st]);
+  if(n<11){ $("#tallyline").textContent=`${n} of 11 picked — ${11-n} to go`; $("#save").disabled=true; }
+  else { $("#tallyline").textContent=`Your call: Democrats ${dems} · Republicans ${100-dems} → ${dems>=51?"Democrats take the Senate":"Republicans keep it"+(dems===50?" (50-50, Vance breaks the tie)":"")}`; $("#save").disabled=!!same; }
+  $("#tallysub").textContent=same?`This is exactly your last saved call (${fmtWhen(last.ts)}). Change a race to save a new version.`:`Democrats hold 43 seats outside these races; 51 takes the Senate, 50 does not.`;
+}
+$("#pre-model").onclick=()=>{ for(const st of STATES) PICKS[st]=DATA.board.races[st][CAL].adj>0?"D":"R"; buildPicks(); updateTally(); };
+$("#pre-market").onclick=()=>{ for(const st of STATES) PICKS[st]=DATA.board.races[st].mkt>50?"D":"R"; buildPicks(); updateTally(); };
+$("#pre-clear").onclick=()=>{ PICKS={}; buildPicks(); updateTally(); };
+$("#save").onclick=async()=>{
+  $("#save").disabled=true; $("#savestatus").textContent="Saving…";
+  try{ const res=await api("/api/calls",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({picks:PICKS,note:$("#notebox").value})});
+    if(res.saved){ $("#savestatus").textContent="Saved "+fmtWhen(res.record.log[res.record.log.length-1].ts)+". Version "+res.record.log.length+"."; $("#notebox").value=""; }
+    else $("#savestatus").textContent="Not saved: "+res.reason+".";
+    CALLS=await api("/api/calls"); renderCalls(); updateTally();
+  }catch(e){ $("#savestatus").textContent="Could not save: "+e.message; $("#save").disabled=false; }
+};
+function renderCalls(){
+  if(!CALLS) return; const B=DATA&&DATA.board;
+  const body=$("#callsbody");
+  if(!CALLS.calls.length){ body.innerHTML=`<tr><td colspan="5" class="muted">Nobody has saved a call yet. Be first.</td></tr>`; $("#cons").innerHTML=""; return; }
+  body.innerHTML=CALLS.calls.map(c=>{ const l=c.log[c.log.length-1]; return `<tr class="${c.id===CALLS.me?"me":""}" data-id="${esc(c.id)}"><td>${c.picture?`<img src="${esc(c.picture)}" alt="">`:""}${esc(c.name)}${c.id===CALLS.me?" (you)":""}</td><td class="num">${l.dems}–${l.reps}</td><td><span class="pill ${l.verdict==="D"?"d":"r"}">${l.verdict==="D"?"Democrats":"Republicans"}</span></td><td class="small" style="white-space:nowrap">${fmtShort(l.ts)}</td><td><button class="hist" data-id="${esc(c.id)}">${c.log.length} save${c.log.length===1?"":"s"}</button></td></tr>`; }).join("");
+  $$("#callsbody button.hist").forEach(b=>b.onclick=()=>{ const id=b.dataset.id; const ex=$(`#callsbody tr.hrow[data-for="${CSS.escape(id)}"]`); if(ex){ ex.remove(); return; }
+    const c=CALLS.calls.find(x=>x.id===id); const row=b.closest("tr");
+    const vers=[...c.log].reverse().map((v,i,all)=>{ const prev=c.log[c.log.length-2-i]; const ch=prev?v.changed.map(st=>`${B?B.races[st].name:st}: ${prev.picks[st]}→${v.picks[st]}`).join(", "):"first call"; return `<div class="ver"><span class="when">${fmtWhen(v.ts)}</span><span><b>D ${v.dems} · R ${v.reps}</b> → ${v.verdict==="D"?"Democrats":"Republicans"}</span><span class="muted">${esc(ch)}${v.note?` · “${esc(v.note)}”`:""}</span><span class="muted">${STATES.map(st=>st+":"+v.picks[st]).join(" ")}</span></div>`; }).join("");
+    const tr=document.createElement("tr"); tr.className="hrow"; tr.dataset.for=id; tr.innerHTML=`<td colspan="5">${vers}</td>`; row.after(tr); });
+  if(B){ const n=CALLS.calls.length; $("#cons").innerHTML=STATES.map(st=>{ const d=CALLS.calls.filter(c=>c.log[c.log.length-1].picks[st]==="D").length; return `<span>${esc(B.races[st].name)}</span><div class="b"><i style="width:${100*d/n}%"></i></div><span class="muted">${d} of ${n} say ${esc(B.races[st].dem)}</span>`; }).join(""); }
+}
+
+boot();
+</script>
+</body>
+</html>
