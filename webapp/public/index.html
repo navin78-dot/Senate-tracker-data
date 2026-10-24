@@ -183,8 +183,7 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
 .cal.compact.open .ctx.long{display:block}
 .calopt .t small{font-weight:500;color:var(--muted);font-size:13px}
 .calgate{font-size:14px;margin:10px 0 0}
-.sel{display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;font-size:13.5px;margin:6px 0 4px}
-@media (max-width:560px){ .sel{grid-template-columns:1fr} }
+.sel{display:grid;grid-template-columns:1fr;gap:0;font-size:13.5px;margin:6px 0 4px;max-width:520px}
 .sel span{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed var(--line);padding:4px 0}
 .sel span em{font-style:normal;color:var(--muted)}
 .sel span.chg em:after{content:" · changed";font-size:11px}
@@ -192,7 +191,7 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
 .calls tr.main{cursor:pointer}
 .calls .acts{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
 .calls button.del{color:var(--r)}
-.calls td.who small{display:block;color:var(--muted);font-size:11.5px}
+.calls td.person small{display:block;color:var(--muted);font-size:11.5px}
 .calls .nar{display:none}
 @media (max-width:640px){
   .calls{table-layout:fixed} .calls th,.calls td{padding:7px 3px} .calls th{font-size:10.5px}
@@ -603,15 +602,16 @@ function renderCalls(){
   const rows=[]; for(const c of CALLS.calls) c.log.forEach((v,i)=>rows.push({c,v,i}));
   rows.sort((a,b)=>a.v.ts<b.v.ts?1:a.v.ts>b.v.ts?-1:0);
   if(!rows.length){ body.innerHTML=`<tr><td colspan="5" class="muted">Nobody has saved a call yet. Be first.</td></tr>`; $("#cons").innerHTML=""; return; }
-  body.innerHTML=rows.map(({c,v,i})=>{ const mine=c.id===CALLS.me, key=c.id+"|"+v.ts; return `<tr class="main ${mine?"me":""}" data-key="${esc(key)}"><td class="who">${c.picture?`<img src="${esc(c.picture)}" alt="">`:""}${esc(c.name)}${mine?" (you)":""}<small>call ${i+1} of ${c.log.length}</small></td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td><span class="pill ${v.verdict==="D"?"d":"r"}"><span class="wide">${v.verdict==="D"?"Democrats":"Republicans"}</span><span class="nar">${v.verdict==="D"?"Dems":"Reps"}</span></span></td><td class="small" style="white-space:nowrap">${fmtShort(v.ts)}</td><td><div class="acts"><button class="hist" data-act="picks">Picks</button>${mine?`<button class="hist del" data-act="del">Delete</button>`:""}</div></td></tr>`; }).join("");
+  body.innerHTML=rows.map(({c,v,i})=>{ const mine=c.id===CALLS.me, key=c.id+"|"+v.ts; return `<tr class="main ${mine?"me":""}" data-key="${esc(key)}"><td class="person">${c.picture?`<img src="${esc(c.picture)}" alt="">`:""}${esc(c.name)}${mine?" (you)":""}<small>call ${i+1} of ${c.log.length}</small></td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td><span class="pill ${v.verdict==="D"?"d":"r"}"><span class="wide">${v.verdict==="D"?"Democrats":"Republicans"}</span><span class="nar">${v.verdict==="D"?"Dems":"Reps"}</span></span></td><td class="small" style="white-space:nowrap">${fmtShort(v.ts)}</td><td><div class="acts"><button class="hist" data-act="picks">Picks</button>${mine?`<button class="hist del" data-act="del">Delete</button>`:""}</div></td></tr>`; }).join("");
   const find=key=>{ const at=key.indexOf("|"), id=key.slice(0,at), ts=key.slice(at+1); const c=CALLS.calls.find(x=>x.id===id); const i=c?c.log.findIndex(e=>e.ts===ts):-1; return c&&i>=0?{c,v:c.log[i],i}:null; };
   const toggle=key=>{
     const ex=$(`#callsbody tr.hrow[data-for="${CSS.escape(key)}"]`); if(ex){ ex.remove(); return; }
     const f=find(key), row=$(`#callsbody tr.main[data-key="${CSS.escape(key)}"]`); if(!f||!row) return; const {c,v,i}=f;
     const prev=i>0?c.log[i-1]:null; const chg=new Set(prev?(v.changed||[]):[]);
     const what=!prev?"their first call":chg.size?`changed ${chg.size} race${chg.size===1?"":"s"} from their call before`:"same picks as their call before";
-    const grid=STATES.map(st=>{ const p=v.picks[st], r=B&&B.races[st]; const who=r?(p==="D"?r.dem:r.rep):p; return `<span class="${chg.has(st)?"chg":""}"><em>${esc(r?r.name:st)}</em><b class="${p==="D"?"fav-d":"fav-r"}">${esc(who)} (${p})</b></span>`; }).join("");
-    const tr=document.createElement("tr"); tr.className="hrow"; tr.dataset.for=key; tr.innerHTML=`<td colspan="5"><div class="small muted" style="margin-bottom:4px">${esc(c.name)}, ${fmtWhen(v.ts)} · ${what}${v.note?` · “${esc(v.note)}”`:""}</div><div class="sel">${grid}</div></td>`; row.after(tr); };
+    const order=B&&CAL?[...STATES].sort((a,b)=>B.races[b][CAL].adj-B.races[a][CAL].adj):STATES.slice();
+    const grid=order.map((st,n)=>{ const p=v.picks[st], r=B&&B.races[st]; const who=r?(p==="D"?r.dem:r.rep):p; return `<span class="${chg.has(st)?"chg":""}"><em>${n+1}. ${esc(r?r.name:st)}</em><b class="${p==="D"?"fav-d":"fav-r"}">${esc(who)} (${p})</b></span>`; }).join("");
+    const tr=document.createElement("tr"); tr.className="hrow"; tr.dataset.for=key; tr.innerHTML=`<td colspan="5"><div class="small muted" style="margin-bottom:4px">${esc(c.name)}, ${fmtWhen(v.ts)} · ${what}${v.note?` · “${esc(v.note)}”`:""}</div><div class="small muted" style="margin-top:8px">All 11 races, in the board's order:</div><div class="sel">${grid}</div></td>`; row.after(tr); };
   const del=async key=>{
     const f=find(key); if(!f) return;
     if(!confirm(`Delete your call from ${fmtWhen(f.v.ts)}? This cannot be undone.`)) return;
