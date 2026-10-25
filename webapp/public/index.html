@@ -223,6 +223,15 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
 .sel span.chg em:after{content:" · changed";font-size:11px}
 .hrow details{margin:4px 0;padding:4px 0} .hrow details summary{cursor:pointer;font-size:13px;color:var(--ink)}
 .calls tr.main{cursor:pointer}
+.switch{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 14px 6px 8px;font-size:13.5px;font-weight:600;cursor:pointer;user-select:none}
+.switch input{appearance:none;-webkit-appearance:none;width:36px;height:22px;border-radius:999px;background:var(--line);position:relative;margin:0;cursor:pointer;transition:background .15s}
+.switch input:before{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--card);box-shadow:0 1px 2px rgba(0,0,0,.2);transition:left .15s}
+.switch input:checked{background:var(--accent)} .switch input:checked:before{left:17px}
+.onlyyou{display:inline-block;border-radius:999px;padding:1px 7px;font-size:11px;background:var(--soft);color:var(--muted);font-weight:500;margin-left:6px;vertical-align:1px;white-space:nowrap}
+.sel span .why{display:block;font-weight:400;color:var(--muted);font-size:12.5px;margin-top:1px}
+.sel.detailed{max-width:760px} .sel.detailed>span{display:block;padding:6px 0} .sel.detailed>span>em{display:block;margin-bottom:2px} .sel.detailed>span>span{display:block;text-align:left}
+.sel.detailed .pill,.sel.detailed .flip{display:inline-block;border-bottom:none;padding:1px 6px;width:auto}
+.sel.detailed .why{display:block;text-align:left;border-bottom:none;padding:0;margin-top:2px;max-width:640px}
 .calls .acts{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
 .calls button.del{color:var(--r)}
 .calls td.person small{display:block;color:var(--muted);font-size:11.5px}
@@ -374,6 +383,13 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
         </div>
         <div class="status" id="savestatus"></div>
       </div>
+    </div>
+
+    <div class="card" id="claudecard" hidden>
+      <h2>Claude's call</h2>
+      <p class="ctx">Made Sunday October 25. Friends cannot see it until you turn this on. Turning it on adds a "Claude" row to everyone's calls and includes it in the agreement counts; turning it off hides it again.</p>
+      <label class="switch"><input type="checkbox" id="claude-switch"> <span id="claude-switch-text">Hidden from friends</span></label>
+      <div class="status" id="claude-status"></div>
     </div>
 
     <div class="card">
@@ -679,9 +695,9 @@ function renderCalls(){
   $("#calls-ctx").textContent=scored?"Ranked by races called right, then by the smallest total margin error. Tap a row to see every pick against the result.":"One row per person, their current call, newest change first, with the rules they had the board on when they saved. Tap a row to see the 11 picks with margins.";
   head.innerHTML=scored?`<tr><th class="rank">#</th><th>Who</th><th class="num">Right</th><th class="num">Error</th><th class="num">Seats</th><th>Senate</th></tr>`:`<tr><th>Who</th><th class="num">Seats D–R</th><th>Senate</th><th>Last changed (ET)</th></tr>`;
   if(!CALLS.calls.length){ body.innerHTML=`<tr><td colspan="6" class="muted">Nobody has saved a call yet. Be first.</td></tr>`; $("#agree").innerHTML=""; renderResults(); return; }
-  body.innerHTML=CALLS.calls.map(c=>{ const v=c.call, mine=c.id===CALLS.me; const who=`${c.picture?`<img src="${esc(c.picture)}" alt="">`:""}${esc(c.name)}${mine?" (you)":""}`;
-    return scored?`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="rank">${c.rank}</td><td class="person">${who}<small>${calTag(v.cal)}</small></td><td class="num"><b>${c.score.right}</b> of ${c.score.called}</td><td class="num">${c.score.err.toFixed(1)}</td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td><span class="pill ${v.verdict==="D"?"d":"r"}">${v.verdict==="D"?"Democrats":"Republicans"}</span></td></tr>`
-                 :`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="person">${who}<small>${calTag(v.cal)}${c.changes?` · changed ${c.changes} time${c.changes===1?"":"s"}`:""}</small></td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td><span class="pill ${v.verdict==="D"?"d":"r"}">${v.verdict==="D"?"Democrats":"Republicans"}</span></td><td class="small" style="white-space:nowrap">${fmtShort(v.ts)}</td></tr>`; }).join("");
+  body.innerHTML=CALLS.calls.map(c=>{ const v=c.call, mine=c.id===CALLS.me; const who=`${c.picture?`<img src="${esc(c.picture)}" alt="">`:""}${esc(c.name)}${mine?" (you)":""}${c.hiddenFromFriends?`<span class="onlyyou">only you can see this</span>`:""}`; const ruleTag=c.isClaude?"Claude's own call, fixed in code":calTag(v.cal);
+    return scored?`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="rank">${c.rank}</td><td class="person">${who}<small>${ruleTag}</small></td><td class="num"><b>${c.score.right}</b> of ${c.score.called}</td><td class="num">${c.score.err.toFixed(1)}</td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td><span class="pill ${v.verdict==="D"?"d":"r"}">${v.verdict==="D"?"Democrats":"Republicans"}</span></td></tr>`
+                 :`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="person">${who}<small>${ruleTag}${c.changes?` · changed ${c.changes} time${c.changes===1?"":"s"}`:""}</small></td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td><span class="pill ${v.verdict==="D"?"d":"r"}">${v.verdict==="D"?"Democrats":"Republicans"}</span></td><td class="small" style="white-space:nowrap">${fmtShort(v.ts)}</td></tr>`; }).join("");
   const toggle=id=>{
     const ex=$(`#callsbody tr.hrow[data-for="${CSS.escape(id)}"]`); if(ex){ ex.remove(); return; }
     const c=CALLS.calls.find(x=>x.id===id), row=$(`#callsbody tr.main[data-id="${CSS.escape(id)}"]`); if(!c||!row) return; const v=c.call;
@@ -689,8 +705,9 @@ function renderCalls(){
     const grid=order.map((st,n)=>{ const p=v.picks[st], r=B&&B.races[st]; const who=r?(p.w==="D"?r.dem:r.rep):p.w; const a=res[st]; const pr=c.score&&c.score.per[st];
       const actual=a?` <em>· result ${esc(r?(a.w==="D"?r.dem:r.rep):a.w)} by ${a.m}</em>`:""; const mark=pr?(pr.ok?`<span class="ok">✓ off by ${pr.err}</span>`:`<span class="bad">✗ off by ${pr.err}</span>`):"";
       const held=r?r.held:null, flip=held&&p.w!==held; const seat=held?` <span class="pill ${held==="D"?"d":"r"}">${held==="D"?"D":"R"} seat now</span>`:"";
-      return `<span><em>${n+1}. ${esc(r?r.name:st)}${seat}</em><span><b class="${p.w==="D"?"fav-d":"fav-r"}">${esc(who)} by ${p.m}</b>${flip?` <span class="flip">flip</span>`:""}${actual} ${mark}</span></span>`; }).join("");
-    const tr=document.createElement("tr"); tr.className="hrow"; tr.dataset.for=id; tr.innerHTML=`<td colspan="6"><div class="small muted">${esc(c.name)}'s call, saved ${fmtWhen(v.ts)} with the board on the <b>${calTag(v.cal)}</b>${c.changes?`, changed ${c.changes} time${c.changes===1?"":"s"} before that`:""}. Each race shows which party holds the seat now; <b>flip</b> means the pick would take it from the other party${c.id===CALLS.me&&!isLocked()?` · <button class="hist" data-act="del">Delete my call</button>`:""}</div><div class="sel">${grid}</div></td>`; row.after(tr);
+      const d=c.detail; const why=d?` · ${d.chance[st]}%<span class="why">${esc(d.why[st])}</span>`:"";
+      return `<span><em>${n+1}. ${esc(r?r.name:st)}${seat}</em><span><b class="${p.w==="D"?"fav-d":"fav-r"}">${esc(who)} by ${p.m}</b>${flip?` <span class="flip">flip</span>`:""}${actual} ${mark}${why}</span></span>`; }).join("");
+    const tr=document.createElement("tr"); tr.className="hrow"; tr.dataset.for=id; tr.innerHTML=`<td colspan="6"><div class="small muted">${c.isClaude?`Claude's call, made ${fmtWhen(v.ts)}. ${esc(c.detail?c.detail.note:"")} For each race: the pick and margin, the chance Claude put on that winner, and why`:`${esc(c.name)}'s call, saved ${fmtWhen(v.ts)} with the board on the <b>${calTag(v.cal)}</b>${c.changes?`, changed ${c.changes} time${c.changes===1?"":"s"} before that`:""}`}. Each race shows which party holds the seat now; <b>flip</b> means the pick would take it from the other party${c.id===CALLS.me&&!isLocked()?` · <button class="hist" data-act="del">Delete my call</button>`:""}</div><div class="sel${c.detail?" detailed":""}">${grid}</div></td>`; row.after(tr);
     const del=tr.querySelector('button[data-act="del"]'); if(del) del.onclick=async e=>{ e.stopPropagation(); if(!confirm("Delete your call? You can save a new one until the deadline.")) return; try{ await api("/api/calls",{method:"DELETE"}); PICKS={}; CALLS=await api("/api/calls"); renderCalls(); buildPicks(); updateTally(); $("#savestatus").textContent="Your call was deleted."; }catch(err){ $("#savestatus").textContent="Could not delete: "+err.message; } }; };
   $$("#callsbody tr.main").forEach(tr=>tr.onclick=()=>toggle(tr.dataset.id));
   if(B) renderAgree(B);
@@ -704,18 +721,30 @@ $("#vis-load").onclick=async()=>{
   }catch(e){ $("#vis-summary").textContent="Could not load: "+e.message; }
 };
 function renderAgree(B){
-  const people=CALLS.calls, n=people.length, k=CAL||"sept";
+  const people=CALLS.calls, counted=people.filter(c=>!c.hiddenFromFriends), n=counted.length, k=CAL||"sept";
   const order=[...STATES].sort((a,b)=>B.races[b][k].adj-B.races[a][k].adj);
   const first=nm=>String(nm||"friend").trim().split(/\s+/)[0];
-  const head=`<thead><tr><th>Race</th><th><div class="ph"><i class="av" style="background:var(--soft);color:var(--muted)">B</i><span>Board</span></div></th>${people.map(c=>`<th class="${c.id===CALLS.me?"me":""}"><div class="ph"><i class="av">${c.picture?`<img src="${esc(c.picture)}" alt="">`:esc(first(c.name).slice(0,1).toUpperCase())}</i><span>${esc(first(c.name))}<span class="wide">${c.id===CALLS.me?" (you)":""}</span></span><small class="muted" style="font-size:10px">${calShort(c.call.cal)}</small></div></th>`).join("")}<th>Split</th></tr></thead>`;
+  const head=`<thead><tr><th>Race</th><th><div class="ph"><i class="av" style="background:var(--soft);color:var(--muted)">B</i><span>Board</span></div></th>${people.map(c=>`<th class="${c.id===CALLS.me?"me":""}"><div class="ph"><i class="av">${c.picture?`<img src="${esc(c.picture)}" alt="">`:esc(first(c.name).slice(0,1).toUpperCase())}</i><span>${esc(first(c.name))}<span class="wide">${c.id===CALLS.me?" (you)":""}</span></span><small class="muted" style="font-size:10px">${c.hiddenFromFriends?"only you":c.isClaude?"in code":calShort(c.call.cal)}</small></div></th>`).join("")}<th>Split</th></tr></thead>`;
   const chip=(w,m,r,extra="")=>`<span class="chip ${w==="D"?"d":"r"}${extra}"><span class="wide">${esc(w==="D"?r.dem:r.rep)}</span><span class="nar">${w}</span> ${m}</span>`;
   const rows=order.map(st=>{ const r=B.races[st], a=r[k].adj; const bw=a>=0?"D":"R", bm=Math.abs(a).toFixed(1);
-    const nD=people.filter(c=>c.call.picks[st].w==="D").length, split=nD>0&&nD<n;
+    const nD=counted.filter(c=>c.call.picks[st].w==="D").length, split=nD>0&&nD<n;
     const sum=n===0?"":nD===n?`<span class="fav-d"><span class="wide">all ${n}: ${esc(r.dem)}</span><span class="nar">${n}–0</span></span>`:nD===0?`<span class="fav-r"><span class="wide">all ${n}: ${esc(r.rep)}</span><span class="nar">0–${n}</span></span>`:`<b>${nD}–${n-nD}</b><span class="wide"> split</span>`;
     return `<tr class="${split?"split":""}"><td class="race"><b>${esc(r.name)}</b><small>${esc(r.dem)} v ${esc(r.rep)} · ${r.held} seat now</small></td><td>${chip(bw,bm,r," b")}</td>${people.map(c=>{ const p=c.call.picks[st]; return `<td>${chip(p.w,p.m,r)}</td>`; }).join("")}<td class="sum">${sum}</td></tr>`; }).join("");
   $("#agree").innerHTML=head+`<tbody>${rows}</tbody>`;
 }
+function renderClaudeCard(){
+  const card=$("#claudecard"); if(!CALLS||!CALLS.admin){ card.hidden=true; return; }
+  card.hidden=false; const on=CALLS.showClaude===true; $("#claude-switch").checked=on; $("#claude-switch-text").textContent=on?"Shown to friends":"Hidden from friends";
+}
+$("#claude-switch").onchange=async e=>{
+  const on=e.target.checked; e.target.disabled=true; $("#claude-status").textContent="Saving…";
+  try{ const r=await api("/api/settings",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({showClaude:on})});
+    CALLS=await api("/api/calls"); renderCalls(); $("#claude-status").textContent=`Saved at ${fmtWhen(r.updatedAt||new Date().toISOString())}. ${r.showClaude?"Friends now see Claude's row.":"Claude's row is hidden from friends again."}`; }
+  catch(err){ $("#claude-status").textContent="Could not save: "+err.message; e.target.checked=!on; }
+  finally{ e.target.disabled=false; }
+};
 function renderResults(){
+  renderClaudeCard();
   $("#visitcard").hidden=!(CALLS&&CALLS.admin);
   if(!CALLS||!DATA) return; const B=DATA.board, res=CALLS.results||{}, open=!!CALLS.resultsOpen, called=STATES.filter(st=>res[st]).length;
   const card=$("#rescard"); card.classList.toggle("dim",!open&&!called);

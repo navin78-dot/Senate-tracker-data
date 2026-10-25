@@ -7,6 +7,8 @@ import { STATES } from "../lib/model.mjs";
 import { HELD_ELSEWHERE } from "../lib/board.mjs";
 import { DEADLINE, DEADLINE_TEXT, ADMIN_EMAILS, MAX_MARGIN, NEED, locked, score } from "../lib/rules.mjs";
 import { loadResults, ELECTION_DAY_TEXT } from "../lib/results.mjs";
+import { claudeRecord, CLAUDE_ID } from "../lib/claude-call.mjs";
+import { readSettings } from "./settings.mjs";
 
 function who(user){ return { id: user.id, name: user.name || user.userMetadata?.full_name || (user.email ? user.email.split("@")[0] : "friend"), picture: user.pictureUrl || null }; }
 const r1 = v => Math.round(v * 10) / 10;
@@ -23,6 +25,7 @@ export default async (req, context) => {
   }
 
   if (req.method === "POST") {
+    if (user.id === CLAUDE_ID) return Response.json({ error: "that id is reserved for Claude's call" }, { status: 400 });   // belt and braces; Identity ids never look like this
     let body; try { body = await req.json(); } catch { return Response.json({ error: "bad JSON" }, { status: 400 }); }
     const picks = body && body.picks;
     if (!picks || typeof picks !== "object") return Response.json({ error: "picks missing" }, { status: 400 });
@@ -55,11 +58,20 @@ export default async (req, context) => {
     const recs = await Promise.all(blobs.map(b => s.get(b.key, { type: "json" })));
     const res = results.states;
     const haveResults = Object.keys(res).length > 0;
-    const calls = recs.filter(r => r && r.call).map(r => ({ id: r.id, name: r.name, picture: r.picture, call: r.call, changes: r.changes || 0, score: haveResults ? score(r.call.picks, res, STATES) : null }));
+    const calls = recs.filter(r => r && r.call && r.id !== CLAUDE_ID).map(r => ({ id: r.id, name: r.name, picture: r.picture, call: r.call, changes: r.changes || 0, score: haveResults ? score(r.call.picks, res, STATES) : null }));
+    // Claude's call lives in code (../lib/claude-call.mjs) and is not subject to the deadline. Friends see it only once the admin
+    // turns the showClaude switch on; the admin always sees it, flagged hiddenFromFriends while the switch is off.
+    const settings = await readSettings(s);
+    const showClaude = settings.showClaude === true;
+    if (showClaude || isAdmin) {
+      const c = claudeRecord(results);
+      c.hiddenFromFriends = !showClaude;
+      calls.push(c);
+    }
     if (haveResults) calls.sort((a, b) => (b.score.right - a.score.right) || (a.score.err - b.score.err) || (a.call.ts < b.call.ts ? -1 : 1));
     else calls.sort((a, b) => a.call.ts < b.call.ts ? 1 : a.call.ts > b.call.ts ? -1 : 0);
     if (haveResults) { let rank = 0, prevKey = null; calls.forEach((c, i) => { const k = c.score.right + "|" + c.score.err; if (k !== prevKey) { rank = i + 1; prevKey = k; } c.rank = rank; }); }
-    const body = { me: user.id, admin: isAdmin, deadline: DEADLINE, deadlineText: DEADLINE_TEXT, locked: locked(), maxMargin: MAX_MARGIN, results: res, resultsUpdated: results.updated, resultsOpen: results.open, electionDayText: ELECTION_DAY_TEXT, calls };
+    const body = { me: user.id, admin: isAdmin, deadline: DEADLINE, deadlineText: DEADLINE_TEXT, locked: locked(), maxMargin: MAX_MARGIN, results: res, resultsUpdated: results.updated, resultsOpen: results.open, electionDayText: ELECTION_DAY_TEXT, showClaude, calls };
     return new Response(JSON.stringify(body), { headers: { "content-type": "application/json", "cache-control": "private, no-store" } });
   }
   return Response.json({ error: "method" }, { status: 405 });
