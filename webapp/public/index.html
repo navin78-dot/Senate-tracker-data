@@ -225,6 +225,15 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
 .sel span.chg em:after{content:" · changed";font-size:11px}
 .hrow details{margin:4px 0;padding:4px 0} .hrow details summary{cursor:pointer;font-size:13px;color:var(--ink)}
 .calls tr.main{cursor:pointer}
+.dlg{border:none;border-radius:16px;padding:0;max-width:760px;width:calc(100% - 24px);background:var(--card);color:var(--ink);box-shadow:0 10px 40px rgba(0,0,0,.25)}
+.dlg::backdrop{background:rgba(0,0,0,.45)}
+.dlg .inner{padding:18px 16px 16px;max-height:88vh;overflow:auto}
+.dlg h2{font-size:18px;margin:0 0 6px}
+.agree tr.dbrow td{border-bottom:none;padding-top:0;padding-bottom:4px}
+.agree tr.dbrow td.race{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.agree .chip.db{opacity:.92;outline:2px dashed color-mix(in srgb,var(--ink) 25%,transparent);outline-offset:1px}
+.agree .none{color:var(--muted);font-size:12px}
+#db-bar .btn:disabled{opacity:.5;cursor:default}
 .switch{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 14px 6px 8px;font-size:13.5px;font-weight:600;cursor:pointer;user-select:none}
 .switch input{appearance:none;-webkit-appearance:none;width:36px;height:22px;border-radius:999px;background:var(--line);position:relative;margin:0;cursor:pointer;transition:background .15s}
 .switch input:before{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--card);box-shadow:0 1px 2px rgba(0,0,0,.2);transition:left .15s}
@@ -232,7 +241,7 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
 .onlyyou{display:inline-block;border-radius:999px;padding:1px 7px;font-size:11px;background:var(--soft);color:var(--muted);font-weight:500;margin-left:6px;vertical-align:1px;white-space:nowrap}
 .sel span .why{display:block;font-weight:400;color:var(--muted);font-size:12.5px;margin-top:1px}
 .sel.detailed{max-width:760px} .sel.detailed>span{display:block;padding:6px 0} .sel.detailed>span>em{display:block;margin-bottom:2px} .sel.detailed>span>span{display:block;text-align:left}
-.sel.detailed .pill,.sel.detailed .flip{display:inline-block;border-bottom:none;padding:1px 6px;width:auto}
+.sel span .pill,.sel span .flip{display:inline-block;border-bottom:none;padding:1px 6px;width:auto}
 .sel.detailed .why{display:block;text-align:left;border-bottom:none;padding:0;margin-top:2px;max-width:640px}
 .calls .acts{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
 .calls button.del{color:var(--r)}
@@ -367,10 +376,24 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
   <section class="page" id="page-call" role="tabpanel">
     <div class="card" id="gridcard">
       <h2>Who picked what, race by race</h2>
-      <p class="ctx small">One column per person. A <span style="display:inline-block;border-radius:8px;padding:1px 6px;font-weight:700;color:#fff;background:var(--d)">blue</span> chip is a pick for the Democrat, a <span style="display:inline-block;border-radius:8px;padding:1px 6px;font-weight:700;color:#fff;background:var(--r)">red</span> chip for the Republican; the number is the margin in points. The first column is what the board says today. Under each race is the split and who is on each side; rows where you disagree are shaded.</p>
+      <p class="ctx small">One column per person. A <span style="display:inline-block;border-radius:8px;padding:1px 6px;font-weight:700;color:#fff;background:var(--d)">blue</span> chip is a pick for the Democrat, a <span style="display:inline-block;border-radius:8px;padding:1px 6px;font-weight:700;color:#fff;background:var(--r)">red</span> chip for the Republican; the number is the margin in points. The first column is what the board says today. Each state has a second row, "Day before", for the separate call made on Monday November 2 (a dashed chip; a dash means none yet). Under each race is the split and who is on each side; rows where you disagree are shaded.</p>
       <div class="tscroll"><table class="agree" id="agree"></table></div>
       <p class="ctx small" id="grid-hint" style="margin-top:10px"></p>
+      <div class="chips" id="db-bar" style="margin-top:8px"><button class="btn" id="db-open" style="padding:9px 14px">Make my day-before call</button><span class="small muted" id="db-note"></span></div>
     </div>
+
+    <dialog class="dlg" id="dbdlg" aria-labelledby="db-title">
+      <div class="inner">
+        <h2 id="db-title">Your day-before call</h2>
+        <p class="ctx">A separate call for the day before the election. Your original call stays exactly as it is; this one sits under it in the grid. It starts from your latest call, so change only what you want to, then save. You can change it until the polls open at 7am ET on Tuesday.</p>
+        <div class="chips"><button id="db-from-call">Start from my original call</button><button id="db-from-board">Start from the board</button></div>
+        <div id="dbpicks"></div>
+        <div class="tally" style="position:static;margin-top:12px">
+          <div class="line"><div><div class="big2" id="db-tally">Pick all 11 races</div><div class="small muted" id="db-sub"></div></div><div class="chips" style="margin:0"><button class="btn ghost" id="db-cancel" style="padding:10px 14px">Cancel</button><button class="btn" id="db-save" disabled>Save my day-before call</button></div></div>
+          <div class="status" id="db-status"></div>
+        </div>
+      </div>
+    </dialog>
 
     <div class="card" id="claudecard" hidden>
       <h2>Claude's call</h2>
@@ -390,6 +413,7 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
       <div class="rule"><b>One call per person.</b> Pick a winner in each of the 11 races and say by how many points. Saving again replaces your earlier call; there is no history, only your current call.</div>
       <div class="rule"><b>Change your mind as often as you like until <span id="dl-text">the deadline</span>.</b> After that every call is locked and nothing can be changed. <span id="dl-count" class="muted"></span></div>
       <div class="rule"><b>Scoring, race by race as each one is called.</b> One point for every race where you picked the winner. Ties are broken by your margins: for each called race we take the gap between the margin you predicted and the real one (a pick of Talarico by 2 against a result of Paxton by 3 is 5 points off), add those gaps up, and the smaller total wins the tie.</div>
+      <div class="rule"><b>The day before: a second call.</b> On Monday November 2, until the polls open at 7am ET on Tuesday, everyone can add a separate "day before" call from the button on this page. It sits under your original in the grid and never replaces it; the leaderboard still scores the original, and the day-before call is scored alongside it so we can see who moved and whether it helped.</div>
       <div class="rule"><b>After Election Day the results fill in on their own.</b> Nothing is typed into the site: as races are called, the results are scanned in, the greyed-out results card below comes alive, and the leaderboard replaces the plain list.</div>
     </div>
 
@@ -652,6 +676,7 @@ $$("#range button").forEach(b=>b.onclick=()=>{ RANGE=b.dataset.r; $$("#range but
 // PICKS is {ST:{w:"D"|"R", m:number|null}}; CALLS comes from /api/calls (one record per person, plus results and scores).
 const calTag=c=>c==="fw"?"Last 3 weeks rules":c==="sept"?"September rules":"rules not recorded";
 const calShort=c=>c==="fw"?"3 wks":c==="sept"?"Sept":"—";
+function myDayBefore(){ if(!CALLS||!ME) return null; const me=CALLS.calls.find(c=>c.id===CALLS.me); return me?me.dayBefore:null; }
 function myCall(){ if(!CALLS||!ME) return null; const me=CALLS.calls.find(c=>c.id===CALLS.me); return me?me.call:null; }
 function isLocked(){ return !!(CALLS&&(CALLS.locked||Date.now()>=Date.parse(CALLS.deadline))); }
 function dlText(){ return CALLS&&CALLS.deadlineText?CALLS.deadlineText:"Monday, November 2 at 9:00am ET"; }
@@ -701,19 +726,25 @@ function renderCalls(){
   $("#calls-ctx").textContent=scored?"Ranked by races called right, then by the smallest total margin error. Tap a row to see every pick against the result.":"One row per person, their current call, newest change first, with the rules they had the board on when they saved. Tap a row to see the 11 picks with margins.";
   head.innerHTML=scored?`<tr><th class="rank">#</th><th>Who</th><th class="num">Right</th><th class="num">Error</th><th class="num">Seats</th><th>Senate</th></tr>`:`<tr><th>Who</th><th class="num">Seats D–R</th><th>Senate</th><th>Last changed (ET)</th></tr>`;
   if(!CALLS.calls.length){ body.innerHTML=`<tr><td colspan="6" class="muted">Nobody has saved a call yet. Be first.</td></tr>`; $("#agree").innerHTML=""; renderResults(); return; }
-  body.innerHTML=CALLS.calls.map(c=>{ const v=c.call, mine=c.id===CALLS.me; const who=`${c.picture?`<img src="${esc(c.picture)}" alt="">`:""}${esc(c.name)}${mine?" (you)":""}${c.hiddenFromFriends?`<span class="onlyyou">only you can see this</span>`:""}`; const ruleTag=c.isClaude?"Claude's own call, fixed in code":calTag(v.cal);
-    return scored?`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="rank">${c.rank}</td><td class="person">${who}<small>${ruleTag}</small></td><td class="num"><b>${c.score.right}</b> of ${c.score.called}</td><td class="num">${c.score.err.toFixed(1)}</td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td><span class="pill ${v.verdict==="D"?"d":"r"}">${v.verdict==="D"?"Democrats":"Republicans"}</span></td></tr>`
-                 :`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="person">${who}<small>${ruleTag}${c.changes?` · changed ${c.changes} time${c.changes===1?"":"s"}`:""}</small></td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td><span class="pill ${v.verdict==="D"?"d":"r"}">${v.verdict==="D"?"Democrats":"Republicans"}</span></td><td class="small" style="white-space:nowrap">${fmtShort(v.ts)}</td></tr>`; }).join("");
+  body.innerHTML=CALLS.calls.map(c=>{ const v=c.call||{picks:null,dems:"—",reps:"—",verdict:null,ts:c.dayBefore?c.dayBefore.ts:"",cal:null}, mine=c.id===CALLS.me; const who=`${c.picture?`<img src="${esc(c.picture)}" alt="">`:""}${esc(c.name)}${mine?" (you)":""}${c.hiddenFromFriends?`<span class="onlyyou">only you can see this</span>`:""}`; const ruleTag=c.isClaude?"Claude's own call, fixed in code":!c.call?"no original call":calTag(v.cal); const dbTag=c.dayBefore?` · day-before call ${fmtShort(c.dayBefore.ts).replace("<br>"," ")}`:"";
+    return scored?`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="rank">${c.rank||"—"}</td><td class="person">${who}<small>${ruleTag}</small></td><td class="num">${c.score?`<b>${c.score.right}</b> of ${c.score.called}`:"—"}</td><td class="num">${c.score?c.score.err.toFixed(1):"—"}</td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td>${v.verdict?`<span class="pill ${v.verdict==="D"?"d":"r"}">${v.verdict==="D"?"Democrats":"Republicans"}</span>`:'<span class="muted small">—</span>'}</td></tr>`
+                 :`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="person">${who}<small>${ruleTag}${c.changes?` · changed ${c.changes} time${c.changes===1?"":"s"}`:""}${dbTag}</small></td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td>${v.verdict?`<span class="pill ${v.verdict==="D"?"d":"r"}">${v.verdict==="D"?"Democrats":"Republicans"}</span>`:'<span class="muted small">—</span>'}</td><td class="small" style="white-space:nowrap">${v.ts?fmtShort(v.ts):""}</td></tr>`; }).join("");
   const toggle=id=>{
     const ex=$(`#callsbody tr.hrow[data-for="${CSS.escape(id)}"]`); if(ex){ ex.remove(); return; }
     const c=CALLS.calls.find(x=>x.id===id), row=$(`#callsbody tr.main[data-id="${CSS.escape(id)}"]`); if(!c||!row) return; const v=c.call;
     const order=B&&CAL?[...STATES].sort((a,b)=>B.races[b][CAL].adj-B.races[a][CAL].adj):STATES.slice();
+    const pickGrid=(picks,sc)=>order.map((st,n)=>{ const p=picks[st], r=B&&B.races[st]; const who=r?(p.w==="D"?r.dem:r.rep):p.w; const a=res[st]; const pr=sc&&sc.per[st];
+      const actual=a?` <em>· result ${esc(r?(a.w==="D"?r.dem:r.rep):a.w)} by ${a.m}</em>`:""; const mark=pr?(pr.ok?`<span class="ok">✓ off by ${pr.err}</span>`:`<span class="bad">✗ off by ${pr.err}</span>`):"";
+      const held=r?r.held:null, flip=held&&p.w!==held; const seat=held?` <span class="pill ${held==="D"?"d":"r"}">${held==="D"?"D":"R"} seat now</span>`:"";
+      return `<span><em>${n+1}. ${esc(r?r.name:st)}${seat}</em><span><b class="${p.w==="D"?"fav-d":"fav-r"}">${esc(who)} by ${p.m}</b>${flip?` <span class="flip">flip</span>`:""}${actual} ${mark}</span></span>`; }).join("");
+    const dbBlock=c.dayBefore?`<div class="small muted" style="margin-top:12px"><b>Day-before call</b>, saved ${fmtWhen(c.dayBefore.ts)}${c.dayBeforeChanges?`, changed ${c.dayBeforeChanges} time${c.dayBeforeChanges===1?"":"s"}`:""}: <b class="fav-d">D ${c.dayBefore.dems}</b> · <b class="fav-r">R ${c.dayBefore.reps}</b> → ${c.dayBefore.verdict==="D"?'<b class="fav-d">Democrats</b>':'<b class="fav-r">Republicans</b>'}${c.dayBeforeScore?` · ${c.dayBeforeScore.right} of ${c.dayBeforeScore.called} right, off by ${c.dayBeforeScore.err.toFixed(1)}`:""}${v?`. Races that differ from the original are marked.`:""}</div><div class="sel">${pickGrid(c.dayBefore.picks,c.dayBeforeScore).replace(/<span><em>(\d+)\. /g,(m0,n)=>{ const st=order[Number(n)-1]; const diff=v&&(v.picks[st].w!==c.dayBefore.picks[st].w||Number(v.picks[st].m)!==Number(c.dayBefore.picks[st].m)); return `<span class="${diff?"chg":""}"><em>${n}. `; })}</div>`:"";
+    if(!v){ const tr=document.createElement("tr"); tr.className="hrow"; tr.dataset.for=id; tr.innerHTML=`<td colspan="6"><div class="small muted">${esc(c.name)} did not save an original call before the deadline.</div>${dbBlock}</td>`; row.after(tr); return; }
     const grid=order.map((st,n)=>{ const p=v.picks[st], r=B&&B.races[st]; const who=r?(p.w==="D"?r.dem:r.rep):p.w; const a=res[st]; const pr=c.score&&c.score.per[st];
       const actual=a?` <em>· result ${esc(r?(a.w==="D"?r.dem:r.rep):a.w)} by ${a.m}</em>`:""; const mark=pr?(pr.ok?`<span class="ok">✓ off by ${pr.err}</span>`:`<span class="bad">✗ off by ${pr.err}</span>`):"";
       const held=r?r.held:null, flip=held&&p.w!==held; const seat=held?` <span class="pill ${held==="D"?"d":"r"}">${held==="D"?"D":"R"} seat now</span>`:"";
       const d=c.detail; const why=d?` · ${d.chance[st]}%<span class="why">${esc(d.why[st])}</span>`:"";
       return `<span><em>${n+1}. ${esc(r?r.name:st)}${seat}</em><span><b class="${p.w==="D"?"fav-d":"fav-r"}">${esc(who)} by ${p.m}</b>${flip?` <span class="flip">flip</span>`:""}${actual} ${mark}${why}</span></span>`; }).join("");
-    const tr=document.createElement("tr"); tr.className="hrow"; tr.dataset.for=id; tr.innerHTML=`<td colspan="6"><div class="small muted">${c.isClaude?`Claude's call, made ${fmtWhen(v.ts)}. ${esc(c.detail?c.detail.note:"")} For each race: the pick and margin, the chance Claude put on that winner, and why`:`${esc(c.name)}'s call, saved ${fmtWhen(v.ts)} with the board on the <b>${calTag(v.cal)}</b>${c.changes?`, changed ${c.changes} time${c.changes===1?"":"s"} before that`:""}`}. Each race shows which party holds the seat now; <b>flip</b> means the pick would take it from the other party${c.id===CALLS.me&&!isLocked()?` · <button class="hist" data-act="del">Delete my call</button>`:""}</div><div class="sel${c.detail?" detailed":""}">${grid}</div></td>`; row.after(tr);
+    const tr=document.createElement("tr"); tr.className="hrow"; tr.dataset.for=id; tr.innerHTML=`<td colspan="6"><div class="small muted">${c.isClaude?`Claude's call, made ${fmtWhen(v.ts)}. ${esc(c.detail?c.detail.note:"")} For each race: the pick and margin, the chance Claude put on that winner, and why`:`${esc(c.name)}'s call, saved ${fmtWhen(v.ts)} with the board on the <b>${calTag(v.cal)}</b>${c.changes?`, changed ${c.changes} time${c.changes===1?"":"s"} before that`:""}`}. Each race shows which party holds the seat now; <b>flip</b> means the pick would take it from the other party${c.id===CALLS.me&&!isLocked()?` · <button class="hist" data-act="del">Delete my call</button>`:""}</div><div class="sel${c.detail?" detailed":""}">${grid}</div>${dbBlock}</td>`; row.after(tr);
     const del=tr.querySelector('button[data-act="del"]'); if(del) del.onclick=async e=>{ e.stopPropagation(); if(!confirm("Delete your call? You can save a new one until the deadline.")) return; try{ await api("/api/calls",{method:"DELETE"}); PICKS={}; CALLS=await api("/api/calls"); renderCalls(); buildPicks(); updateTally(); $("#savestatus").textContent="Your call was deleted."; }catch(err){ $("#savestatus").textContent="Could not delete: "+err.message; } }; };
   $$("#callsbody tr.main").forEach(tr=>tr.onclick=()=>toggle(tr.dataset.id));
   if(B) renderAgree(B);
@@ -727,22 +758,56 @@ $("#vis-load").onclick=async()=>{
   }catch(e){ $("#vis-summary").textContent="Could not load: "+e.message; }
 };
 function renderAgree(B){
-  const people=CALLS.calls, counted=people.filter(c=>!c.hiddenFromFriends), n=counted.length, k=CAL||"sept";
+  const people=CALLS.calls, counted=people.filter(c=>!c.hiddenFromFriends), n=counted.length, k=CAL||"sept", anyDb=counted.some(c=>c.dayBefore);
   const order=[...STATES].sort((a,b)=>B.races[b][k].adj-B.races[a][k].adj);
   const first=nm=>String(nm||"friend").trim().split(/\s+/)[0];
-  const head=`<thead><tr><th>Race</th><th><div class="ph"><i class="av" style="background:var(--soft);color:var(--muted)">B</i><span>Board</span></div></th>${people.map(c=>`<th class="${c.id===CALLS.me?"me":""}"><div class="ph"><i class="av">${c.picture?`<img src="${esc(c.picture)}" alt="">`:esc(first(c.name).slice(0,1).toUpperCase())}</i><span>${esc(first(c.name))}<span class="wide">${c.id===CALLS.me?" (you)":""}</span></span><small class="muted" style="font-size:10px">${c.hiddenFromFriends?"only you":c.isClaude?"in code":calShort(c.call.cal)}</small></div></th>`).join("")}</tr></thead>`;
+  const head=`<thead><tr><th>Race</th><th><div class="ph"><i class="av" style="background:var(--soft);color:var(--muted)">B</i><span>Board</span></div></th>${people.map(c=>`<th class="${c.id===CALLS.me?"me":""}"><div class="ph"><i class="av">${c.picture?`<img src="${esc(c.picture)}" alt="">`:esc(first(c.name).slice(0,1).toUpperCase())}</i><span>${esc(first(c.name))}<span class="wide">${c.id===CALLS.me?" (you)":""}</span></span><small class="muted" style="font-size:10px">${c.hiddenFromFriends?"only you":c.isClaude?"in code":c.call?calShort(c.call.cal):"day before only"}</small></div></th>`).join("")}</tr></thead>`;
   const chip=(w,m,r,extra="")=>`<span class="chip ${w==="D"?"d":"r"}${extra}"><span class="wide">${esc(w==="D"?r.dem:r.rep)}</span><span class="nar">${w}</span> ${m}</span>`;
   const rows=order.map(st=>{ const r=B.races[st], a=r[k].adj; const bw=a>=0?"D":"R", bm=Math.abs(a).toFixed(1);
-    const ds=counted.filter(c=>c.call.picks[st].w==="D"), rs=counted.filter(c=>c.call.picks[st].w==="R"), nD=ds.length, split=nD>0&&nD<n;
+    const ds=counted.filter(c=>c.call&&c.call.picks[st].w==="D"), rs=counted.filter(c=>c.call&&c.call.picks[st].w==="R"), nD=ds.length, nR=rs.length, split=nD>0&&nR>0;
     const names=arr=>arr.map(c=>esc(first(c.name))+(c.id===CALLS.me?" (you)":"")).join(", ");
-    const sum=n===0?"":nD===n?`<b class="fav-d">Everyone (${n}) says ${esc(r.dem)}</b>`:nD===0?`<b class="fav-r">Everyone (${n}) says ${esc(r.rep)}</b>`:`<b>Split ${nD}–${n-nD}:</b> <b class="fav-d">${esc(r.dem)} ${nD}</b> (${names(ds)}) · <b class="fav-r">${esc(r.rep)} ${n-nD}</b> (${names(rs)})`;
+    const nn=nD+nR; const sum=nn===0?"":nR===0?`<b class="fav-d">Everyone (${nn}) says ${esc(r.dem)}</b>`:nD===0?`<b class="fav-r">Everyone (${nn}) says ${esc(r.rep)}</b>`:`<b>Split ${nD}–${nR}:</b> <b class="fav-d">${esc(r.dem)} ${nD}</b> (${names(ds)}) · <b class="fav-r">${esc(r.rep)} ${nR}</b> (${names(rs)})`;
     const cols=people.length+2;
-    return `<tr class="mainrow ${split?"split":""}"><td class="race"><b>${esc(r.name)}</b><small>${esc(r.dem)} v ${esc(r.rep)} · ${r.held} seat now</small></td><td>${chip(bw,bm,r," b")}</td>${people.map(c=>{ const p=c.call.picks[st]; return `<td>${chip(p.w,p.m,r)}</td>`; }).join("")}</tr><tr class="sub ${split?"split":""}"><td colspan="${cols}">${sum}</td></tr>`; }).join("");
+    const dbs=counted.filter(c=>c.dayBefore&&c.dayBefore.picks[st].w==="D"), dbr=counted.filter(c=>c.dayBefore&&c.dayBefore.picks[st].w==="R"), ndb=dbs.length+dbr.length;
+    const dbSum=!anyDb?"":ndb===0?"":`<span class="muted">Day before (${ndb}): </span>${dbs.length===ndb?`<b class="fav-d">everyone says ${esc(r.dem)}</b>`:dbr.length===ndb?`<b class="fav-r">everyone says ${esc(r.rep)}</b>`:`<b class="fav-d">${esc(r.dem)} ${dbs.length}</b> (${names(dbs)}) · <b class="fav-r">${esc(r.rep)} ${dbr.length}</b> (${names(dbr)})`}`;
+    const dbRow=(anyDb||CALLS.dayBeforeOpen)?`<tr class="dbrow ${split?"split":""}"><td class="race">Day before</td><td></td>${people.map(c=>{ const p=c.dayBefore&&c.dayBefore.picks[st]; return `<td>${p?chip(p.w,p.m,r," db"):'<span class="none">—</span>'}</td>`; }).join("")}</tr>`:"";
+    return `<tr class="mainrow ${split?"split":""}"><td class="race"><b>${esc(r.name)}</b><small>${esc(r.dem)} v ${esc(r.rep)} · ${r.held} seat now</small></td><td>${chip(bw,bm,r," b")}</td>${people.map(c=>{ const p=c.call&&c.call.picks[st]; return `<td>${p?chip(p.w,p.m,r):'<span class="none">—</span>'}</td>`; }).join("")}</tr>${dbRow}<tr class="sub ${split?"split":""}"><td colspan="${cols}">${sum}${dbSum?`<br>${dbSum}`:""}</td></tr>`; }).join("");
   $("#agree").innerHTML=head+`<tbody>${rows}</tbody>`;
   const mine=myCall(), hint=$("#grid-hint");
   hint.innerHTML=isLocked()?"":mine?`Want to change yours? <button class="hist" id="go-make">Change my call, below</button>`:`You are not in the grid yet. <button class="hist" id="go-make">Make your call, below</button>`;
   const go=$("#go-make"); if(go) go.onclick=()=>$("#callcard").scrollIntoView({behavior:"smooth",block:"start"});
+  const open=!!CALLS.dayBeforeOpen, haveDb=!!myDayBefore(), btn=$("#db-open"), note=$("#db-note");
+  btn.disabled=!open; btn.textContent=haveDb?"Change my day-before call":"Make my day-before call";
+  note.textContent=open?(haveDb?`Saved ${fmtWhen(myDayBefore().ts)}. Open until 7am ET on Election Day.`:"Open now, until the polls open at 7am ET on Tuesday."):(Date.now()<Date.parse(CALLS.dayBeforeOpensAt||0)?"Opens Monday, November 2.":"Closed: the polls have opened.");
 }
+/* ---------- the day-before call (popup) ---------- */
+let DB={};
+function dbVal(st){ const p=DB[st]; return p&&p.m!=null&&p.m!==""&&Number.isFinite(Number(p.m))?Number(p.m):null; }
+function dbComplete(){ return STATES.every(st=>DB[st]&&(DB[st].w==="D"||DB[st].w==="R")&&dbVal(st)!=null&&dbVal(st)>=0&&dbVal(st)<=(CALLS?CALLS.maxMargin:40)); }
+function buildDbPicks(){
+  const B=DATA.board, k=CAL||"sept"; const rows=STATES.map(st=>B.races[st]).sort((a,b)=>Math.abs(a[k].adj)-Math.abs(b[k].adj)); const orig=myCall();
+  $("#dbpicks").innerHTML=rows.map(r=>{ const p=DB[r.st]||{}; const w=p.w||""; const o=orig&&orig.picks[r.st]; return `<div class="pickrow" data-st="${r.st}" data-w="${w}"><div class="st"><b>${esc(r.name)}</b><small>${o?`your original: <b class="${o.w==="D"?"fav-d":"fav-r"}">${esc(o.w==="D"?r.dem:r.rep)} by ${o.m}</b> · `:""}board ${mar(r[k].adj)} · market favorite ${mktHtml(r)}</small></div><button class="d" data-v="D" aria-pressed="${w==="D"}">${esc(r.dem)} (D)</button><button class="r" data-v="R" aria-pressed="${w==="R"}">${esc(r.rep)} (R)</button><div class="mrow"><span class="by">wins by</span><input class="mg" type="number" inputmode="decimal" min="0" max="${CALLS?CALLS.maxMargin:40}" step="0.1" placeholder="pts" value="${p.m!=null?p.m:""}" aria-label="${esc(r.name)} winning margin in points"><span class="by">pts</span></div></div>`; }).join("");
+  $$("#dbpicks .pickrow button").forEach(b=>b.onclick=()=>{ const row=b.closest(".pickrow"), st=row.dataset.st; DB[st]={...(DB[st]||{}),w:b.dataset.v}; row.dataset.w=b.dataset.v; row.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed", x===b?"true":"false")); dbTally(); });
+  $$("#dbpicks input.mg").forEach(inp=>inp.oninput=()=>{ const st=inp.closest(".pickrow").dataset.st; DB[st]={...(DB[st]||{}),m:inp.value===""?null:Number(inp.value)}; dbTally(); });
+  dbTally();
+}
+function dbTally(){
+  const nw=STATES.filter(st=>DB[st]&&DB[st].w).length, nm=STATES.filter(st=>dbVal(st)!=null).length, dems=43+STATES.filter(st=>DB[st]&&DB[st].w==="D").length, orig=myCall();
+  if(!dbComplete()){ $("#db-tally").textContent=`${nw} of 11 winners picked, ${nm} of 11 margins filled`; $("#db-sub").textContent="Every race needs a winner and a margin in points."; $("#db-save").disabled=true; return; }
+  const moved=orig?STATES.filter(st=>orig.picks[st].w!==DB[st].w).length:0;
+  $("#db-tally").innerHTML=`Day before: ${seatsHtml(dems,100-dems)} → ${verdictHtml(dems)}`; $("#db-sub").textContent=orig?(moved?`${moved} race${moved===1?"":"s"} flipped from your original call.`:"Same winners as your original call; only margins differ, if anything."):"You have no original call; this will be your only one."; $("#db-save").disabled=false;
+}
+$("#db-open").onclick=()=>{ if(!DATA||!CALLS||!CALLS.dayBeforeOpen) return; const base=myDayBefore()||myCall(); DB=base?JSON.parse(JSON.stringify(base.picks)):{}; $("#db-status").textContent=""; buildDbPicks(); $("#dbdlg").showModal(); };
+$("#db-cancel").onclick=()=>$("#dbdlg").close();
+$("#db-from-call").onclick=()=>{ const o=myCall(); if(!o) return; DB=JSON.parse(JSON.stringify(o.picks)); buildDbPicks(); };
+$("#db-from-board").onclick=()=>{ for(const st of STATES){ const a=DATA.board.races[st][CAL||"sept"].adj; DB[st]={w:a>=0?"D":"R",m:Math.round(Math.abs(a)*10)/10}; } buildDbPicks(); };
+$("#db-save").onclick=async()=>{
+  $("#db-save").disabled=true; $("#db-status").textContent="Saving…";
+  try{ const picks={}; for(const st of STATES) picks[st]={w:DB[st].w,m:dbVal(st)};
+    const res=await api("/api/calls",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({kind:"dayBefore",picks,cal:CAL})});
+    CALLS=await api("/api/calls"); renderCalls(); $("#dbdlg").close(); $("#savestatus").textContent=(res.replaced?"Replaced your day-before call. ":"Saved your day-before call. ")+"It is in the second row of each state in the grid above.";
+  }catch(e){ $("#db-status").textContent="Could not save: "+e.message; $("#db-save").disabled=false; }
+};
 function renderClaudeCard(){
   const card=$("#claudecard"); if(!CALLS||!CALLS.admin){ card.hidden=true; return; }
   card.hidden=false; const on=CALLS.showClaude===true; $("#claude-switch").checked=on; $("#claude-switch-text").textContent=on?"Shown to friends":"Hidden from friends";

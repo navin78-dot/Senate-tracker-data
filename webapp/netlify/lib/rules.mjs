@@ -7,6 +7,13 @@ export const NEED = 51;                              // Democrats need 51; 50-50
 
 export function locked(now = Date.now()) { return now >= Date.parse(DEADLINE); }
 
+// The "day before" call: a second, separate call everyone may add on Monday November 2, kept next to the original.
+// Open from midnight ET on November 2 until the polls open at 7:00am ET on Election Day. Not subject to DEADLINE.
+export const DAYBEFORE_OPEN = "2026-11-02T05:00:00Z";
+export const DAYBEFORE_CLOSE = "2026-11-03T12:00:00Z";
+export const DAYBEFORE_TEXT = "Monday, November 2, until 7:00am ET on Election Day";
+export function dayBeforeOpen(now = Date.now()) { return now >= Date.parse(DAYBEFORE_OPEN) && now < Date.parse(DAYBEFORE_CLOSE); }
+
 // A pick is { w: "D"|"R", m: number } — winner and the winner's margin in points. Signed D margin: +m for D, -m for R.
 export function signed(p) { return p.w === "D" ? p.m : -p.m; }
 
