@@ -172,7 +172,7 @@ details summary{cursor:pointer;font-size:13.5px;color:var(--muted)}
 .agree tr.sub td{text-align:left;font-size:12px;color:var(--muted);padding:0 4px 8px;border-bottom:1px solid var(--line)}
 .agree tr.sub td b{font-weight:600}
 .agree .nar{display:none}
-@media (max-width:640px){ .agree{font-size:12px} .agree .wide{display:none} .agree .nar{display:inline} .agree td,.agree th{padding:4px 1px} .agree .chip{padding:2px 3px;font-size:11.5px;border-radius:6px} .agree td.race{padding-left:0} .agree td.race b{font-size:12px} .agree td.race small{display:none} .agree .ph{font-size:11px} .agree .ph .av{width:22px;height:22px;font-size:11px} .agree .ph span{max-width:44px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap} }
+@media (max-width:640px){ .agree{font-size:12px} .agree .wide{display:none} .agree .nar{display:inline} .agree td,.agree th{padding:4px 1px} .agree .chip{padding:2px 3px;font-size:11.5px;border-radius:6px} .agree td.race{padding-left:0} .agree td.race b{font-size:12px} .agree td.race small{display:none} .agree .ph{font-size:11px} .agree .ph .av{width:22px;height:22px;font-size:11px} .agree .ph span{max-width:44px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap} .agree .seats{font-size:12.5px} .agree .seats .n{display:flex;flex-direction:column;line-height:1.15} .agree tfoot tr.tot td{font-size:11.5px} }
 .rules .rule{padding:8px 0;border-bottom:1px solid var(--line);font-size:14.5px}
 .rules .rule:last-child{border-bottom:none}
 .rules .rule b{display:block;margin-bottom:2px}
@@ -234,7 +234,7 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
 .agree tfoot tr.tot td{border-bottom:none;border-top:2px solid var(--line);padding-top:8px;background:var(--soft);font-size:13px}
 .agree tfoot tr.tot+tr.tot td{border-top:1px dashed var(--line);padding-top:6px}
 .agree tfoot td.race{font-weight:600} .agree tfoot td.race small{display:block;font-weight:400}
-.agree .seats{display:inline-flex;flex-direction:column;align-items:center;gap:2px;font-variant-numeric:tabular-nums;font-size:14px} .agree .seats .pill{font-size:10px;padding:0 6px}
+.agree .seats{display:inline-flex;flex-direction:column;align-items:center;gap:2px;font-variant-numeric:tabular-nums;font-size:14px} .agree .seats .n{white-space:nowrap} .agree .seats .pill{font-size:10px;padding:0 6px}
 .agree tr.dbrow td.race{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
 .agree .chip.db{opacity:.92;outline:2px dashed color-mix(in srgb,var(--ink) 25%,transparent);outline-offset:1px}
 .agree .none{color:var(--muted);font-size:12px}
@@ -784,7 +784,7 @@ function renderAgree(B){
     const dbSum=!anyDb?"":ndb===0?"":`<span class="muted">Day before (${ndb}): </span>${dbs.length===ndb?`<b class="fav-d">everyone says ${esc(r.dem)}</b>`:dbr.length===ndb?`<b class="fav-r">everyone says ${esc(r.rep)}</b>`:`<b class="fav-d">${esc(r.dem)} ${dbs.length}</b> (${names(dbs)}) · <b class="fav-r">${esc(r.rep)} ${dbr.length}</b> (${names(dbr)})`}`;
     const dbRow=(anyDb||CALLS.dayBeforeOpen)?`<tr class="dbrow ${split?"split":""}"><td class="race">Day before</td><td></td>${people.map(c=>{ const p=c.dayBefore&&c.dayBefore.picks[st]; return `<td>${p?chip(p.w,p.m,r," db"):'<span class="none">—</span>'}</td>`; }).join("")}</tr>`:"";
     return `<tr class="mainrow ${split?"split":""}"><td class="race"><b>${esc(r.name)}</b><small>${esc(r.dem)} v ${esc(r.rep)} · ${r.held} seat now</small></td><td>${chip(bw,bm,r," b")}</td>${people.map(c=>{ const p=c.call&&c.call.picks[st]; return `<td>${p?chip(p.w,p.m,r):'<span class="none">—</span>'}</td>`; }).join("")}</tr>${dbRow}<tr class="sub ${split?"split":""}"><td colspan="${cols}">${sum}${dbSum?`<br>${dbSum}`:""}</td></tr>`; }).join("");
-  const seatCell=(d,r)=>d==null?'<span class="none">—</span>':`<span class="seats"><b class="fav-d">${d}</b>–<b class="fav-r">${r}</b><span class="pill ${d>=51?"d":"r"} wide">${d>=51?"Dems":"Reps"}</span></span>`;
+  const seatCell=(d,r)=>d==null?'<span class="none">—</span>':`<span class="seats"><span class="n"><b class="fav-d">${d}</b><span class="wide">–</span><b class="fav-r">${r}</b></span><span class="pill ${d>=51?"d":"r"} wide">${d>=51?"Dems":"Reps"}</span></span>`;
   const bs=B.seats&&B.seats[k];
   const foot=`<tfoot><tr class="tot"><td class="race">Seats, original<small>D–R of 100</small></td><td>${bs?seatCell(bs.dems,bs.reps):""}</td>${people.map(c=>`<td>${c.call?seatCell(c.call.dems,c.call.reps):seatCell(null)}</td>`).join("")}</tr>${(anyDb||CALLS.dayBeforeOpen)?`<tr class="tot"><td class="race">Seats, day before<small>D–R of 100</small></td><td></td>${people.map(c=>`<td>${c.dayBefore?seatCell(c.dayBefore.dems,c.dayBefore.reps):seatCell(null)}</td>`).join("")}</tr>`:""}</tfoot>`;
   $("#agree").innerHTML=head+`<tbody>${rows}</tbody>`+foot;
