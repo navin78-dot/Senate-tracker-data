@@ -138,7 +138,7 @@ details summary{cursor:pointer;font-size:13.5px;color:var(--muted)}
 .tally .line{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .tally .big2{font-size:22px;font-weight:700;letter-spacing:-.01em}
 .btn{border:none;background:var(--accent);color:var(--bg);border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer;font-size:15px}
-.btn[disabled]{opacity:.5;cursor:default}
+.btn[disabled]{opacity:.4;filter:grayscale(1);cursor:default;pointer-events:none}
 .btn.ghost{background:var(--card);color:var(--ink);border:1.5px solid var(--line);font-weight:600}
 .note{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 10px;font:inherit;background:var(--card);color:var(--ink);margin-top:8px}
 .status{font-size:13px;color:var(--muted);margin-top:6px;min-height:18px}
@@ -231,6 +231,10 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
 .dlg .inner{padding:18px 16px 16px;max-height:88vh;overflow:auto}
 .dlg h2{font-size:18px;margin:0 0 6px}
 .agree tr.dbrow td{border-bottom:none;padding-top:0;padding-bottom:4px}
+.agree tfoot tr.tot td{border-bottom:none;border-top:2px solid var(--line);padding-top:8px;background:var(--soft);font-size:13px}
+.agree tfoot tr.tot+tr.tot td{border-top:1px dashed var(--line);padding-top:6px}
+.agree tfoot td.race{font-weight:600} .agree tfoot td.race small{display:block;font-weight:400}
+.agree .seats{display:inline-flex;flex-direction:column;align-items:center;gap:2px;font-variant-numeric:tabular-nums;font-size:14px} .agree .seats .pill{font-size:10px;padding:0 6px}
 .agree tr.dbrow td.race{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
 .agree .chip.db{opacity:.92;outline:2px dashed color-mix(in srgb,var(--ink) 25%,transparent);outline-offset:1px}
 .agree .none{color:var(--muted);font-size:12px}
@@ -681,6 +685,8 @@ $$("#range button").forEach(b=>b.onclick=()=>{ RANGE=b.dataset.r; $$("#range but
 // PICKS is {ST:{w:"D"|"R", m:number|null}}; CALLS comes from /api/calls (one record per person, plus results and scores).
 const calTag=c=>c==="fw"?"Last 3 weeks rules":c==="sept"?"September rules":"rules not recorded";
 const calShort=c=>c==="fw"?"3 wks":c==="sept"?"Sept":"—";
+function missingText(miss){ return miss.length>=6?`${miss.length} of the 11 races still need a winner and a margin; the fastest way is one of the "Start from" buttons above, then adjust.`:"Still missing: "+miss.join(", ")+"."; }
+function missingList(picks,B){ const out=[]; for(const st of STATES){ const p=picks[st]||{}; const name=B?B.races[st].name:st; const noW=!(p.w==="D"||p.w==="R"); const m=p.m; const noM=m==null||m===""||!Number.isFinite(Number(m)); const bad=!noM&&(Number(m)<0||Number(m)>(CALLS?CALLS.maxMargin:40)); if(noW&&noM) out.push(name+" (winner and margin)"); else if(noW) out.push(name+" (winner)"); else if(noM) out.push(name+" (margin)"); else if(bad) out.push(name+" (margin must be 0 to "+(CALLS?CALLS.maxMargin:40)+")"); } return out; }
 function myDayBefore(){ if(!CALLS||!ME) return null; const me=CALLS.calls.find(c=>c.id===CALLS.me); return me?me.dayBefore:null; }
 function myCall(){ if(!CALLS||!ME) return null; const me=CALLS.calls.find(c=>c.id===CALLS.me); return me?me.call:null; }
 function isLocked(){ return !!(CALLS&&(CALLS.locked||Date.now()>=Date.parse(CALLS.deadline))); }
@@ -706,8 +712,9 @@ function updateTally(){
   const lock=isLocked(); const nw=STATES.filter(st=>PICKS[st]&&PICKS[st].w).length, nm=STATES.filter(st=>mval(st)!=null).length;
   const dems=43+STATES.filter(st=>PICKS[st]&&PICKS[st].w==="D").length;
   const mine=myCall(); const same=mine&&STATES.every(st=>PICKS[st]&&mine.picks[st].w===PICKS[st].w&&Number(mine.picks[st].m)===mval(st));
-  if(lock){ $("#tallyline").innerHTML=mine?`Your final call: ${seatsHtml(mine.dems,mine.reps)} → ${verdictHtml(mine.dems)}`:"No call saved"; $("#tallysub").textContent="Locked. Scores appear below as races are called."; $("#save").disabled=true; return; }
-  if(!complete()){ $("#tallyline").textContent=`${nw} of 11 winners picked, ${nm} of 11 margins filled`; $("#save").disabled=true; $("#tallysub").textContent="Every race needs a winner and a margin in points (0 to "+(CALLS?CALLS.maxMargin:40)+")."; return; }
+  $("#save").hidden=lock;
+  if(lock){ $("#tallyline").innerHTML=mine?`Your final call: ${seatsHtml(mine.dems,mine.reps)} → ${verdictHtml(mine.dems)}`:"No call saved"; $("#tallysub").textContent=`Locked at ${dlText()}. The day-before call at the top of this page is still open until 7am ET on Tuesday.`; $("#save").disabled=true; return; }
+  if(!complete()){ const miss=missingList(PICKS,DATA.board); $("#tallyline").textContent=`${nw} of 11 winners picked, ${nm} of 11 margins filled`; $("#save").disabled=true; $("#tallysub").textContent="The Save button stays grey until every race has a winner and a margin in points (a plain number like 2 or 3.5). "+missingText(miss); return; }
   $("#tallyline").innerHTML=`Your call: ${seatsHtml(dems,100-dems)} → ${verdictHtml(dems)}`; $("#save").disabled=!!same;
   $("#tallysub").innerHTML=same?`This is exactly your saved call (${fmtWhen(mine.ts)}). Change something to save a new one.`:mine?`Saving replaces your call from ${fmtWhen(mine.ts)}. Changes allowed until ${esc(dlText())}.`:`Democrats hold 43 seats outside these races; 51 takes the Senate, 50 does not. Changes allowed until ${esc(dlText())}.`;
   $("#save").textContent=mine?"Save (replaces my call)":"Save my call";
@@ -777,7 +784,10 @@ function renderAgree(B){
     const dbSum=!anyDb?"":ndb===0?"":`<span class="muted">Day before (${ndb}): </span>${dbs.length===ndb?`<b class="fav-d">everyone says ${esc(r.dem)}</b>`:dbr.length===ndb?`<b class="fav-r">everyone says ${esc(r.rep)}</b>`:`<b class="fav-d">${esc(r.dem)} ${dbs.length}</b> (${names(dbs)}) · <b class="fav-r">${esc(r.rep)} ${dbr.length}</b> (${names(dbr)})`}`;
     const dbRow=(anyDb||CALLS.dayBeforeOpen)?`<tr class="dbrow ${split?"split":""}"><td class="race">Day before</td><td></td>${people.map(c=>{ const p=c.dayBefore&&c.dayBefore.picks[st]; return `<td>${p?chip(p.w,p.m,r," db"):'<span class="none">—</span>'}</td>`; }).join("")}</tr>`:"";
     return `<tr class="mainrow ${split?"split":""}"><td class="race"><b>${esc(r.name)}</b><small>${esc(r.dem)} v ${esc(r.rep)} · ${r.held} seat now</small></td><td>${chip(bw,bm,r," b")}</td>${people.map(c=>{ const p=c.call&&c.call.picks[st]; return `<td>${p?chip(p.w,p.m,r):'<span class="none">—</span>'}</td>`; }).join("")}</tr>${dbRow}<tr class="sub ${split?"split":""}"><td colspan="${cols}">${sum}${dbSum?`<br>${dbSum}`:""}</td></tr>`; }).join("");
-  $("#agree").innerHTML=head+`<tbody>${rows}</tbody>`;
+  const seatCell=(d,r)=>d==null?'<span class="none">—</span>':`<span class="seats"><b class="fav-d">${d}</b>–<b class="fav-r">${r}</b><span class="pill ${d>=51?"d":"r"} wide">${d>=51?"Dems":"Reps"}</span></span>`;
+  const bs=B.seats&&B.seats[k];
+  const foot=`<tfoot><tr class="tot"><td class="race">Seats, original<small>D–R of 100</small></td><td>${bs?seatCell(bs.dems,bs.reps):""}</td>${people.map(c=>`<td>${c.call?seatCell(c.call.dems,c.call.reps):seatCell(null)}</td>`).join("")}</tr>${(anyDb||CALLS.dayBeforeOpen)?`<tr class="tot"><td class="race">Seats, day before<small>D–R of 100</small></td><td></td>${people.map(c=>`<td>${c.dayBefore?seatCell(c.dayBefore.dems,c.dayBefore.reps):seatCell(null)}</td>`).join("")}</tr>`:""}</tfoot>`;
+  $("#agree").innerHTML=head+`<tbody>${rows}</tbody>`+foot;
   const mine=myCall(), hint=$("#grid-hint");
   hint.innerHTML=isLocked()?"":mine?`Want to change yours? <button class="hist" id="go-make">Change my call, below</button>`:`You are not in the grid yet. <button class="hist" id="go-make">Make your call, below</button>`;
   const go=$("#go-make"); if(go) go.onclick=()=>$("#callcard").scrollIntoView({behavior:"smooth",block:"start"});
@@ -798,7 +808,8 @@ function buildDbPicks(){
 }
 function dbTally(){
   const nw=STATES.filter(st=>DB[st]&&DB[st].w).length, nm=STATES.filter(st=>dbVal(st)!=null).length, dems=43+STATES.filter(st=>DB[st]&&DB[st].w==="D").length, orig=myCall();
-  if(!dbComplete()){ $("#db-tally").textContent=`${nw} of 11 winners picked, ${nm} of 11 margins filled`; $("#db-sub").textContent="Every race needs a winner and a margin in points."; $("#db-save").disabled=true; return; }
+  if(!dbComplete()){ const miss=missingList(DB,DATA.board); $("#db-tally").textContent=`${nw} of 11 winners picked, ${nm} of 11 margins filled`; $("#db-sub").textContent="The Save button stays grey until every race has a winner and a margin in points (a plain number like 2 or 3.5)."; $("#db-status").textContent=missingText(miss); $("#db-save").disabled=true; return; }
+  $("#db-status").textContent="";
   const moved=orig?STATES.filter(st=>orig.picks[st].w!==DB[st].w).length:0;
   $("#db-tally").innerHTML=`Day before: ${seatsHtml(dems,100-dems)} → ${verdictHtml(dems)}`; $("#db-sub").textContent=orig?(moved?`${moved} race${moved===1?"":"s"} flipped from your original call.`:"Same winners as your original call; only margins differ, if anything."):"You have no original call; this will be your only one."; $("#db-save").disabled=false;
 }
