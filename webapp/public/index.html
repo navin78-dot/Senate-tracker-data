@@ -137,7 +137,11 @@ details summary{cursor:pointer;font-size:13.5px;color:var(--muted)}
 .tally{position:sticky;bottom:0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-top:12px;box-shadow:var(--shadow)}
 .tally .line{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .tally .big2{font-size:22px;font-weight:700;letter-spacing:-.01em}
-.btn{border:none;background:var(--accent);color:var(--bg);border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer;font-size:15px}
+.btn{border:none;background:#2f9e4f;color:#fff;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer;font-size:15px;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.btn:not([disabled]):hover{filter:brightness(1.06)}
+/* a .btn inside a chips row keeps its own look (the chips rule would paint it white on white) */
+.chips button.btn{background:#2f9e4f;color:#fff;border:none;border-radius:10px;padding:11px 16px;font-size:15px;font-weight:700}
+.chips button.btn.ghost{background:var(--card);color:var(--ink);border:1.5px solid var(--line);font-weight:600}
 .btn[disabled]{opacity:.4;filter:grayscale(1);cursor:default;pointer-events:none}
 .btn.ghost{background:var(--card);color:var(--ink);border:1.5px solid var(--line);font-weight:600}
 .note{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 10px;font:inherit;background:var(--card);color:var(--ink);margin-top:8px}
@@ -715,7 +719,7 @@ function updateTally(){
   $("#save").hidden=lock;
   if(lock){ $("#tallyline").innerHTML=mine?`Your final call: ${seatsHtml(mine.dems,mine.reps)} → ${verdictHtml(mine.dems)}`:"No call saved"; $("#tallysub").textContent=`Locked at ${dlText()}. The day-before call at the top of this page is still open until 7am ET on Tuesday.`; $("#save").disabled=true; return; }
   if(!complete()){ const miss=missingList(PICKS,DATA.board); $("#tallyline").textContent=`${nw} of 11 winners picked, ${nm} of 11 margins filled`; $("#save").disabled=true; $("#tallysub").textContent="The Save button stays grey until every race has a winner and a margin in points (a plain number like 2 or 3.5). "+missingText(miss); return; }
-  $("#tallyline").innerHTML=`Your call: ${seatsHtml(dems,100-dems)} → ${verdictHtml(dems)}`; $("#save").disabled=!!same;
+  $("#tallyline").innerHTML=`Your call: ${seatsHtml(dems,100-dems)} → ${verdictHtml(dems)}`; $("#save").disabled=!!same; if(!same) $("#savestatus").innerHTML='<b style="color:#2f9e4f">Ready: tap the green button to save.</b>';
   $("#tallysub").innerHTML=same?`This is exactly your saved call (${fmtWhen(mine.ts)}). Change something to save a new one.`:mine?`Saving replaces your call from ${fmtWhen(mine.ts)}. Changes allowed until ${esc(dlText())}.`:`Democrats hold 43 seats outside these races; 51 takes the Senate, 50 does not. Changes allowed until ${esc(dlText())}.`;
   $("#save").textContent=mine?"Save (replaces my call)":"Save my call";
 }
@@ -809,7 +813,7 @@ function buildDbPicks(){
 function dbTally(){
   const nw=STATES.filter(st=>DB[st]&&DB[st].w).length, nm=STATES.filter(st=>dbVal(st)!=null).length, dems=43+STATES.filter(st=>DB[st]&&DB[st].w==="D").length, orig=myCall();
   if(!dbComplete()){ const miss=missingList(DB,DATA.board); $("#db-tally").textContent=`${nw} of 11 winners picked, ${nm} of 11 margins filled`; $("#db-sub").textContent="The Save button stays grey until every race has a winner and a margin in points (a plain number like 2 or 3.5)."; $("#db-status").textContent=missingText(miss); $("#db-save").disabled=true; return; }
-  $("#db-status").textContent="";
+  $("#db-status").innerHTML='<b style="color:#2f9e4f">Ready: tap the green button to save.</b>';
   const moved=orig?STATES.filter(st=>orig.picks[st].w!==DB[st].w).length:0;
   $("#db-tally").innerHTML=`Day before: ${seatsHtml(dems,100-dems)} → ${verdictHtml(dems)}`; $("#db-sub").textContent=orig?(moved?`${moved} race${moved===1?"":"s"} flipped from your original call.`:"Same winners as your original call; only margins differ, if anything."):"You have no original call; this will be your only one."; $("#db-save").disabled=false;
 }
