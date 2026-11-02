@@ -225,6 +225,7 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
 .sel span.chg em:after{content:" · changed";font-size:11px}
 .hrow details{margin:4px 0;padding:4px 0} .hrow details summary{cursor:pointer;font-size:13px;color:var(--ink)}
 .calls tr.main{cursor:pointer}
+.dbcard{border-color:var(--accent)} .dbcard .line{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .dlg{border:none;border-radius:16px;padding:0;max-width:760px;width:calc(100% - 24px);background:var(--card);color:var(--ink);box-shadow:0 10px 40px rgba(0,0,0,.25)}
 .dlg::backdrop{background:rgba(0,0,0,.45)}
 .dlg .inner{padding:18px 16px 16px;max-height:88vh;overflow:auto}
@@ -374,18 +375,21 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
 
   <!-- CALL IT -->
   <section class="page" id="page-call" role="tabpanel">
+    <div class="card dbcard" id="db-bar">
+      <div class="line"><div><h2 style="margin:0 0 2px">Day-before call</h2><div class="small muted" id="db-note"></div></div><button class="btn" id="db-open" style="padding:11px 16px">Make my day-before call</button></div>
+    </div>
+
     <div class="card" id="gridcard">
       <h2>Who picked what, race by race</h2>
       <p class="ctx small">One column per person. A <span style="display:inline-block;border-radius:8px;padding:1px 6px;font-weight:700;color:#fff;background:var(--d)">blue</span> chip is a pick for the Democrat, a <span style="display:inline-block;border-radius:8px;padding:1px 6px;font-weight:700;color:#fff;background:var(--r)">red</span> chip for the Republican; the number is the margin in points. The first column is what the board says today. Each state has a second row, "Day before", for the separate call made on Monday November 2 (a dashed chip; a dash means none yet). Under each race is the split and who is on each side; rows where you disagree are shaded.</p>
       <div class="tscroll"><table class="agree" id="agree"></table></div>
       <p class="ctx small" id="grid-hint" style="margin-top:10px"></p>
-      <div class="chips" id="db-bar" style="margin-top:8px"><button class="btn" id="db-open" style="padding:9px 14px">Make my day-before call</button><span class="small muted" id="db-note"></span></div>
     </div>
 
     <dialog class="dlg" id="dbdlg" aria-labelledby="db-title">
       <div class="inner">
         <h2 id="db-title">Your day-before call</h2>
-        <p class="ctx">A separate call for the day before the election. Your original call stays exactly as it is; this one sits under it in the grid. It starts from your latest call, so change only what you want to, then save. You can change it until the polls open at 7am ET on Tuesday.</p>
+        <p class="ctx">A separate call for the day before the election. Your original call stays exactly as it is; this one sits under it in the grid. It starts from your latest call, so change only what you want to, then save. You can change it until the polls open at 7am ET on Tuesday. If you close this, the button at the top of the Call it page brings it back.</p>
         <div class="chips"><button id="db-from-call">Start from my original call</button><button id="db-from-board">Start from the board</button></div>
         <div id="dbpicks"></div>
         <div class="tally" style="position:static;margin-top:12px">
@@ -525,6 +529,7 @@ function showPage(p){
   if(location.hash!=="#"+p) history.replaceState(null,"","#"+p);
   window.scrollTo({top:0});
   if(p==="trend") drawCharts();
+  if(p==="call") maybePromptDayBefore();
 }
 $$("nav.tabs [role=tab]").forEach(b=>b.onclick=()=>showPage(b.dataset.page));
 $$(".pagenav button[data-go]").forEach(b=>b.onclick=()=>showPage(b.dataset.go));
@@ -573,7 +578,7 @@ function renderAll(){
   const oh=B.races.OH, a=oh[k];
   $("#worked").innerHTML=`Take Ohio. The polls say ${esc(oh.dem)} leads ${esc(oh.rep)} by <b class="${mc(oh.m)}">${oh.m.toFixed(1)}</b> (${oh.d}% to ${oh.r}%). The ${calLower} subtract <b>${Math.abs(a.fade).toFixed(1)}</b> for the usual polling miss in a state Trump won by ${oh.trump24.toFixed(0)}, leaving ${mar(a.adj)}. A lead that size, with polls assumed to be off by a typical 5 points either way, wins about ${pct(a.win)} of the time. The market favorite is ${mktHtml(oh)}.`;
 
-  renderRaces(); buildPicks(); updateTally(); if(PAGE==="trend") drawCharts(); if(CALLS) renderCalls();
+  renderRaces(); buildPicks(); updateTally(); if(PAGE==="trend") drawCharts(); if(CALLS) renderCalls(); if(PAGE==="call") maybePromptDayBefore();
 }
 
 function renderRaces(){
@@ -797,7 +802,10 @@ function dbTally(){
   const moved=orig?STATES.filter(st=>orig.picks[st].w!==DB[st].w).length:0;
   $("#db-tally").innerHTML=`Day before: ${seatsHtml(dems,100-dems)} → ${verdictHtml(dems)}`; $("#db-sub").textContent=orig?(moved?`${moved} race${moved===1?"":"s"} flipped from your original call.`:"Same winners as your original call; only margins differ, if anything."):"You have no original call; this will be your only one."; $("#db-save").disabled=false;
 }
-$("#db-open").onclick=()=>{ if(!DATA||!CALLS||!CALLS.dayBeforeOpen) return; const base=myDayBefore()||myCall(); DB=base?JSON.parse(JSON.stringify(base.picks)):{}; $("#db-status").textContent=""; buildDbPicks(); $("#dbdlg").showModal(); };
+function openDayBefore(){ if(!DATA||!CALLS||!CALLS.dayBeforeOpen) return false; const dlg=$("#dbdlg"); if(dlg.open) return true; const base=myDayBefore()||myCall(); DB=base?JSON.parse(JSON.stringify(base.picks)):{}; $("#db-status").textContent=""; buildDbPicks(); try{ dlg.showModal(); }catch{ dlg.setAttribute("open",""); } dlg.querySelector(".inner").scrollTop=0; return true; }
+$("#db-open").onclick=()=>openDayBefore();
+let DB_PROMPTED=false;
+function maybePromptDayBefore(){ if(DB_PROMPTED||PAGE!=="call"||!CAL||!DATA||!CALLS||!CALLS.dayBeforeOpen||myDayBefore()) return; DB_PROMPTED=true; setTimeout(openDayBefore,250); }
 $("#db-cancel").onclick=()=>$("#dbdlg").close();
 $("#db-from-call").onclick=()=>{ const o=myCall(); if(!o) return; DB=JSON.parse(JSON.stringify(o.picks)); buildDbPicks(); };
 $("#db-from-board").onclick=()=>{ for(const st of STATES){ const a=DATA.board.races[st][CAL||"sept"].adj; DB[st]={w:a>=0?"D":"R",m:Math.round(Math.abs(a)*10)/10}; } buildDbPicks(); };
