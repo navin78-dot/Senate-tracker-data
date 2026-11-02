@@ -1,6 +1,6 @@
 // Shared rules for the Call it page. Change DEADLINE here if Navin moves it.
-export const DEADLINE = "2026-11-02T14:00:00Z";   // Monday Nov 2, 2026, 9:00am Eastern (EST; clocks went back Nov 1)
-export const DEADLINE_TEXT = "Monday, November 2 at 9:00am ET";
+export const DEADLINE = "2026-11-02T11:33:00Z";   // Monday Nov 2, 2026, 6:33am Eastern: Navin closed the first-round calls early (was 9:00am ET)
+export const DEADLINE_TEXT = "Monday, November 2 at 6:33am ET";
 export const ADMIN_EMAILS = ["navin78@gmail.com"];  // who may enter the actual results after each race is called
 export const MAX_MARGIN = 40;                        // points; a predicted margin above this is rejected as a typo
 export const NEED = 51;                              // Democrats need 51; 50-50 stays Republican (Vance breaks ties)
