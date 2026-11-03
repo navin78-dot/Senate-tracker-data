@@ -24,15 +24,41 @@ export const CLAUDE_CALL = {
   }
 };
 
+// Claude's day-before call, given to Navin on the evening of Monday November 2, 2026 (7:10pm ET) and logged here then.
+// Same shape as a friend's day-before call. Maine and Kansas flip to the Democrat from the original call above.
+export const CLAUDE_DAYBEFORE = {
+  madeAt: "2026-11-03T00:10:00Z",
+  picks: {
+    NC: { w: "D", m: 10 },   // Cooper
+    GA: { w: "D", m: 8 },    // Ossoff
+    NH: { w: "D", m: 8 },    // Pappas
+    MN: { w: "D", m: 6 },    // Flanagan
+    MI: { w: "D", m: 4 },    // El-Sayed
+    ME: { w: "D", m: 3 },    // Jackson
+    OH: { w: "D", m: 2 },    // Brown
+    TX: { w: "D", m: 1 },    // Talarico
+    KS: { w: "D", m: 1 },    // Hamilton
+    AK: { w: "R", m: 1 },    // Sullivan holds
+    IA: { w: "R", m: 2 }     // Hinson holds
+  }
+};
+
+function entry(src) {
+  const picks = {}; for (const st of STATES) picks[st] = { w: src.picks[st].w, m: src.picks[st].m };
+  const dems = HELD_ELSEWHERE + STATES.filter(st => picks[st].w === "D").length;
+  return { ts: src.madeAt, picks, dems, reps: 100 - dems, verdict: dems >= NEED ? "D" : "R" };
+}
+
 // The same shape as a friend's record in /api/calls, so the page can render it with the others.
 export function claudeRecord(results) {
-  const picks = {}; for (const st of STATES) picks[st] = { w: CLAUDE_CALL.picks[st].w, m: CLAUDE_CALL.picks[st].m };
-  const dems = HELD_ELSEWHERE + STATES.filter(st => picks[st].w === "D").length;
+  const call = entry(CLAUDE_CALL), dayBefore = entry(CLAUDE_DAYBEFORE);
   const res = (results && results.states) || {};
+  const have = Object.keys(res).length > 0;
   return {
     id: CLAUDE_ID, name: "Claude", picture: null, isClaude: true, changes: 0,
-    call: { ts: CLAUDE_CALL.madeAt, picks, dems, reps: 100 - dems, verdict: dems >= NEED ? "D" : "R" },
+    call, dayBefore, dayBeforeChanges: 0,
     detail: { note: CLAUDE_CALL.note, chance: Object.fromEntries(STATES.map(st => [st, CLAUDE_CALL.picks[st].chance])), why: Object.fromEntries(STATES.map(st => [st, CLAUDE_CALL.picks[st].why])) },
-    score: Object.keys(res).length ? score(picks, res, STATES) : null
+    score: have ? score(call.picks, res, STATES) : null,
+    dayBeforeScore: have ? score(dayBefore.picks, res, STATES) : null
   };
 }
