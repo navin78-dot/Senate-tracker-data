@@ -67,7 +67,7 @@ export default async (req, context) => {
   }
 
   if (req.method === "GET") {
-    const [{ blobs }, results] = await Promise.all([s.list({ prefix: "calls/" }), loadResults(s)]);
+    const [{ blobs }, results] = await Promise.all([s.list({ prefix: "calls/" }), loadResults(s, { admin: isAdmin })]);
     const recs = await Promise.all(blobs.map(b => s.get(b.key, { type: "json" })));
     const res = results.states;
     const haveResults = Object.keys(res).length > 0;
@@ -88,7 +88,7 @@ export default async (req, context) => {
     if (haveResults) calls.sort((a, b) => ((b.score ? b.score.right : -1) - (a.score ? a.score.right : -1)) || ((a.score ? a.score.err : 1e9) - (b.score ? b.score.err : 1e9)) || (latest(a) < latest(b) ? -1 : 1));
     else calls.sort((a, b) => latest(a) < latest(b) ? 1 : latest(a) > latest(b) ? -1 : 0);
     if (haveResults) { let rank = 0, prevKey = null; calls.forEach((c, i) => { if (!c.score) return; const k = c.score.right + "|" + c.score.err; if (k !== prevKey) { rank = i + 1; prevKey = k; } c.rank = rank; }); }
-    const body = { me: user.id, admin: isAdmin, deadline: DEADLINE, deadlineText: DEADLINE_TEXT, locked: locked(), maxMargin: MAX_MARGIN, results: res, resultsUpdated: results.updated, resultsOpen: results.open, electionDayText: ELECTION_DAY_TEXT, showClaude, dayBeforeOpen: dayBeforeOpen(), dayBeforeOpensAt: DAYBEFORE_OPEN, dayBeforeClosesAt: DAYBEFORE_CLOSE, dayBeforeText: DAYBEFORE_TEXT, calls };
+    const body = { me: user.id, admin: isAdmin, deadline: DEADLINE, deadlineText: DEADLINE_TEXT, locked: locked(), maxMargin: MAX_MARGIN, results: res, resultsUpdated: results.updated, resultsOpen: results.open, resultsPreview: results.preview, resultsPreviewStates: results.previewStates, electionDayText: ELECTION_DAY_TEXT, showClaude, dayBeforeOpen: dayBeforeOpen(), dayBeforeOpensAt: DAYBEFORE_OPEN, dayBeforeClosesAt: DAYBEFORE_CLOSE, dayBeforeText: DAYBEFORE_TEXT, calls };
     return new Response(JSON.stringify(body), { headers: { "content-type": "application/json", "cache-control": "private, no-store" } });
   }
   return Response.json({ error: "method" }, { status: 405 });

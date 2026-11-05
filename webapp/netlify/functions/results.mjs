@@ -13,8 +13,8 @@ export default async (req, context) => {
   if (!user) return Response.json({ error: "sign in first" }, { status: 401 });
   const s = store();
   if (req.method === "GET") {
-    const r = await loadResults(s);
-    return Response.json({ states: r.states, updated: r.updated, open: r.open });
+    const r = await loadResults(s, { admin: ADMIN_EMAILS.includes((user.email || "").toLowerCase()) });
+    return Response.json({ states: r.states, updated: r.updated, open: r.open, preview: r.preview, previewStates: r.previewStates });
   }
   if (req.method === "POST") {
     if (!ADMIN_EMAILS.includes((user.email || "").toLowerCase())) return Response.json({ error: "only Navin can enter results" }, { status: 403 });

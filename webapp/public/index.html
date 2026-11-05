@@ -738,7 +738,8 @@ function renderCalls(){
   if(!CALLS) return; const B=DATA&&DATA.board; countdown();
   const res=CALLS.results||{}, called=STATES.filter(st=>res[st]), scored=called.length>0;
   const head=$("#callshead"), body=$("#callsbody");
-  $("#calls-title").textContent=scored?`Leaderboard · ${called.length} of 11 races called`:"Everyone's calls";
+  const pv=!!CALLS.resultsPreview;
+  $("#calls-title").innerHTML=scored?`Leaderboard · ${called.length} of 11 races called${pv?' <span class="onlyyou">preview · only you can see the scores</span>':""}`:"Everyone's calls";
   $("#calls-ctx").textContent=scored?"Ranked by races called right, then by the smallest total margin error. Tap a row to see every pick against the result.":"One row per person, their current call, newest change first, with the rules they had the board on when they saved. Tap a row to see the 11 picks with margins.";
   head.innerHTML=scored?`<tr><th class="rank">#</th><th>Who</th><th class="num">Right</th><th class="num">Error</th><th class="num">Seats</th><th>Senate</th></tr>`:`<tr><th>Who</th><th class="num">Seats D–R</th><th>Senate</th><th>Last changed (ET)</th></tr>`;
   if(!CALLS.calls.length){ body.innerHTML=`<tr><td colspan="6" class="muted">Nobody has saved a call yet. Be first.</td></tr>`; $("#agree").innerHTML=""; renderResults(); return; }
@@ -848,11 +849,11 @@ function renderResults(){
   if(!CALLS||!DATA) return; const B=DATA.board, res=CALLS.results||{}, open=!!CALLS.resultsOpen, called=STATES.filter(st=>res[st]).length;
   const card=$("#rescard"); card.classList.toggle("dim",!open&&!called);
   const day=CALLS.electionDayText||"Tuesday, November 3";
-  $("#res-title").textContent=open||called?`The results · ${called} of 11 races called`:"The results (after Election Day)";
+  $("#res-title").innerHTML=open||called?`The results · ${called} of 11 races called${CALLS.resultsPreview?' <span class="onlyyou">preview · only you can see these</span>':""}`:"The results (after Election Day)";
   $("#res-ctx").textContent=open||called?"Filled in automatically as races are called; nothing is typed in here. Each person's call is scored against these above.":`Greyed out until Election Day, ${day}. Nothing to enter here: once the races are called the results are scanned in and this card fills on its own. Then everyone's call is scored above.`;
   const order=CAL?[...STATES].sort((a,b)=>B.races[b][CAL].adj-B.races[a][CAL].adj):STATES.slice();
   $("#resgrid").innerHTML=order.map((st,n)=>{ const r=B.races[st], a=res[st]; return `<span><em>${n+1}. ${esc(r.name)}</em>${a?`<b class="${a.w==="D"?"fav-d":"fav-r"}">${esc(a.w==="D"?r.dem:r.rep)} (${a.w}) by ${a.m}</b>`:`<b class="none">${open?"not called yet":"—"}</b>`}</span>`; }).join("");
-  $("#res-foot").textContent=CALLS.resultsUpdated?`Last scan: ${fmtWhen(CALLS.resultsUpdated)}.`:(open?"No race has been called yet.":"");
+  $("#res-foot").textContent=(CALLS.resultsUpdated?`Last scan: ${fmtWhen(CALLS.resultsUpdated)}.`:(open?"No race has been called yet.":""))+(CALLS.resultsPreview?" These results are a preview held back from friends until you say so; their pages still show no results and no scores.":"");
 }
 
 boot();
