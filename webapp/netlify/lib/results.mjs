@@ -9,20 +9,20 @@ export const RESULTS = {};
 
 // Preview results: the same shape, but handed only to the admin (friends never receive them), so Navin can see the
 // leaderboard before the results are made public. To publish, move entries from RESULTS_PREVIEW into RESULTS above.
-// Scan of November 5, 2026, morning: ten races called, Alaska still counting (ranked-choice tabulation expected Nov 18).
-// Margins are the leader's margin in points from near-complete counts; Ohio is from the count at 87% reporting.
-export const RESULTS_PREVIEW_UPDATED = "2026-11-05T13:30:00Z";
+// First scan November 5, 2026; refreshed by the twice-daily scan. Ten races called, Alaska still counting (ranked-choice
+// tabulation expected Nov 18). Margins are the leader's margin in points from the most complete count found; stage noted per race.
+export const RESULTS_PREVIEW_UPDATED = "2026-11-07T01:25:00Z";
 export const RESULTS_PREVIEW = {
   NC: { w: "D", m: 19.6 },   // Cooper
   GA: { w: "D", m: 18.1 },   // Ossoff
-  NH: { w: "D", m: 14.3 },   // Pappas
+  NH: { w: "D", m: 13.7 },   // Pappas; NBC tally Nov 6 (55.9–42.2), later than the 90% AP snapshot that gave 14.3
   TX: { w: "D", m: 12.1 },   // Talarico
   MN: { w: "D", m: 10.1 },   // Flanagan
-  ME: { w: "D", m: 7.2 },    // Jackson, won on first choices; no ranked-choice round
+  ME: { w: "D", m: 6.4 },    // Jackson, won on first choices, no ranked-choice round; AP/ABC at 93% (53.2–46.8), was 7.2 on the initial count
   MI: { w: "D", m: 7.0 },    // El-Sayed
   KS: { w: "D", m: 4.8 },    // Hamilton
   IA: { w: "D", m: 4.7 },    // Turek
-  OH: { w: "D", m: 2.1 }     // Brown
+  OH: { w: "D", m: 4.8 }     // Brown; Ohio Secretary of State final unofficial count, 50.0–45.2 per NBC (was 2.1 at 87% reporting)
 };
 
 export function resultsOpen(now = Date.now()) { return now >= Date.parse(RESULTS_OPEN); }
