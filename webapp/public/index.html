@@ -230,6 +230,10 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
 .sel span.chg em:after{content:" · changed";font-size:11px}
 .hrow details{margin:4px 0;padding:4px 0} .hrow details summary{cursor:pointer;font-size:13px;color:var(--ink)}
 .calls tr.main{cursor:pointer}
+.rankby{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:4px 0 12px}
+.rankby .lbl{font-size:13.5px;color:var(--muted);font-weight:600;margin-right:2px}
+.rankby button{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:9px 16px;font-size:14.5px;font-weight:700;cursor:pointer}
+.rankby button[aria-pressed="true"]{background:var(--accent);color:var(--bg);border-color:var(--accent)}
 .calls td.more{text-align:right;white-space:nowrap} .calls button.det .chev{font-size:11px;margin-left:2px} .calls button.hist.det{padding:5px 9px;font-size:12.5px}
 @media (max-width:640px){ .calls td.more{padding-left:0;padding-right:0} .calls button.det,.calls button.hist.det{padding:3px 4px;font-size:11px;border-radius:6px} .calls button.btn.det{padding:5px 6px!important;font-size:11px!important} .calls th.rank,.calls td.rank{padding-left:0;padding-right:2px;width:16px} }
 .dbcard{border-color:var(--accent)} .dbcard .line{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
@@ -398,6 +402,7 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
     <div class="card">
       <h2 id="calls-title">Everyone's calls</h2>
       <p class="ctx" id="calls-ctx">One row per person, their current call, newest change first. Tap a row to see the 11 picks with margins.</p>
+      <div class="rankby" id="rankby" hidden><span class="lbl">Rank by</span><button data-rank="call" aria-pressed="true">Original call</button><button data-rank="db" aria-pressed="false">Day-before call</button></div>
       <div class="tscroll"><table class="calls" id="callstbl"><thead id="callshead"></thead><tbody id="callsbody"></tbody></table></div>
     </div>
 
@@ -742,21 +747,26 @@ $("#save").onclick=async()=>{
     CALLS=await api("/api/calls"); renderCalls(); updateTally();
   }catch(e){ $("#savestatus").textContent="Could not save: "+e.message; $("#save").disabled=false; }
 };
-let AUTO_OPENED=false;
-const detLabel=(mine,scored,open)=>open?`Hide <span class="chev">▴</span>`:mine?`<span class="wide">${scored?"How did I do?":"My picks"}</span><span class="nar">${scored?"How did I do?":"Mine"}</span> <span class="chev">▾</span>`:`<span class="wide">Details</span><span class="nar">See</span> <span class="chev">▾</span>`;
+let AUTO_OPENED=false, RANK_BY="call";
+const detLabel=(mine,scored,open)=>open?`Hide <span class="chev">▴</span>`:mine?`<span class="wide">${scored?"How did I do?":"My picks"}</span><span class="nar">Mine</span> <span class="chev">▾</span>`:`<span class="wide">Details</span><span class="nar">See</span> <span class="chev">▾</span>`;
+$$("#rankby button").forEach(b=>b.onclick=()=>{ RANK_BY=b.dataset.rank; renderCalls(); });
 function renderCalls(){
   if(!CALLS) return; const B=DATA&&DATA.board; countdown();
   const res=CALLS.results||{}, called=STATES.filter(st=>res[st]), scored=called.length>0;
   const head=$("#callshead"), body=$("#callsbody");
   const pv=!!CALLS.resultsPreview;
-  $("#calls-title").innerHTML=scored?`Leaderboard · ${called.length} of 11 races called${pv?' <span class="onlyyou">preview · only you can see the scores</span>':""}`:"Everyone's calls";
-  $("#calls-ctx").innerHTML=scored?"Ranked by races called right, then by the smallest total margin error. <b>Tap any row, or its Details button, to see all 11 picks next to the actual results.</b> Your own row is highlighted and opens for you automatically.":"One row per person, their current call, newest change first, with the rules they had the board on when they saved. <b>Tap any row, or its Details button, to see the 11 picks with margins.</b>";
+  $("#calls-title").innerHTML=scored?`Leaderboard · ${called.length} of 11 races called · ranked by ${RANK_BY==="db"?"day-before":"original"} calls${pv?' <span class="onlyyou">preview · only you can see the scores</span>':""}`:"Everyone's calls";
+  $("#calls-ctx").innerHTML=scored?`Ranked by races called right, then by the smallest total margin error, using each person's <b>${RANK_BY==="db"?"day-before call (made Monday November 2)":"original call (made before the deadline)"}</b>; flip the switch below to rank by the other one. <b>Tap any row, or its Details button, to see all 11 picks next to the actual results.</b> Your own row is highlighted and opens for you automatically.`:"One row per person, their current call, newest change first, with the rules they had the board on when they saved. <b>Tap any row, or its Details button, to see the 11 picks with margins.</b>";
   const cg=$("#callstbl colgroup"); if(cg) cg.innerHTML=scored?'<col class="c-rank"><col class="c-who"><col class="c-right"><col class="c-err"><col class="c-seats"><col class="c-sen"><col class="c-act">':'<col class="c-who"><col class="c-seats"><col class="c-sen"><col class="c-when"><col class="c-act">';
   head.innerHTML=scored?`<tr><th class="rank">#</th><th>Who</th><th class="num">Right</th><th class="num">Error</th><th class="num">Seats</th><th>Senate</th><th></th></tr>`:`<tr><th>Who</th><th class="num">Seats D–R</th><th>Senate</th><th>Last changed (ET)</th><th></th></tr>`;
   if(!CALLS.calls.length){ body.innerHTML=`<tr><td colspan="6" class="muted">Nobody has saved a call yet. Be first.</td></tr>`; $("#agree").innerHTML=""; renderResults(); return; }
-  body.innerHTML=CALLS.calls.map(c=>{ const v=c.call||{picks:null,dems:"—",reps:"—",verdict:null,ts:c.dayBefore?c.dayBefore.ts:"",cal:null}, mine=c.id===CALLS.me; const who=`${c.picture?`<img src="${esc(c.picture)}" alt="">`:""}${esc(c.name)}${mine?" (you)":""}${c.hiddenFromFriends?`<span class="onlyyou">only you can see this</span>`:""}`; const ruleTag=c.isClaude?"Claude's own call, fixed in code":!c.call?"no original call":calTag(v.cal); const dbTag=c.dayBefore?` · day-before call ${fmtShort(c.dayBefore.ts).replace("<br>"," ")}`:"";
+  const useDb=RANK_BY==="db", pick=c=>useDb?{vv:c.dayBefore,sc:c.dayBeforeScore}:{vv:c.call,sc:c.score};
+  const rb=$("#rankby"); rb.hidden=!scored; $$("#rankby button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.rank===RANK_BY?"true":"false"));
+  let people=CALLS.calls.slice();
+  if(scored){ people.sort((a,b)=>{ const A=pick(a).sc, B=pick(b).sc; return ((B?B.right:-1)-(A?A.right:-1))||((A?A.err:1e9)-(B?B.err:1e9)); }); let rank=0, pk=null; people.forEach((c,i)=>{ const sc=pick(c).sc; c._rank=null; if(!sc) return; const k=sc.right+"|"+sc.err; if(k!==pk){ rank=i+1; pk=k; } c._rank=rank; }); }
+  body.innerHTML=people.map(c=>{ const {vv,sc}=pick(c); const v=vv||{picks:null,dems:"—",reps:"—",verdict:null,ts:c.dayBefore?c.dayBefore.ts:(c.call?c.call.ts:""),cal:null}, mine=c.id===CALLS.me; const who=`${c.picture?`<img src="${esc(c.picture)}" alt="">`:""}${esc(c.name)}${mine?" (you)":""}${c.hiddenFromFriends?`<span class="onlyyou">only you can see this</span>`:""}`; const ruleTag=useDb?(c.dayBefore?(c.isClaude?"Claude's day-before call, fixed in code":`day-before call, ${fmtDay(c.dayBefore.ts)}`):"no day-before call"):(c.isClaude?"Claude's own call, fixed in code":!c.call?"no original call":calTag(v.cal)); const dbTag=c.dayBefore?` · day-before call ${fmtShort(c.dayBefore.ts).replace("<br>"," ")}`:"";
     const more=`<td class="more"><button class="${mine?"btn":"hist"} det" data-act="details" style="${mine?"padding:7px 10px;font-size:13px":""}">${detLabel(mine,scored,false)}</button></td>`;
-    return scored?`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="rank">${c.rank||"—"}</td><td class="person">${who}<small>${ruleTag}</small></td><td class="num">${c.score?`<b>${c.score.right}</b> of ${c.score.called}`:"—"}</td><td class="num">${c.score?c.score.err.toFixed(1):"—"}</td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td>${v.verdict?`<span class="pill ${v.verdict==="D"?"d":"r"}"><span class="wide">${v.verdict==="D"?"Democrats":"Republicans"}</span><span class="nar">${v.verdict==="D"?"Dems":"Reps"}</span></span>`:'<span class="muted small">—</span>'}</td>${more}</tr>`
+    return scored?`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="rank">${c._rank||"—"}</td><td class="person">${who}<small>${ruleTag}</small></td><td class="num">${sc?`<b>${sc.right}</b> of ${sc.called}`:"—"}</td><td class="num">${sc?sc.err.toFixed(1):"—"}</td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td>${v.verdict?`<span class="pill ${v.verdict==="D"?"d":"r"}"><span class="wide">${v.verdict==="D"?"Democrats":"Republicans"}</span><span class="nar">${v.verdict==="D"?"Dems":"Reps"}</span></span>`:'<span class="muted small">—</span>'}</td>${more}</tr>`
                  :`<tr class="main ${mine?"me":""}" data-id="${esc(c.id)}"><td class="person">${who}<small>${ruleTag}${c.changes?` · changed ${c.changes} time${c.changes===1?"":"s"}`:""}${dbTag}</small></td><td class="num"><b class="fav-d">${v.dems}</b>–<b class="fav-r">${v.reps}</b></td><td>${v.verdict?`<span class="pill ${v.verdict==="D"?"d":"r"}"><span class="wide">${v.verdict==="D"?"Democrats":"Republicans"}</span><span class="nar">${v.verdict==="D"?"Dems":"Reps"}</span></span>`:'<span class="muted small">—</span>'}</td><td class="small" style="white-space:nowrap">${v.ts?fmtShort(v.ts):""}</td>${more}</tr>`; }).join("");
   const toggle=id=>{
     const row0=$(`#callsbody tr.main[data-id="${CSS.escape(id)}"]`); const setBtn=open=>{ const b=row0&&row0.querySelector("button.det"); if(!b) return; const mine=row0.classList.contains("me"); b.innerHTML=detLabel(mine,scored,open); };
