@@ -500,7 +500,7 @@ const verdictHtml=d=>d>=51?`<b class="fav-d">Democrats take the Senate</b>`:`<b 
 
 let DATA=null, CALLS=null, ME=null, CAL=null, PAGE="board", RANGE="all", RACE="TX", PICKS={};
 const AFTER_ELECTION=Date.now()>=Date.parse("2026-11-04T05:00:00Z");   // midnight ET at the end of Election Day
-try{ CAL=localStorage.getItem("sb-cal")||null; PAGE=location.hash.slice(1)||(AFTER_ELECTION?"call":(localStorage.getItem("sb-page")||"board")); RACE=localStorage.getItem("sb-race")||"TX"; }catch{ if(AFTER_ELECTION) PAGE="call"; }
+try{ CAL=localStorage.getItem("sb-cal")||null; const h=location.hash.slice(1); PAGE=AFTER_ELECTION?(["trend","races","call"].includes(h)?h:"call"):(h||localStorage.getItem("sb-page")||"board"); RACE=localStorage.getItem("sb-race")||"TX"; }catch{ if(AFTER_ELECTION) PAGE="call"; }
 if(!["board","trend","races","call"].includes(PAGE)) PAGE="board";
 if(!["sept","fw"].includes(CAL)) CAL=null;
 
@@ -539,7 +539,7 @@ function showPage(p){
   PAGE=p; try{ localStorage.setItem("sb-page",p); }catch{}
   $$("nav.tabs [role=tab]").forEach(b=>b.setAttribute("aria-selected", b.dataset.page===p?"true":"false"));
   $$(".page").forEach(s=>s.classList.toggle("on", s.id==="page-"+p));
-  if(location.hash!=="#"+p) history.replaceState(null,"","#"+p);
+  if(location.hash) history.replaceState(null,"",location.pathname+location.search);
   window.scrollTo({top:0});
   if(p==="trend") drawCharts();
   if(p==="call") maybePromptDayBefore();
