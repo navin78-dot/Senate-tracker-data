@@ -387,8 +387,17 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
 
   <!-- CALL IT -->
   <section class="page" id="page-call" role="tabpanel">
-    <div class="card dbcard" id="db-bar">
-      <div class="line"><div><h2 style="margin:0 0 2px">Day-before call</h2><div class="small muted" id="db-note"></div></div><button class="btn" id="db-open" style="padding:11px 16px">Make my day-before call</button></div>
+    <div class="card" id="rescard">
+      <h2 id="res-title">The results</h2>
+      <p class="ctx" id="res-ctx"></p>
+      <div class="sel" id="resgrid"></div>
+      <p class="small muted" id="res-foot"></p>
+    </div>
+
+    <div class="card">
+      <h2 id="calls-title">Everyone's calls</h2>
+      <p class="ctx" id="calls-ctx">One row per person, their current call, newest change first. Tap a row to see the 11 picks with margins.</p>
+      <div class="tscroll"><table class="calls" id="callstbl"><thead id="callshead"></thead><tbody id="callsbody"></tbody></table></div>
     </div>
 
     <div class="card" id="gridcard">
@@ -418,10 +427,8 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
       <div class="status" id="claude-status"></div>
     </div>
 
-    <div class="card">
-      <h2 id="calls-title">Everyone's calls</h2>
-      <p class="ctx" id="calls-ctx">One row per person, their current call, newest change first. Tap a row to see the 11 picks with margins.</p>
-      <div class="tscroll"><table class="calls" id="callstbl"><thead id="callshead"></thead><tbody id="callsbody"></tbody></table></div>
+    <div class="card dbcard" id="db-bar">
+      <div class="line"><div><h2 style="margin:0 0 2px">Day-before call</h2><div class="small muted" id="db-note"></div></div><button class="btn" id="db-open" style="padding:11px 16px">Make my day-before call</button></div>
     </div>
 
     <div class="card rules">
@@ -445,13 +452,6 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
         </div>
         <div class="status" id="savestatus"></div>
       </div>
-    </div>
-
-    <div class="card" id="rescard">
-      <h2 id="res-title">The results</h2>
-      <p class="ctx" id="res-ctx"></p>
-      <div class="sel" id="resgrid"></div>
-      <p class="small muted" id="res-foot"></p>
     </div>
 
     <div class="card" id="visitcard" hidden>
