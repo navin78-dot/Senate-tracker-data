@@ -220,6 +220,7 @@ footer.site{color:var(--muted);font-size:12.5px;margin-top:28px;border-top:1px s
 .cal.compact .calopt .x{display:none}
 .cal.compact .calopt .num{margin-top:4px;font-size:12.5px}
 .cal.compact.open .calopt .x{display:block}
+.cal.post{padding:10px 16px} .cal.post h2{font-size:13.5px;color:var(--muted);font-weight:500;display:inline} .cal.post .calgrid{display:none} .cal.post.open .calgrid{display:grid} .cal.post #calmore{display:inline-block;margin:0 0 0 10px;padding:3px 10px;font-size:12.5px;vertical-align:1px}
 .cal.compact.open .ctx.long{display:block}
 .calopt .t small{font-weight:500;color:var(--muted);font-size:13px}
 .calgate{font-size:14px;margin:10px 0 0}
@@ -502,7 +503,7 @@ let DATA=null, CALLS=null, ME=null, CAL=null, PAGE="board", RANGE="all", RACE="T
 const AFTER_ELECTION=Date.now()>=Date.parse("2026-11-04T05:00:00Z");   // midnight ET at the end of Election Day
 try{ CAL=localStorage.getItem("sb-cal")||null; const h=location.hash.slice(1); PAGE=AFTER_ELECTION?(["trend","races","call"].includes(h)?h:"call"):(h||localStorage.getItem("sb-page")||"board"); RACE=localStorage.getItem("sb-race")||"TX"; }catch{ if(AFTER_ELECTION) PAGE="call"; }
 if(!["board","trend","races","call"].includes(PAGE)) PAGE="board";
-if(!["sept","fw"].includes(CAL)) CAL=null;
+if(!["sept","fw"].includes(CAL)) CAL=AFTER_ELECTION?"sept":null;
 
 /* ---------- auth ---------- */
 async function boot(){
@@ -556,13 +557,14 @@ function applyGate(){
   const chosen=!!CAL;
   $("#gated").hidden=!chosen; $("#calgate").hidden=chosen; $("#calmore").hidden=!chosen;
   $("#calcard").classList.toggle("compact",chosen);
-  $("#caltitle").textContent=chosen?"How much to trust the polls (your pick, change it any time)":"First, choose how much to trust the polls";
+  $("#caltitle").textContent=AFTER_ELECTION?`Forecast shown under the ${CALNAME[CAL]||"September rules"}`:chosen?"How much to trust the polls (your pick, change it any time)":"First, choose how much to trust the polls";
+  if(AFTER_ELECTION){ $("#calcard").classList.add("post"); $("#calmore").textContent=$("#calcard").classList.contains("open")?"Hide":"Change"; }
   if(chosen){ const intro=$("#intro"), pb=$("#page-board"); if(intro.parentElement!==pb) pb.prepend(intro); }
   $$(".calopt").forEach(b=>b.setAttribute("aria-checked", b.dataset.cal===CAL?"true":"false"));
 }
 function setCal(c){ const first=!CAL; CAL=c; try{ localStorage.setItem("sb-cal",c); }catch{} applyGate(); if(DATA) renderAll(); if(first) showPage(PAGE); }
 $$(".calopt").forEach(b=>b.onclick=()=>setCal(b.dataset.cal));
-$("#calmore").onclick=()=>{ const o=$("#calcard").classList.toggle("open"); $("#calmore").textContent=o?"Hide the explanation":"Explain the two options"; };
+$("#calmore").onclick=()=>{ const o=$("#calcard").classList.toggle("open"); $("#calmore").textContent=AFTER_ELECTION?(o?"Hide":"Change"):(o?"Hide the explanation":"Explain the two options"); };
 
 /* ---------- render ---------- */
 function renderAll(){
@@ -862,7 +864,7 @@ function renderResults(){
   const card=$("#rescard"); card.classList.toggle("dim",!open&&!called);
   const day=CALLS.electionDayText||"Tuesday, November 3";
   $("#res-title").innerHTML=open||called?`The results · ${called} of 11 races called${CALLS.resultsPreview?' <span class="onlyyou">preview · only you can see these</span>':""}`:"The results (after Election Day)";
-  $("#res-ctx").textContent=open||called?"Filled in automatically as races are called; nothing is typed in here. Each person's call is scored against these above.":`Greyed out until Election Day, ${day}. Nothing to enter here: once the races are called the results are scanned in and this card fills on its own. Then everyone's call is scored above.`;
+  $("#res-ctx").textContent=open||called?"Filled in automatically as races are called; nothing is typed in here. Each person's call is scored against these in the leaderboard below.":`Greyed out until Election Day, ${day}. Nothing to enter here: once the races are called the results are scanned in and this card fills on its own. Then everyone's call is scored above.`;
   const order=CAL?[...STATES].sort((a,b)=>B.races[b][CAL].adj-B.races[a][CAL].adj):STATES.slice();
   $("#resgrid").innerHTML=order.map((st,n)=>{ const r=B.races[st], a=res[st]; return `<span><em>${n+1}. ${esc(r.name)}</em>${a?`<b class="${a.w==="D"?"fav-d":"fav-r"}">${esc(a.w==="D"?r.dem:r.rep)} (${a.w}) by ${a.m}</b>`:`<b class="none">${open?"not called yet":"—"}</b>`}</span>`; }).join("");
   $("#res-foot").textContent=(CALLS.resultsUpdated?`Last scan: ${fmtWhen(CALLS.resultsUpdated)}.`:(open?"No race has been called yet.":""))+(CALLS.resultsPreview?" These results are a preview held back from friends until you say so; their pages still show no results and no scores.":"");
