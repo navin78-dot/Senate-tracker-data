@@ -4,15 +4,9 @@
 // Shape: { TX: { w: "R", m: 3.4 }, ... }  w = winner's party, m = the winner's margin in points.
 export const ELECTION_DAY_TEXT = "Tuesday, November 3";
 export const RESULTS_OPEN = "2026-11-04T05:00:00Z";    // midnight Eastern at the end of Election Day (EST)
-export const RESULTS_UPDATED = null;                     // ISO time of the last public scan, set when RESULTS is filled in
-export const RESULTS = {};
-
-// Preview results: the same shape, but handed only to the admin (friends never receive them), so Navin can see the
-// leaderboard before the results are made public. To publish, move entries from RESULTS_PREVIEW into RESULTS above.
-// First scan November 5, 2026; refreshed by the twice-daily scan. Ten races called, Alaska still counting (ranked-choice
-// tabulation expected Nov 18). Margins are the leader's margin in points from the most complete count found; stage noted per race.
-export const RESULTS_PREVIEW_UPDATED = "2026-11-07T01:25:00Z";
-export const RESULTS_PREVIEW = {
+// Published to friends on November 6, 2026 (evening ET). Ten races; Alaska is added when called. Stage of count noted per race.
+export const RESULTS_UPDATED = "2026-11-07T01:40:00Z";
+export const RESULTS = {
   NC: { w: "D", m: 19.6 },   // Cooper
   GA: { w: "D", m: 18.1 },   // Ossoff
   NH: { w: "D", m: 13.7 },   // Pappas; NBC tally Nov 6 (55.9–42.2), later than the 90% AP snapshot that gave 14.3
@@ -24,6 +18,13 @@ export const RESULTS_PREVIEW = {
   IA: { w: "D", m: 4.7 },    // Turek
   OH: { w: "D", m: 4.8 }     // Brown; Ohio Secretary of State final unofficial count, 50.0–45.2 per NBC (was 2.1 at 87% reporting)
 };
+
+// Preview results: the same shape, but handed only to the admin (friends never receive them), so Navin can see the
+// leaderboard before the results are made public. To publish, move entries from RESULTS_PREVIEW into RESULTS above.
+// First scan November 5, 2026; refreshed by the twice-daily scan. Ten races called, Alaska still counting (ranked-choice
+// tabulation expected Nov 18). Margins are the leader's margin in points from the most complete count found; stage noted per race.
+export const RESULTS_PREVIEW_UPDATED = null;
+export const RESULTS_PREVIEW = {};
 
 export function resultsOpen(now = Date.now()) { return now >= Date.parse(RESULTS_OPEN); }
 
