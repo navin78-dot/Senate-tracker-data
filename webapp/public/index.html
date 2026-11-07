@@ -146,6 +146,14 @@ details summary{cursor:pointer;font-size:13.5px;color:var(--muted)}
 .btn.ghost{background:var(--card);color:var(--ink);border:1.5px solid var(--line);font-weight:600}
 .note{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 10px;font:inherit;background:var(--card);color:var(--ink);margin-top:8px}
 .status{font-size:13px;color:var(--muted);margin-top:6px;min-height:18px}
+.vis{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+.vis th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:left;padding:6px 6px;border-bottom:1px solid var(--line);font-weight:600;vertical-align:bottom}
+.vis td{padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+.vis td.person b{font-weight:600} .vis td.person small{display:block;color:var(--muted);font-size:11.5px;overflow-wrap:anywhere}
+.vis td.num,.vis th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.vis td.when{white-space:nowrap} .vis td.when small{display:block;color:var(--muted);font-size:11.5px}
+.vis.log td.when{width:7em}
+@media (max-width:640px){ .vis{font-size:13px} .vis th,.vis td{padding:6px 4px} }
 .calls{width:100%;border-collapse:collapse;font-size:14px}
 .calls th{font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:left;padding:6px;border-bottom:1px solid var(--line);font-weight:600}
 .calls td{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:middle;font-size:13.5px}
@@ -813,8 +821,10 @@ function renderCalls(){
 $("#vis-load").onclick=async()=>{
   $("#vis-summary").innerHTML="Loading…";
   try{ const v=await api("/api/visits");
-    $("#vis-summary").innerHTML=`<h3>${v.summary.length} people · ${v.total} visits in all</h3><div class="tscroll"><table class="calls"><thead><tr><th>Email</th><th>Name</th><th class="num">Visits</th><th>First (ET)</th><th>Latest (ET)</th></tr></thead><tbody>${v.summary.map(p=>`<tr><td>${esc(p.email||"(no email on record)")}</td><td>${esc(p.name||"")}</td><td class="num">${p.visits}</td><td class="small" style="white-space:nowrap">${fmtWhen(p.first)}</td><td class="small" style="white-space:nowrap">${fmtWhen(p.last)}</td></tr>`).join("")}</tbody></table></div>`;
-    $("#vis-log").innerHTML=`<h3>Every visit, newest first (last ${v.visits.length})</h3><table class="calls"><thead><tr><th>When (ET)</th><th>Email</th><th>Name</th></tr></thead><tbody>${v.visits.map(x=>`<tr><td class="small" style="white-space:nowrap">${fmtWhen(x.ts)}</td><td>${esc(x.email||"")}</td><td>${esc(x.name||"")}</td></tr>`).join("")}</tbody></table>`;
+    const who=(name,email)=>`<b>${esc(name||email||"(no name)")}</b>${name&&email?`<small>${esc(email).replace("@","<wbr>@")}</small>`:""}`;
+    const when2=iso=>{ const m=fmtWhen(iso).replace(" ET","").match(/^(.*?)(?:,\s|\sat\s)(.*)$/); return m?`${m[1]}<small>${m[2]}</small>`:fmtWhen(iso); };
+    $("#vis-summary").innerHTML=`<h3>${v.summary.length} people · ${v.total} visits in all</h3><table class="vis"><thead><tr><th>Person</th><th class="num">Visits</th><th>First (ET)</th><th>Latest (ET)</th></tr></thead><tbody>${v.summary.map(p=>`<tr><td class="person">${who(p.name,p.email)}</td><td class="num">${p.visits}</td><td class="when">${when2(p.first)}</td><td class="when">${when2(p.last)}</td></tr>`).join("")}</tbody></table>`;
+    $("#vis-log").innerHTML=`<h3>Every visit, newest first (last ${v.visits.length})</h3><table class="vis log"><thead><tr><th>When (ET)</th><th>Person</th></tr></thead><tbody>${v.visits.map(x=>`<tr><td class="when">${when2(x.ts)}</td><td class="person">${who(x.name,x.email)}</td></tr>`).join("")}</tbody></table>`;
   }catch(e){ $("#vis-summary").textContent="Could not load: "+e.message; }
 };
 function renderAgree(B){
