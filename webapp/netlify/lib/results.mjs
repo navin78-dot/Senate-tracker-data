@@ -5,7 +5,7 @@
 export const ELECTION_DAY_TEXT = "Tuesday, November 3";
 export const RESULTS_OPEN = "2026-11-04T05:00:00Z";    // midnight Eastern at the end of Election Day (EST)
 // Published to friends on November 6, 2026 (evening ET). Ten races; Alaska is added when called. Stage of count noted per race.
-export const RESULTS_UPDATED = "2026-11-07T13:30:00Z";
+export const RESULTS_UPDATED = "2026-11-08T01:17:00Z";
 export const RESULTS = {
   NC: { w: "D", m: 19.6 },   // Cooper
   GA: { w: "D", m: 18.1 },   // Ossoff
@@ -15,7 +15,7 @@ export const RESULTS = {
   ME: { w: "D", m: 6.3 },    // Jackson, won on first choices, no ranked-choice round; NBC at 93.6% (53.1–46.8), earlier 93% gave 6.4
   MI: { w: "D", m: 7.0 },    // El-Sayed
   KS: { w: "D", m: 4.9 },    // Hamilton; Kansas Secretary of State unofficial count, all 4,168 precincts (556,414 to 503,230)
-  IA: { w: "D", m: 4.7 },    // Turek
+  IA: { w: "D", m: 4.1 },    // Turek; Iowa Secretary of State unofficial count, all precincts (50.45–46.34), earlier partial snapshot gave 4.7
   OH: { w: "D", m: 4.8 }     // Brown; Ohio Secretary of State final unofficial count, 50.0–45.2 per NBC (was 2.1 at 87% reporting)
 };
 
