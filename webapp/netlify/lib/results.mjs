@@ -5,10 +5,10 @@
 export const ELECTION_DAY_TEXT = "Tuesday, November 3";
 export const RESULTS_OPEN = "2026-11-04T05:00:00Z";    // midnight Eastern at the end of Election Day (EST)
 // Published to friends on November 6, 2026 (evening ET). Ten races; Alaska is added when called. Stage of count noted per race.
-export const RESULTS_UPDATED = "2026-11-08T01:17:00Z";
+export const RESULTS_UPDATED = "2026-11-08T13:17:00Z";
 export const RESULTS = {
   NC: { w: "D", m: 19.6 },   // Cooper
-  GA: { w: "D", m: 18.1 },   // Ossoff
+  GA: { w: "D", m: 18.0 },   // Ossoff; NBC/Fox tally Nov 8 at 99% (59.02–40.98), earlier snapshot gave 18.1
   NH: { w: "D", m: 13.7 },   // Pappas; NBC tally Nov 6 (55.9–42.2), later than the 90% AP snapshot that gave 14.3
   TX: { w: "D", m: 12.1 },   // Talarico
   MN: { w: "D", m: 10.1 },   // Flanagan
